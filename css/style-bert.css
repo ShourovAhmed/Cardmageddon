@@ -47,6 +47,12 @@ button {
     display: flex;
     justify-content: space-around;
 }
+.deck-summary > ul > li > img{
+    padding-right: 0.3rem;
+}
+.deck-summary > img {
+    border-radius: 0.6rem;
+}
 #decks{
     padding: 1.5rem;
     display: flex;
@@ -54,4 +60,20 @@ button {
     justify-content: space-around;
     gap: 3rem;
 }
+#page-nav{
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+.change-page-button{
+    border: none;
+    padding: 0.3rem;
+    margin: 1.2rem;
+    border-radius: 0.3rem;
+    background-color:cornsilk;
+}
+.change-page-button:hover{
+    background-color: blanchedalmond;
+}
+
 
