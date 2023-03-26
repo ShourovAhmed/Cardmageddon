@@ -1,3 +1,57 @@
+* {
+    text-decoration: none;
+    color: black;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
 body {
     background-color:bisque
 }
+header{
+    padding: 0.9rem;
+    background-color:chocolate;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+nav > a {
+    background-color: beige;
+    padding: 0.3rem;
+    border-radius: 0.3rem;
+}
+button {
+    padding: 0.3rem;
+}
+
+.active{
+    background-color:burlywood;
+}
+
+.deck-summary {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+    max-width: max-content;
+    background-color: burlywood;
+    padding: 0.6rem 1.5rem 0.3rem 1.5rem;
+    border-radius: 0.9rem;
+}
+.deck-summary > ul {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+#decks{
+    padding: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 3rem;
+}
+
