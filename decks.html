@@ -23,7 +23,22 @@
         </button>
     </header>
     <main>
-        <h1>Decks</h1>
+        <section class="mainHead">
+            <h1>Decks</h1>
+            <section class="sortChoise">
+                <label for="sortBy">Sorteren Op:</label>
+                <select name="sortBy" id="sortBy" select>
+                    <option value="avgMana">Gemiddelde Mana</option>
+                    <option value="cardCount">Aantal Kaarten</option>
+                    <option value="deckName">Deck Naam</option>
+                  </select>
+                  <label for="sortOrder">Sorteren Van:</label>
+                  <select name="sortOrder" id="sortOrder" select>
+                      <option value="desc">Hoog naar Laag</option>
+                      <option value="ass">Laag naar Hoog</option>
+                    </select>
+            </section>
+        </section>
         <section id="decks">
             <article class="deck-summary">
                 <h2>Deckname</h2>

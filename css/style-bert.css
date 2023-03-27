@@ -17,6 +17,10 @@ header{
     justify-content: space-between;
     align-items: center;
 }
+header > nav{
+    display: flex;
+    gap: 1.5rem;
+}
 nav > a {
     background-color: beige;
     padding: 0.3rem;
@@ -30,6 +34,32 @@ button {
     background-color:burlywood;
 }
 
+h2{
+    color: white;
+}
+
+.mainHead{
+    padding: 1.5em 0.6em 0.6em 3em;
+    display: flex;
+}
+.sortChoise{
+    display: flex;
+    min-width: 80%;
+    align-items: center;
+    justify-content: center;
+}
+.sortChoise > label{
+    padding-right: 0.3rem;
+}
+#sortBy{
+    margin-right: 1.5rem;
+}
+select{
+    padding: 0.15rem;
+}
+a:hover{
+    background-color: rgb(55, 151, 224);
+}
 .deck-summary {
     display: flex;
     flex-direction: column;
