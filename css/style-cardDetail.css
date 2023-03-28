@@ -1,0 +1,17 @@
+body {
+    background-color:bisque;
+    display: grid;
+    grid-template-areas:    'header header  header'
+                            'mainHead mainHead mainHead'
+                            'aside  main    main'
+                            'footer footer  footer';
+}
+header{
+    grid-area: header;
+    padding: 0.9rem;
+    background-color: rgb(125, 49, 49);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
