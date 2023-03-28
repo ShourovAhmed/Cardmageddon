@@ -1,0 +1,17 @@
+
+
+
+.project{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+    max-width: max-content;
+    background-color: rgb(219, 162, 56);
+    padding: 0.6rem 1.5rem 0.3rem 1.5rem;
+    border-radius: 0.9rem;
+
+}
+
