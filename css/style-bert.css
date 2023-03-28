@@ -8,11 +8,18 @@
 
 
 body {
-    background-color:bisque
+    background-color:bisque;
+    display: grid;
+    grid-template-areas:    'header header  header'
+                            'mainHead mainHead mainHead'
+                            'aside  main    main'
+                            'footer footer  footer';
 }
 header{
+    grid-area: header;
     padding: 0.9rem;
-    background-color:chocolate;
+    background-color: rgb(125, 49, 49);
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -29,7 +36,20 @@ nav > a {
 button {
     padding: 0.3rem;
 }
-
+.deck-image-container{
+    position: relative;
+    overflow: hidden;
+    border: 0.12rem solid rgb(85, 15, 15);
+    width: 15rem;
+    height: 18rem;
+    border-radius: 1.2rem;    
+}
+.deck-image{
+    position: absolute;
+    left: -6.96rem;
+    top: -4.75rem;
+    
+}
 .active{
     background-color:burlywood;
 }
@@ -41,6 +61,8 @@ h2{
 .mainHead{
     padding: 1.5em 0.6em 0.6em 3em;
     display: flex;
+    grid-area: mainHead;
+    background-color:chocolate;
 }
 .sortChoise{
     display: flex;
@@ -58,7 +80,13 @@ select{
     padding: 0.15rem;
 }
 a:hover{
-    background-color: rgb(55, 151, 224);
+    background-color:rgb(222, 146, 91);
+}
+.deck-summary:hover{
+    transform: scale(102%);
+}
+.deck-summary:hover > .deck-image-container{
+    transform: scale(117%);
 }
 .deck-summary {
     display: flex;
@@ -69,7 +97,7 @@ a:hover{
     gap: 0.3rem;
     max-width: max-content;
     background-color: burlywood;
-    padding: 0.6rem 1.5rem 0.3rem 1.5rem;
+    padding: 0.9rem 1.5rem 0.6rem 1.5rem;
     border-radius: 0.9rem;
 }
 .deck-summary > ul {
@@ -106,4 +134,7 @@ a:hover{
     background-color: blanchedalmond;
 }
 
-
+aside{
+    grid-area: aside;
+    
+}

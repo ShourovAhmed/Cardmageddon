@@ -4,9 +4,56 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <link rel="stylesheet" href="./css/style-bert.css">
+    
+    <title>Deck Details</title>
 </head>
 <body>
+    <header>
+        <nav>
+            <a href="./homepage.html">Startpagina</a>
+            <a href="./decks.html" class="active">Decks</a>
+            <a href="./drawtest.html">Draw Test</a>
+        </nav>
+        <button>
+            Afmelden
+        </button>
+    </header>
+    <aside>
+        <a class="deck-summary" href="./decks.html">
+            <h2>Deckname</h2>
+            <ul>
+                <li>Count: <span class="cardCount">0</span></li>
+                <li>Avg Mana: <span class="avgMana">0</span></li>
+            </ul>
+            <img src="./assets/images/placeholders/planeswalkers.jpg" alt="placeholder" width="250">
+            <ul>
+                <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
+                <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">0</span></li>
+                <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">0</span></li>
+                <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
+                <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
+            </ul>
+        </a>
+    </aside>
+    <main>
+        <section class="mainHead">
+            <h1>Deck Details</h1>
+            <section class="sortChoise">
 
+                <section>
+                    Cards
+                    
+                </section>
+
+                <label for="sortBy">Weergave:</label>
+                <select name="view" id="view" select>
+                    <option value="list">Lijst</option>
+                    <option value="grid">Rooster</option>
+                </select>
+            </section>
+        </section>   
+    </main>
 </body>
 </html>
