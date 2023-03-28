@@ -1,0 +1,128 @@
+header{
+    
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+  
+    position: sticky;
+    background-color: white;
+    width: 100%;
+    top: 0;
+    z-index: 999;
+    height: 6rem;
+    
+}
+
+nav{
+    
+
+       
+    
+    display: flex;
+    flex-direction: row;
+
+    margin-left: 2rem;
+    margin-top: 1rem;
+    padding-bottom: 2rem;
+    font-size: 1.2rem;
+  
+    
+
+    
+    
+}
+
+nav ul{
+
+
+
+    display: flex;
+    flex-direction: row;
+    
+    list-style-type: none;
+    text-decoration: none;
+    padding: 2rem;
+    margin-left: 2 rem;
+    margin-right: auto;
+    gap: 2rem;
+
+    
+    
+}
+
+
+nav ul li{
+
+    list-style: none;
+    text-decoration: none;
+    }
+
+    nav ul li a{
+        text-decoration: none;
+        color: #313131 ;
+        
+        transition:0.5;
+        transition-duration:1000s;
+    }
+
+    li > a::after {
+        content: "";
+        display: block;
+        margin: auto;
+        background: transparent;
+        height: 3px;
+        
+        top: 5px;
+        width: 0;
+        border-radius: 4px;
+
+        transition: 0.5s;
+        
+      }
+      li > a:hover::after, li > a.active-nav::after {
+        width: 100%;
+        background: black;
+      }
+
+
+
+
+h2{
+
+    font-size: 1.8rem;
+   
+}
+
+p{
+    font-size: 1rem;
+    
+}
+
+
+
+#drawPile{
+
+    width: 8rem;
+    height: auto;
+}
+
+#previewDraw{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+
+    margin-top: 5rem;
+    
+
+}
+#formDraw{
+
+    margin-left: 30%;
+    margin-right: auto;
+    margin-top: 4rem;
+    align-items: center;
+}
+
+
+#drawButton{
+    align-self: center;
+}
