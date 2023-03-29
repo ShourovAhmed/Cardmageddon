@@ -21,6 +21,7 @@ h1{
     justify-content: center;
     align-items: center;
 }
+
 .project {
     flex-basis: calc(25% - 10px);
     height: 450px;
@@ -35,6 +36,7 @@ h1{
     padding: 20px;
 
 }
+
 .project img {
     width: 100%;
     height: auto;
