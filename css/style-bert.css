@@ -11,9 +11,10 @@ body {
     background-color:bisque;
     display: grid;
     grid-template-areas:    'header header  header'
-                            'mainHead mainHead mainHead'
-                            'aside  main    main'
+
+                            'main  main    main'
                             'footer footer  footer';
+    grid-template-columns: 100%;
 }
 header{
     grid-area: header;
@@ -63,6 +64,13 @@ h2{
     display: flex;
     grid-area: mainHead;
     background-color:chocolate;
+}
+aside{
+    border-right: 0.3rem solid black;
+    background-color: aqua;
+}
+.selectionBar{
+    display: flex;
 }
 .sortChoise{
     display: flex;

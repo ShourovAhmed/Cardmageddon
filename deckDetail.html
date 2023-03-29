@@ -20,40 +20,51 @@
             Afmelden
         </button>
     </header>
-    <aside>
-        <a class="deck-summary" href="./decks.html">
-            <h2>Deckname</h2>
-            <ul>
-                <li>Count: <span class="cardCount">0</span></li>
-                <li>Avg Mana: <span class="avgMana">0</span></li>
-            </ul>
-            <img src="./assets/images/placeholders/planeswalkers.jpg" alt="placeholder" width="250">
-            <ul>
-                <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
-                <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">0</span></li>
-                <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">0</span></li>
-                <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
-                <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
-            </ul>
-        </a>
-    </aside>
     <main>
         <section class="mainHead">
             <h1>Deck Details</h1>
-            <section class="sortChoise">
-
-                <section>
-                    Cards
-                    
-                </section>
-
+            <section class="selectionBar">
+                <select name="" id="">
+                    <option value="all">All</option>
+                    <option value="lands">Lands</option>
+                    <option value="creatures">Creatures</option>
+                    <option value="artifacts">Artifacts</option>
+                    <option value="enchantments">Enchantments</option>
+                    <option value="planeswalkers">Planeswalkers</option>
+                    <option value="instants">Instants</option>
+                    <option value="sorceries">Sorceries</option>
+                </select>
+            </section>
+            <section class="viewSelection">
                 <label for="sortBy">Weergave:</label>
                 <select name="view" id="view" select>
                     <option value="list">Lijst</option>
                     <option value="grid">Rooster</option>
                 </select>
             </section>
-        </section>   
+        </section>
+        <aside>
+            <a class="deck-summary" href="./decks.html">
+                <h2>Deckname</h2>
+                <ul>
+                    <li>Count: <span class="cardCount">0</span></li>
+                    <li>Avg Mana: <span class="avgMana">0</span></li>
+                </ul>
+                <div class="deck-image-container">
+                    <img class="deck-image" src="/assets/images/placeholders/planeswalkers.jpg" alt="" width="471">
+                </div>
+                <ul>
+                    <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
+                    <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">0</span></li>
+                    <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">0</span></li>
+                    <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
+                    <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
+                </ul>
+            </a>
+        </aside>
+        <section class="cardsView">
+            
+        </section>
     </main>
 </body>
 </html>
