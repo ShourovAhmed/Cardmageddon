@@ -1,26 +1,68 @@
-body{
-    background-color: #8b419a;
+body {
+    background-color:bisque;
+    display: grid;
+    grid-template-areas:    'header header  header'
+                            'search	search	search'
+                            'imageGrid  imageGrid    imageGrid';
+    text-align: center;
 }
+header{
+    grid-area: header;
+    padding: 0.9rem;
+    background-color: rgb(125, 49, 49);
 
-.search input[type=text]{
-    width:400px;
-    height:50px;
-    border-radius:25px;
-    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-     
-.search{
-    float:right;
-    margin:7px;
+header > nav{
+    display: flex;
+    gap: 1.5rem;
 }
-     
-.search button{
-    background-color: #0074D9;
-    color: #f2f2f2;
-    float: right;
-    padding: 5px 10px;
-    margin-right: 16px;
-    font-size: 12px;
-    border: none;
-    cursor: pointer;
+nav > a {
+    background-color: beige;
+    padding: 0.3rem;
+    border-radius: 0.3rem;
 }
+		.search-box {
+			grid-area: search;
+			margin-top: 50px;
+			width: 400px;
+			height: 40px;
+			border: 2px solid #ccc;
+			border-radius: 20px;
+			padding: 10px;
+			font-size: 16px;
+			text-align: center;
+			outline: none;
+		}
+
+		.image-grid {
+			grid-area: imageGrid;
+			display: grid;
+			grid-template-columns: repeat(5, 1fr);
+			grid-template-rows: repeat(2, 1fr);
+			grid-gap: 20px;
+			margin-top: 50px;
+		}
+
+		.image-grid img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 20px;
+			border-style: solid;
+		}
+
+		.common{
+			border-color: white;
+		}
+		.uncommon{
+			border-color: blue;
+		}
+		.rare{
+			border-color: yellow;
+		}
+		.mythic{
+			border-color: red;
+		}
