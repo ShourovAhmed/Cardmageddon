@@ -1,27 +1,67 @@
-* {
-    text-decoration: none;
-    color: black;
-    list-style: none;
-    padding: 0;
-    margin: 0;
+@font-face {
+    font-family: open-sans;
+    src: url(../fonts/OpenSans/OpenSans-Regular.ttf) format('truetype');
+    font-weight: normal;
 }
+@font-face {
+    font-family: open-sans;
+    src: url(../fonts/OpenSans/OpenSans-Bold.ttf) format('truetype');
+    font-weight: bold;
+}
+@font-face {
+    font-family: open-sans;
+    src: url(../fonts/OpenSans/OpenSans-ExtraBold.ttf) format('truetype');
+    font-weight: bolder;
+}
+@font-face {
+    font-family: open-sans;
+    src: url(../fonts/OpenSans/OpenSans-Light.ttf) format('truetype');
+    font-weight: lighter;
+}
+@font-face {
+    font-family: open-sans;
+    src: url(../fonts/OpenSans/OpenSans-Italic.ttf) format('truetype');
+    font-style: italic;
+}
+
 :root {
-    --main-colour: bisque;
-    --header-colour:  rgb(122, 55, 55);
-    --subHeader-colour: chocolate;
     --light-colour:  rgb(196, 196, 196);
     --dark-colour: #313131 ;
-    --active-colour: rgba(176, 176, 176, 0.589);
-    --bijhouden: rgb(222, 146, 91);
+
+    --primary-colour: bisque;
+    --secondary-colour: burlywood;
+    --header-colour:  rgb(122, 55, 55);
+    --subHeader-colour: chocolate;
+
+
+    --active-colour: rgb(222, 146, 91);
+
+    --bijhouden: ;
+    --bijhoude2: rgba(176, 176, 176, 0.589);
+
 
     /* BORDER COLOURS */
-    --ledgendaryBorder-colour: ;
+
+    --common-colour: var(--dark-colour);
+    --uncommon-colour: silver;
+    --rare-colour: gold;
+    --mythic-rare-colour: rgba(205, 134, 26, 0.947);
     
 }
 
 
+* {
+    text-decoration: none;
+    color: var(--dark-colour);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: 'open-sans';
+}
+
+
 body {
-    background-color: var(--main-colour);
+    background-color: var(--primary-colour);
     display: grid;
     grid-template-areas:    'header     header      header'
                             'mainHead   mainHead    mainHead'
@@ -58,31 +98,27 @@ nav ul li{
 
 nav ul li a{
     text-decoration: none;
-    color: var(--light-color);
+    color: var(--light-colour);
 }
 
 li > a::after {
     content: "";
     display: block;
     margin: auto;
-    background: transparent;
     height: 3px;
-    
     top: 5px;
     width: 0;
     border-radius: 3px;
-
     transition: 0.9s;
-    
 }
 
 li > a:hover::after, .active::after {
     width: 100%;
-    background: var(--light-color);
+    background: var(--light-colour);
 }
 .active::after {
     width: 100%;
-    background: var(--active-color);
+    background: var(--active-colour);
 }
 
 nav > ul > li {
@@ -109,11 +145,11 @@ button {
     
 }
 .active{
-    color:var(--active-color);
+    color:var(--active-colour);
 }
 
 h2{
-    color: var(--dark-color);
+    color: var(--dark-colour);
 }   
 
 .mainHead{
@@ -121,7 +157,7 @@ h2{
     display: flex;
     flex-wrap: wrap;
     grid-area: mainHead;
-    background-color:var(--subHeader-color);
+    background-color:var(--subHeader-colour);
 }
 aside{
 
@@ -153,15 +189,17 @@ select{
 }
 
 .deck-summary:hover{
-    background-color:rgb(222, 146, 91);
+    background-color: var(--active-colour);
     transform: scale(102%);
 
 }
 .deck-summary:hover > .deck-image-container{
+
     transform: scale(117%);
-    
+
 }
 .deck-summary {
+
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -172,8 +210,10 @@ select{
     background-color: burlywood;
     padding: 0.9rem 1.5rem 0.6rem 1.5rem;
     border-radius: 0.9rem;
+
 }
 .deck-summary > ul {
+
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -190,6 +230,7 @@ select{
     flex-wrap: wrap;
     justify-content: space-around;
     gap: 3rem;
+
 }
 #page-nav{
     display: flex;
@@ -198,13 +239,16 @@ select{
 }
 .change-page-button{
     border: none;
+    width: 6rem;
     padding: 0.3rem;
     margin: 1.2rem;
-    border-radius: 0.3rem;
-    background-color:cornsilk;
+    background-color:burlywood;
+
 }
 .change-page-button:hover{
-    background-color: blanchedalmond;
+
+    background-color: var(--active-colour);
+
 }
 
 aside{
@@ -214,3 +258,69 @@ aside{
 #cardClass{
     display: flex;
 }
+.pre-page{
+    border-radius: 0.9rem 3rem 0.9rem 6rem;
+}
+.next-page{
+    border-radius: 0.9rem 6rem 0.9rem 3rem;
+}
+
+/* MODAL */
+#modal-background{
+    position: fixed;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: invert(60%);
+}
+#login-modal{
+    background-color: var(--active-colour);
+    padding: 3rem;
+    border: var(--secondary-colour) 0.3rem solid;
+    border-radius: 0.6rem;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    backdrop-filter: invert(100%);
+}
+
+#exit-login-btn{
+    position: absolute;
+
+    width: 1.2rem;
+    height: 1.2rem;
+    right: 0.3rem;
+    top: 0.3rem;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--header-colour);
+    font-weight: bolder;
+    background-color: var(--light-colour);
+
+    border-radius: 0.21rem;
+    padding: 0.51rem;
+}
+#exit-login-btn:hover{
+    transform: scale(111%);
+    transition: ease-in-out 0.18s;
+}
+
+.login-form > input{
+    background-color: var(--primary-colour);
+    margin-bottom: 1.2rem;
+}
+
+#login-btn{
+    margin-left: 3rem;
+    border-radius: 0.3rem;
+    background-color: var(--primary-colour);
+}
+#login-btn:hover{
+    background-color: var(--secondary-colour);
+    transform: scale(111%);
+    transition: ease-in-out 0.3s;
+}
+/* EINDE MODAL*/
