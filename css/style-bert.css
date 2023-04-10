@@ -1,53 +1,4 @@
-@font-face {
-    font-family: open-sans;
-    src: url(../fonts/OpenSans/OpenSans-Regular.ttf) format('truetype');
-    font-weight: normal;
-}
-@font-face {
-    font-family: open-sans;
-    src: url(../fonts/OpenSans/OpenSans-Bold.ttf) format('truetype');
-    font-weight: bold;
-}
-@font-face {
-    font-family: open-sans;
-    src: url(../fonts/OpenSans/OpenSans-ExtraBold.ttf) format('truetype');
-    font-weight: bolder;
-}
-@font-face {
-    font-family: open-sans;
-    src: url(../fonts/OpenSans/OpenSans-Light.ttf) format('truetype');
-    font-weight: lighter;
-}
-@font-face {
-    font-family: open-sans;
-    src: url(../fonts/OpenSans/OpenSans-Italic.ttf) format('truetype');
-    font-style: italic;
-}
 
-:root {
-    --light-colour:  rgb(196, 196, 196);
-    --dark-colour: #313131 ;
-
-    --primary-colour: bisque;
-    --secondary-colour: burlywood;
-    --header-colour:  rgb(122, 55, 55);
-    --subHeader-colour: chocolate;
-
-
-    --active-colour: rgb(222, 146, 91);
-
-    --bijhouden: ;
-    --bijhoude2: rgba(176, 176, 176, 0.589);
-
-
-    /* BORDER COLOURS */
-
-    --common-colour: var(--dark-colour);
-    --uncommon-colour: silver;
-    --rare-colour: gold;
-    --mythic-rare-colour: rgba(205, 134, 26, 0.947);
-    
-}
 
 
 * {
@@ -68,63 +19,7 @@ body {
                             'aside      main        main';
     grid-template-columns: 100%;
 }
-header{
-    grid-area: header;
-    padding: 0.9rem;
-    background-color: var(--header-colour);
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-nav{
-    display: flex;
-    font-size: 1.2rem;
-}
-
-nav ul{
-    display: flex;
-    list-style-type: none;
-    text-decoration: none;
-    gap: 2rem;
-}
-
-
-nav ul li{
-    list-style: none;
-    text-decoration: none;
-}
-
-nav ul li a{
-    text-decoration: none;
-    color: var(--light-colour);
-}
-
-li > a::after {
-    content: "";
-    display: block;
-    margin: auto;
-    height: 3px;
-    top: 5px;
-    width: 0;
-    border-radius: 3px;
-    transition: 0.9s;
-}
-
-li > a:hover::after, .active::after {
-    width: 100%;
-    background: var(--light-colour);
-}
-.active::after {
-    width: 100%;
-    background: var(--active-colour);
-}
-
-nav > ul > li {
-    padding: 0.3rem;
-
-}
 
 button {
     padding: 0.3rem;
@@ -143,9 +38,6 @@ button {
     left: -6.96rem;
     top: -4.75rem;
     
-}
-.active{
-    color:var(--active-colour);
 }
 
 h2{
@@ -267,65 +159,3 @@ aside{
     border-radius: 0.9rem 6rem 0.9rem 3rem;
 }
 
-/* MODAL */
-.modal-back{
-    position: fixed;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
-    backdrop-filter: invert(60%);
-}
-#modal-front{
-    background-color: var(--active-colour);
-    padding: 3rem;
-    border: var(--secondary-colour) 0.3rem solid;
-    border-radius: 0.6rem;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    backdrop-filter: invert(100%);
-}
-
-.exit-modal-btn{
-    position: absolute;
-
-    width: 1.2rem;
-    height: 1.2rem;
-    right: 0.3rem;
-    top: 0.3rem;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    color: var(--header-colour);
-    font-weight: bolder;
-    background-color: var(--light-colour);
-
-    border-radius: 0.21rem;
-    padding: 0.51rem;
-}
-.exit-modal-btn:hover{
-    transform: scale(111%);
-    transition: ease-in-out 0.18s;
-}
-
-.modal-form > input{
-    background-color: var(--primary-colour);
-    margin-bottom: 1.2rem;
-}
-.modal-form > input:focus{
-    outline: var(--header-colour) 0.12rem solid;
-}
-
-#login-btn{
-    margin-left: 3rem;
-    border-radius: 0.3rem;
-    background-color: var(--primary-colour);
-}
-#login-btn:hover{
-    background-color: var(--secondary-colour);
-    transform: scale(111%);
-    transition: ease-in-out 0.3s;
-}
-/* EINDE MODAL*/
