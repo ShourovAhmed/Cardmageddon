@@ -189,24 +189,19 @@
             <button class="change-page-button next-page">Vogende</button></nav>
     </main>
     <footer></footer>
-    <div id="logout-modal-back" class="modal-back">
+    <div class="modal-back" id="logout-modal-back">
         <div id="modal-front">
-            <button id="exit-logout-modal-btn">X</button>
-            <form action="./landingpage.html" class="login-form">
-                <label for="username">Gebruikersnaam</label>
+            <button class="exit-modal-btn" id="exit-logout-modal-btn">X</button>
+
+            <form action="./landingpage.html" class="modal-form">
+                <p>Weet u zeker dat u wilt:</p>
                 <br>
-                <input type="text" id="username" required>
-                <br>
-                <label for="password">Paswoord</label>
-                <br>
-                <input type="text" id="password" required>
-                <br>
-                <button type="submit" id="login-btn">Aanmelden</button>
+                <button type="submit" id="login-btn">Afmelden</button>
             </form>
         </div>
     </div>
 </body>
 
-<script src="./js/modal.js"></script>
+<script src="./js/logoutModelTest.js"></script>
 </html>
 

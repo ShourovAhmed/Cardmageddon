@@ -310,9 +310,12 @@ aside{
     transition: ease-in-out 0.18s;
 }
 
-.login-form > input{
+.modal-form > input{
     background-color: var(--primary-colour);
     margin-bottom: 1.2rem;
+}
+.modal-form > input:focus{
+    outline: var(--header-colour) 0.12rem solid;
 }
 
 #login-btn{
