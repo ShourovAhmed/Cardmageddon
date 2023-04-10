@@ -5,38 +5,95 @@
     padding: 0;
     margin: 0;
 }
+:root {
+    --main-colour: bisque;
+    --header-colour:  rgb(122, 55, 55);
+    --subHeader-colour: chocolate;
+    --light-colour:  rgb(196, 196, 196);
+    --dark-colour: #313131 ;
+    --active-colour: rgba(176, 176, 176, 0.589);
+    --bijhouden: rgb(222, 146, 91);
+
+    /* BORDER COLOURS */
+    --ledgendaryBorder-colour: ;
+    
+}
 
 
 body {
-    background-color:bisque;
+    background-color: var(--main-colour);
     display: grid;
-    grid-template-areas:    'header header  header'
-
-                            'main  main    main'
-                            'footer footer  footer';
+    grid-template-areas:    'header     header      header'
+                            'mainHead   mainHead    mainHead'
+                            'aside      main        main';
     grid-template-columns: 100%;
 }
 header{
     grid-area: header;
     padding: 0.9rem;
-    background-color: rgb(125, 49, 49);
+    background-color: var(--header-colour);
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-header > nav{
+
+nav{
     display: flex;
-    gap: 1.5rem;
+    font-size: 1.2rem;
 }
-nav > a {
-    background-color: beige;
+
+nav ul{
+    display: flex;
+    list-style-type: none;
+    text-decoration: none;
+    gap: 2rem;
+}
+
+
+nav ul li{
+    list-style: none;
+    text-decoration: none;
+}
+
+nav ul li a{
+    text-decoration: none;
+    color: var(--light-color);
+}
+
+li > a::after {
+    content: "";
+    display: block;
+    margin: auto;
+    background: transparent;
+    height: 3px;
+    
+    top: 5px;
+    width: 0;
+    border-radius: 3px;
+
+    transition: 0.9s;
+    
+}
+
+li > a:hover::after, .active::after {
+    width: 100%;
+    background: var(--light-color);
+}
+.active::after {
+    width: 100%;
+    background: var(--active-color);
+}
+
+nav > ul > li {
     padding: 0.3rem;
-    border-radius: 0.3rem;
+
 }
+
 button {
     padding: 0.3rem;
 }
+
 .deck-image-container{
     position: relative;
     overflow: hidden;
@@ -52,21 +109,22 @@ button {
     
 }
 .active{
-    background-color:burlywood;
+    color:var(--active-color);
 }
 
 h2{
-    color: white;
-}
+    color: var(--dark-color);
+}   
 
 .mainHead{
     padding: 1.5em 0.6em 0.6em 3em;
     display: flex;
+    flex-wrap: wrap;
     grid-area: mainHead;
-    background-color:chocolate;
+    background-color:var(--subHeader-color);
 }
 aside{
-    border-right: 0.3rem solid black;
+
     background-color: aqua;
 }
 .selectionBar{
@@ -84,17 +142,24 @@ aside{
 #sortBy{
     margin-right: 1.5rem;
 }
+
 select{
     padding: 0.15rem;
 }
-a:hover{
-    background-color:rgb(222, 146, 91);
+
+
+.deck-summary:hover, .deck-summary:hover > .deck-image-container{
+    transition: ease-in-out 0.3s;
 }
+
 .deck-summary:hover{
+    background-color:rgb(222, 146, 91);
     transform: scale(102%);
+
 }
 .deck-summary:hover > .deck-image-container{
     transform: scale(117%);
+    
 }
 .deck-summary {
     display: flex;
@@ -144,5 +209,8 @@ a:hover{
 
 aside{
     grid-area: aside;
-    
+}
+
+#cardClass{
+    display: flex;
 }
