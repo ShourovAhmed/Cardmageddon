@@ -1,11 +1,12 @@
-var modal = document.getElementById("modal-background");
-var onBtn = document.getElementById("open-login-btn");
-var offBtn = document.getElementById("exit-login-btn");
+var loginModal = document.getElementById("login-modal-back");
+var loginOnBtn = document.getElementById("open-login-modal-btn");
+var logoutOnBtn = document.getElementById("")
+var offBtn = document.getElementById("exit-modal-btn");
 
 
-onBtn.onclick = function() {
-  modal.style.display = "flex";
+loginOnBtn.onclick = function() {
+  loginModal.style.display = "flex";
 }
 offBtn.onclick = function() {
-    modal.style.display = "none";
+    loginModal.style.display = "none";
   }
