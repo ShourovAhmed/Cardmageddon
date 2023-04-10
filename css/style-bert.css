@@ -184,9 +184,7 @@ select{
 }
 
 
-.deck-summary:hover, .deck-summary:hover > .deck-image-container{
-    transition: ease-in-out 0.3s;
-}
+
 
 .deck-summary:hover{
     background-color: var(--active-colour);
@@ -196,6 +194,10 @@ select{
 .deck-summary:hover > .deck-image-container{
 
     transform: scale(117%);
+
+}
+.deck-summary:hover, .deck-summary:hover > .deck-image-container{
+    transition: ease-in-out 0.6s;
 
 }
 .deck-summary {
@@ -266,7 +268,7 @@ aside{
 }
 
 /* MODAL */
-#login-modal-back{
+.modal-back{
     position: fixed;
     display: none;
     justify-content: center;
@@ -275,7 +277,7 @@ aside{
     height: 100vh;
     backdrop-filter: invert(60%);
 }
-#login-modal-front{
+#modal-front{
     background-color: var(--active-colour);
     padding: 3rem;
     border: var(--secondary-colour) 0.3rem solid;
@@ -284,7 +286,7 @@ aside{
     backdrop-filter: invert(100%);
 }
 
-#exit-modal-btn{
+.exit-modal-btn{
     position: absolute;
 
     width: 1.2rem;
@@ -303,7 +305,7 @@ aside{
     border-radius: 0.21rem;
     padding: 0.51rem;
 }
-#exit-modal-btn:hover{
+.exit-modal-btn:hover{
     transform: scale(111%);
     transition: ease-in-out 0.18s;
 }

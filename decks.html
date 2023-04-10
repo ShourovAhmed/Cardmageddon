@@ -20,8 +20,9 @@
                 <li><a href="./drawtest.html">Draw Test</a></li>
             </ul> 
         </nav>
-        <button id="open-logout-btn">Afmelden</button>
+        <button id="open-logout-modal-btn">Afmelden</button>
     </header>
+
     <main>
         <section class="mainHead">
             <h1>Decks</h1>
@@ -188,6 +189,24 @@
             <button class="change-page-button next-page">Vogende</button></nav>
     </main>
     <footer></footer>
+    <div id="logout-modal-back" class="modal-back">
+        <div id="modal-front">
+            <button id="exit-logout-modal-btn">X</button>
+            <form action="./landingpage.html" class="login-form">
+                <label for="username">Gebruikersnaam</label>
+                <br>
+                <input type="text" id="username" required>
+                <br>
+                <label for="password">Paswoord</label>
+                <br>
+                <input type="text" id="password" required>
+                <br>
+                <button type="submit" id="login-btn">Aanmelden</button>
+            </form>
+        </div>
+    </div>
 </body>
 
+<script src="./js/modal.js"></script>
 </html>
+

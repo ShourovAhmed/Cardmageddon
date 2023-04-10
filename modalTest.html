@@ -8,12 +8,12 @@
 </head>
 <body>
     <header>
-        <button style="width: 3rem;" id="open-login-modal-btn">Login</button>
+        <button id="open-login-modal-btn">Aanmelden</button>
     </header>
 
-    <div id="login-modal-back">
-        <div id="login-modal-front">
-            <button id="exit-modal-btn">X</button>
+    <div class="modal-back" id="login-modal-back">
+        <div id="modal-front">
+            <button class="exit-modal-btn" id="exit-login-modal-btn">X</button>
             <form action="./homepage.html" class="login-form">
                 <label for="username">Gebruikersnaam</label>
                 <br>
@@ -29,6 +29,6 @@
     </div>
 </body>
 
+<script src="./js/modal.js"></script>
 </html>
 
-<script src="./js/loginModel.js"></script>
