@@ -5,46 +5,58 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="./css/style-universal.css">
+    <link rel="stylesheet" href="./css/style-modal.css">
+    <link rel="stylesheet" href="./css/style-header.css">
+
     <link rel="stylesheet" href="./css/style-bert.css">
-    
     <title>Deck Details</title>
 </head>
 <body>
     <header>
         <nav>
-            <a href="./homepage.html">Startpagina</a>
-            <a href="./decks.html" class="active">Decks</a>
-            <a href="./drawtest.html">Draw Test</a>
+            <ul>
+                <li class="home-link"><a href="./homepage.html">Startpagina</a></li>
+                <li class="decks-link"><a href="./decks.html">Decks</a></li>
+                <li><a href="#" class="active">Deck Details</a></li>
+                <li class="draw-link"><a href="./drawtest.html">Draw Test</a></li>
+                <li class="header-btn"><button id="open-logout-modal-btn">Afmelden</button>
+            </ul> 
         </nav>
-        <button>
-            Afmelden
-        </button>
     </header>
+
     <main>
-        <section class="mainHead">
+
+        <section class="sub-header">
             <h1>Deck Details</h1>
-            <section class="selectionBar">
-                <select name="cardClass" id="cardClass" multiple>
-                    <option value="all">All</option>
-                    <option value="lands">Lands</option>
-                    <option value="creatures">Creatures</option>
-                    <option value="artifacts">Artifacts</option>
-                    <option value="enchantments">Enchantments</option>
-                    <option value="planeswalkers">Planeswalkers</option>
-                    <option value="instants">Instants</option>
-                    <option value="sorceries">Sorceries</option>
-                </select>
+
+            <section class="ff">
+                <label for="cardCl">Select:</label>
+                <section class="" name="cardClass" id="cardClass" multiple size="1">
+                    <button value="all">All</button>
+                    <button value="lands">Lands</button>
+                    <button value="creatures">Creatures</button>
+                    <button value="artifacts">Artifacts</button>
+                    <button value="enchantments">Enchantments</button>
+                    <button value="planeswalkers">Planeswalkers</button>
+                    <button value="instants">Instants</button>
+                    <button value="sorceries">Sorceries</button>
+                </section>
             </section>
-            <section class="viewSelection">
-                <label for="sortBy">Weergave:</label>
-                <select name="view" id="view" select>
+
+
+            <section class="flex ff">
+                <label for="viewChoise">Weergave:</label>
+                <select name="viewChoise" id="viewChoise" select>
                     <option value="list">Lijst</option>
                     <option value="grid">Rooster</option>
                 </select>
             </section>
+
         </section>
+
         <aside>
-            <a class="deck-summary" href="./decks.html">
+            <section class="deck-summary">
                 <h2>Deckname</h2>
                 <ul>
                     <li>Count: <span class="cardCount">0</span></li>
@@ -60,11 +72,38 @@
                     <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
                     <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
                 </ul>
-            </a>
+            </section>
         </aside>
-        <section class="cardsView">
-            
+
+        <section class="cards-view">
+            <article class="card">
+                <p class="card-count"></p>
+                <img src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
+            </article>
+            <article class="card">
+                <p class="card-count"></p>
+                <img src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
+            </article>
+            <article class="card">
+                <p class="card-count"></p>
+                <img src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
+            </article>
+            <article class="card">
+                <p class="card-count"></p>
+                <img src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
+            </article>
+            <article class="card">
+                <p class="card-count"></p>
+                <img src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
+            </article>
+            <article class="card">
+                <p class="card-count"></p>
+                <img src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
+            </article>
         </section>
+
     </main>
+
 </body>
+
 </html>

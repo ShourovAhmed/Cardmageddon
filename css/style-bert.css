@@ -2,17 +2,31 @@
     padding: 0;
     margin: 0;
 }
-
-
-body {
-    background-color: var(--primary-colour);
-    display: grid;
-    grid-template-areas:    'header     header      header'
-                            'mainHead   mainHead    mainHead'
-                            'aside      main        main';
-    grid-template-columns: 100%;
+/*SPECIALS*/
+.ff{
+    display: none !important;
 }
-
+.flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.disabled{
+    filter: brightness(120%);
+}
+body {
+    display: grid;
+    grid-template-areas: 'header header'
+                         'main   main'
+                         'footer footer';
+    grid-template-columns: auto;
+}
+main{
+    grid-area: main;
+    display: grid;
+    grid-template-areas: 'sub-header sub-header sub-header sub-header sub-header'
+                         'aside      view       view       view       view';
+}
 
 button {
     padding: 0.3rem;
@@ -37,28 +51,39 @@ h2{
     color: var(--dark-colour);
 }   
 
-.mainHead{
-    padding: 1.5em 0.6em 0.6em 3em;
+.sub-header{
+    padding: 0.6rem 1.5rem 0.6rem 1.5rem;
     display: flex;
-    flex-wrap: wrap;
-    grid-area: mainHead;
+    align-items: center;
+    justify-content: space-between;
+    grid-area: sub-header;
     background-color:var(--subHeader-colour);
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 aside{
-
-    background-color: aqua;
+    grid-area: aside;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
+aside > .deck-summary{
+    margin-top: 1.5rem;
+    position: sticky;
+    top: 4.5rem;
+}
+
 .selectionBar{
     display: flex;
 }
-.sortChoise{
+.sub-header :nth-child(2){
     display: flex;
-    min-width: 80%;
+    margin: auto;
     align-items: center;
-    justify-content: center;
 }
-.sortChoise > label{
-    padding-right: 0.3rem;
+label{
+    padding-right: 0.51rem;
 }
 #sortBy{
     margin-right: 1.5rem;
@@ -68,9 +93,15 @@ select{
     padding: 0.15rem;
 }
 
+.cards-view{
+    grid-area: view;
+    display: flex;
+    flex-wrap: wrap;
+}
+.card{
 
-
-
+    width: 25%;
+}
 .deck-summary:hover{
     background-color: var(--active-colour);
     transform: scale(102%);
@@ -112,6 +143,7 @@ select{
     border-radius: 0.6rem;
 }
 #decks{
+    grid-area: view;
     padding: 1.5rem;
     display: flex;
     flex-wrap: wrap;
@@ -132,19 +164,23 @@ select{
     background-color:burlywood;
 
 }
+.page-info{
+    flex-direction: column;
+}
+.cu
 .change-page-button:hover{
 
     background-color: var(--active-colour);
 
 }
 
-aside{
-    grid-area: aside;
-}
-
 #cardClass{
     display: flex;
 }
+footer{
+    grid-area: footer;
+}
+
 .pre-page{
     border-radius: 0.9rem 3rem 0.9rem 6rem;
 }
@@ -152,3 +188,6 @@ aside{
     border-radius: 0.9rem 6rem 0.9rem 3rem;
 }
 
+#cardClass > button {
+    margin-right:0.3rem;
+}
