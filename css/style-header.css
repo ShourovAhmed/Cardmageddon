@@ -3,18 +3,19 @@ header{
     padding: 0.9rem;
     background-color: var(--header-colour);
 
-    display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 nav{
-    display: flex;
     font-size: 1.2rem;
+    width: 100%;
 }
 
 nav ul{
     display: flex;
+    flex-wrap: wrap;
+    width: 100%;
     list-style-type: none;
     text-decoration: none;
     gap: 2rem;
@@ -24,6 +25,10 @@ nav ul{
 nav ul li{
     list-style: none;
     text-decoration: none;
+}
+
+.header-btn{
+    margin-left: auto;
 }
 
 nav ul li a{
@@ -46,6 +51,8 @@ li > a:hover::after, .active::after {
     width: 100%;
     background: var(--light-colour);
 }
+
+
 .active::after {
     width: 100%;
     background: var(--active-colour);
@@ -54,6 +61,47 @@ li > a:hover::after, .active::after {
 nav > ul > li {
     padding: 0.3rem;
 }
+nav > ul > li > button{
+    align-self: flex-end;
+}
 .active{
     color:var(--active-colour);
+}
+
+@media all and (width < 470px) {
+    .home-link{
+        order: 0;
+        margin-right: 29%;
+    }
+    .decks-link{
+        order: 2;
+        margin-left: auto;
+    }
+    .draw-link{
+        order: 3;
+        margin-right: auto;
+    }
+    .header-btn{
+        order: 1;
+        margin-left: auto;
+    }
+}
+
+@media all and (width < 358px) {
+    .home-link{
+        order: 0;
+        margin-right: 6%;
+    }
+    .decks-link{
+        order: 2;
+        margin-left: auto;
+    }
+    .draw-link{
+        order: 3;
+        margin-right: auto;
+    }
+    .header-btn{
+        order: 1;
+        margin-left: auto;
+    }
 }
