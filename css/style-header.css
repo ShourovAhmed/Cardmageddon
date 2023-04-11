@@ -30,6 +30,10 @@ nav ul li{
 .header-btn{
     margin-left: auto;
 }
+.header-btn:hover > button{
+    border-radius: 0.3rem;
+    background-color: var(--active-colour);
+}
 
 nav ul li a{
     text-decoration: none;
