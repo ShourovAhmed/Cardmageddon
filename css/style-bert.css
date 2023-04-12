@@ -191,3 +191,9 @@ footer{
 #cardClass > button {
     margin-right:0.3rem;
 }
+
+modalId{
+    width: 50rem;
+    height: 50rem;
+    background-color: aqua;
+}

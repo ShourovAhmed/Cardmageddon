@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="nl-BE">
+
+<head>
+    <link rel="stylesheet" href="./css/style-universal.css">
+    <link rel="stylesheet" href="./css/style-modal.css">
+    <link rel="stylesheet" href="./css/style-header.css">
+
+</head>
+
+<body>
+    <p id="dbT" style="width: 80vw; height: 6rem; background-color: lightgreen; color: red;">Custom console (niet op letten)</p>
+
+    <header>
+
+        <button class="header-btn showM logM" id="loginStatus">Aanmelden<status>0</status></button>
+
+        <button class="header-btn showM errorM">Open Project
+            <status>
+            <!-- ERROR MESSAGE HIER-->
+            Bijvoorbeeld deze compleet ramndom tekst:
+            qsfqsfjql sfs blransstrdeee lo. =)
+            </status>
+        </button>
+
+        <button class="header-btn showM cardM">Open Card</button>
+    </header>
+
+    <section id="modals">
+
+        <modal id="loginM">
+
+            <button class="hideM">X</button>
+            <form action="#" onsubmit="setLoginStatus()" class="modal-form">
+                <label for="username">Gebruikersnaam</label>
+                <br>
+                <input type="text" id="username" required>
+                <br>
+                <label for="password">Paswoord</label>
+                <br>
+                <input type="text" id="password" required>
+                <br>
+                <button id="request-login-btn" type="submit">Aanmelden</button>
+            </form>
+        </modal>
+
+        <modal id="logoutM">
+ 
+            <button class="hideM">X</button>
+            <form action="./landingpage.html" class="modal-form">
+                <p>Weet u zeker dat u wilt:</p>
+                <br>
+                <button type="submit">Afmelden</button>
+            </form>
+
+        </modal>
+
+        <modal id="cardM">
+ 
+            <button class="hideM">X</button>
+            <!-- IFrame moet nog via js aanpasbaar worden
+            maar gezien we voorlopig maar 1 carddetail page hebben, heb ik daar nu men tijd niet in gestoken -->
+            <iframe src="./cardDetails.html"></iframe>
+
+
+        </modal>
+
+        <modal id="errorM">
+ 
+            <button class="hideM">X</button>
+            <p id="errorMess">sdfhdhyfsdhsdfhfhd</p>
+        </modal>
+
+    </section>
+
+
+
+
+</body>
+
+<script src="./js/modals.js"></script>
+</html>
+
