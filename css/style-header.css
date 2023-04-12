@@ -27,7 +27,7 @@ nav ul li{
     text-decoration: none;
 }
 
-.header-btn{
+nav > ul > li:last-child{
     margin-left: auto;
 }
 .header-btn:hover > button{

@@ -23,7 +23,7 @@
                 <li class="home-link"><a href="./homepage.html">Startpagina</a></li>
                 <li class="decks-link"><a href="./decks.html" class="active">Decks</a></li>
                 <li class="draw-link"><a href="./drawtest.html">Draw Test</a></li>
-                <li class="header-btn"><button id="open-logout-modal-btn">Afmelden</button>
+                <li><button class="header-btn showM logM" id="loginStatus">Aanmelden<status>0</status></button></li>
             </ul> 
         </nav>
     </header>
@@ -200,24 +200,59 @@
     </footer>
 
 
-    <div class="modal-back" id="logout-modal-back">
-        <div id="modal-front">
-            <button class="exit-modal-btn" id="exit-logout-modal-btn">X</button>
+    <section id="modals">
 
+        <modal id="loginM">
+
+            <button class="hideM">X</button>
+            <form action="#" onsubmit="setLoginStatus()" class="modal-form">
+                <label for="username">Gebruikersnaam</label>
+                <br>
+                <input type="text" id="username" required>
+                <br>
+                <label for="password">Paswoord</label>
+                <br>
+                <input type="text" id="password" required>
+                <br>
+                <button id="request-login-btn" type="submit">Aanmelden</button>
+            </form>
+        </modal>
+
+        <modal id="logoutM">
+ 
+            <button class="hideM">X</button>
             <form action="./landingpage.html" class="modal-form">
                 <p>Weet u zeker dat u wilt:</p>
                 <br>
-                <button type="submit" id="login-btn">Afmelden</button>
+                <button type="submit">Afmelden</button>
             </form>
-        </div>
-    </div>
+
+        </modal>
+
+        <modal id="cardM">
+ 
+            <button class="hideM">X</button>
+            <!-- IFrame moet nog via js aanpasbaar worden
+            maar gezien we voorlopig maar 1 carddetail page hebben, heb ik daar nu men tijd niet in gestoken -->
+            <iframe src="./cardDetails.html"></iframe>
+
+
+        </modal>
+
+        <modal id="errorM">
+ 
+            <button class="hideM">X</button>
+            <p id="errorMess">sdfhdhyfsdhsdfhfhd</p>
+        </modal>
+
+    </section>
 
 
 </body>
 
 
-<script src="./js/logoutModelTest.js"></script>
+<script src="./js/modals.js"></script>
 
 
-    </html>
+</html>
 
