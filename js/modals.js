@@ -58,7 +58,8 @@ for (let i = 0; i < openModalBtns.length; i++){
             errorM.style.display = "flex";
         }
         else{
-
+            errorMess.textContent = "Fout opgetreden. Contacteer support als dit zich blijft voordoen."
+            errorM.style.display = "flex";
         }
     })
 };
