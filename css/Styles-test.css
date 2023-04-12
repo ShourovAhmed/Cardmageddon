@@ -1,88 +1,32 @@
 header{
     
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
-  
+    grid-area: header;
+    padding: 0.9rem;
+    background-color: rgb(125, 49, 49);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.sub-header{
+    padding: 0.6rem 1.5rem 0.6rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-area: sub-header;
+    background-color:var(--subHeader-colour);
     position: sticky;
-    background-color: white;
-    width: 100%;
     top: 0;
-    z-index: 999;
-    height: 6rem;
-    
+    z-index: 1;
 }
 
-nav{
-    
-
-       
-    
+.sub-header :nth-child(2){
     display: flex;
-    flex-direction: row;
-
-    margin-left: 2rem;
-    margin-top: 1rem;
-    padding-bottom: 2rem;
-    font-size: 1.2rem;
-  
-    
-
-    
-    
+    margin: auto;
+    align-items: center;
 }
-
-nav ul{
-
-
-
-    display: flex;
-    flex-direction: row;
-    
-    list-style-type: none;
-    text-decoration: none;
-    padding: 2rem;
-    margin-left: 2 rem;
-    margin-right: auto;
-    gap: 2rem;
-
-    
-    
-}
-
-
-nav ul li{
-
-    list-style: none;
-    text-decoration: none;
-    }
-
-    nav ul li a{
-        text-decoration: none;
-        color: #313131 ;
-        
-        transition:0.5;
-        transition-duration:1000s;
-    }
-
-    li > a::after {
-        content: "";
-        display: block;
-        margin: auto;
-        background: transparent;
-        height: 3px;
-        
-        top: 5px;
-        width: 0;
-        border-radius: 4px;
-
-        transition: 0.5s;
-        
-      }
-      li > a:hover::after, li > a.active-nav::after {
-        width: 100%;
-        background: black;
-      }
-
-
 
 
 h2{
@@ -95,6 +39,11 @@ p{
     font-size: 1rem;
     
 }
+button {
+    padding: 0.3rem;
+    margin-right: 2rem;
+}
+
 
 
 
@@ -125,4 +74,5 @@ p{
 
 #drawButton{
     align-self: center;
+    padding: 0.3rem;
 }
