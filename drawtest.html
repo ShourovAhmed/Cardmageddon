@@ -5,29 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drawtest</title>
+    
+    <link rel="stylesheet" href="./css/style-universal.css">
+    <link rel="stylesheet" href="./css/style-modal.css">
+    <link rel="stylesheet" href="./css/style-header.css">
+
     <link rel="stylesheet" href=".//css/Styles-test.css">
+    
 </head>
 <body>
 
 
 
-    <header>
-        <nav> 
-            
-            <ul>
-                <li><a href="./homepage.html">Cards</a></li>
-                <li><a href="./decks.html">Decks</a></li>
-                <li><a href="./drawtest.html">Draw Test</a></li>
-                
-              </ul> 
-
-
-
-        </nav>
-    </header>
+  <header>
+    <nav>
+        <ul>
+            <li class="home-link"><a href="./homepage.html">Startpagina</a></li>
+            <li class="decks-link"><a href="./decks.html" >Decks</a></li>
+            <li class="draw-link"><a href="./drawtest.html" class="active">Draw Test</a></li>
+            <li class="header-btn"><button id="open-logout-modal-btn">Afmelden</button>
+        </ul> 
+    </nav>
+</header>
 <main>
 
-<h2>Drawtest</h2>
+
+  <section class="sub-header">
+    <h1>Drawtest</h1>
+    
+</section>
+
+
 
 <form id="formDraw" action="">
     <label for="cars">Select deck</label>
@@ -48,26 +56,14 @@
 
 
   <article id="previewDraw">
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-    <ul><img src="./assets/images/backside-card.png" id="drawPile" alt=""></ul>
-
-
-   
+    <ul><img src="./assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
+    <ul><img src="./assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
+    <ul><img src="./assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
+    <ul><img src="./assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
+    <ul><img src="./assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
+    <ul><img src="./assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
+    <ul><img src="./assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
     
-
-
   </article>
 
 
@@ -77,6 +73,22 @@
 </main>
 <footer>
 
-</footer>    
+</footer> 
+
+
+
+<div class="modal-back" id="logout-modal-back">
+  <div id="modal-front">
+      <button class="exit-modal-btn" id="exit-logout-modal-btn">X</button>
+
+      <form action="./landingpage.html" class="modal-form">
+          <p>Weet u zeker dat u wilt:</p>
+          <br>
+          <button type="submit" id="login-btn">Afmelden</button>
+      </form>
+  </div>
+</div>
 </body>
+
+<script src="./js/logoutModelTest.js"></script>
 </html>
