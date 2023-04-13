@@ -42,10 +42,10 @@ for (let i = 0; i < openModalBtns.length; i++){
         if (eventClasses.contains("logM")){ //log in out modal 
 
             if(loginStatus.textContent != "1"){
-                loginM.style.display = "flex";
+                logoutM.style.display = "flex";
             }
             else{
-                logoutM.style.display = "flex";
+                loginM.style.display = "flex";
             }
         } 
 
