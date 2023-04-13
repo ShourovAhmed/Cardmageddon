@@ -18,17 +18,18 @@ nav ul{
     width: 100%;
     list-style-type: none;
     text-decoration: none;
-    gap: 2rem;
 }
 
 
 nav ul li{
     list-style: none;
     text-decoration: none;
+    margin-right: 1.5rem;
 }
 
 nav > ul > li:last-child{
     margin-left: auto;
+    margin-right: 0;
 }
 .header-btn:hover > button{
     border-radius: 0.3rem;
@@ -65,43 +66,50 @@ li > a:hover::after, .active::after {
 nav > ul > li {
     padding: 0.3rem;
 }
-nav > ul > li > button{
-    align-self: flex-end;
-}
+
 .active{
     color:var(--active-colour);
 }
-
-@media all and (width < 470px) {
+.flex-break{
+    height: 0;
+    width: 100%;
+    display: none;
+}
+@media all and (width < 621px) {
     .home-link{
         order: 0;
-        margin-right: 29%;
+    }
+    nav > ul > li:last-child{
+        order: 1;
+    }
+    .flex-break{
+        display: block;
+        order: 2;
     }
     .decks-link{
-        order: 2;
+        order: 3;
         margin-left: auto;
     }
+    .deckDetail-link{
+        order: 4;
+    }
     .draw-link{
-        order: 3;
+        order: 5;
         margin-right: auto;
     }
-    .header-btn{
-        order: 1;
-        margin-left: auto;
-    }
-}
 
-@media all and (width < 358px) {
+}
+@media all and (width < 466px) {
     .home-link{
         order: 0;
-        margin-right: 6%;
+
     }
     .decks-link{
         order: 2;
         margin-left: auto;
     }
     .draw-link{
-        order: 3;
+        order: 4;
         margin-right: auto;
     }
     .header-btn{

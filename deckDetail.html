@@ -16,9 +16,10 @@
     <header>
         <nav>
             <ul>
+                <li class="flex-break"></li>
                 <li class="home-link"><a href="./homepage.html">Startpagina</a></li>
                 <li class="decks-link"><a href="./decks.html">Decks</a></li>
-                <li><a href="#" class="active">Deck Details</a></li>
+                <li class="deckDetail-link"><a href="#" class="active">Deck Details</a></li>
                 <li class="draw-link"><a href="./drawtest.html">Draw Test</a></li>
                 <li><button class="header-btn showM logM" id="loginStatus">Afmelden<status>0</status></button></li>
                 
@@ -60,46 +61,85 @@
             <section class="deck-summary">
                 <h2>Deckname</h2>
                 <ul>
-                    <li>Count: <span class="cardCount">0</span></li>
-                    <li>Avg Mana: <span class="avgMana">0</span></li>
+                    <li>Count: <span class="cardCount">24</span></li>
+                    <li>Avg Mana: <span class="avgMana">3.6</span></li>
                 </ul>
                 <div class="deck-image-container">
                     <img class="deck-image" src="./assets/images/placeholders/planeswalkers.jpg" alt="" width="471">
                 </div>
                 <ul>
-                    <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
-                    <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">0</span></li>
-                    <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">0</span></li>
+                    <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">5</span></li>
+                    <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">2</span></li>
+                    <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">10</span></li>
                     <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
-                    <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
+                    <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">7</span></li>
                 </ul>
             </section>
         </aside>
-
-        <section class="cards-view">
+        <section id="cards-view">
             <article class="card">
-                <p class="card-count"></p>
-                <img src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
+                <div class="card-count">
+                    <p class="count-up">+</p>
+                    <p class="count-now">1</p>
+                    <p class="count-down">-</p>
+                    </div>
+                <img class="single showM cardM" src="./assets/images/placeholders/planeswalkers.jpg" alt="">
             </article>
             <article class="card">
-                <p class="card-count"></p>
-                <img src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
+                <div class="card-count">
+                <p class="count-up">+</p>
+                <p class="count-now">7</p>
+                <p class="count-down">-</p>
+                </div>
+                <img class="stack-multi showM cardM" src="./assets/images/placeholders/land - forest.jpg" alt="">
             </article>
             <article class="card">
-                <p class="card-count"></p>
-                <img src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
+                <div class="card-count">
+                    <p class="count-up">+</p>
+                    <p class="count-now">4</p>
+                    <p class="count-down">-</p>
+                    </div>
+                <img class="stack-multi showM cardM" src="./assets/images/placeholders/creature.png" alt="">
             </article>
             <article class="card">
-                <p class="card-count"></p>
-                <img src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
+                <div class="card-count">
+                    <p class="count-up">+</p>
+                    <p class="count-now">2</p>
+                    <p class="count-down">-</p>
+                    </div>
+                <img class="stack showM cardM" src="./assets/images/placeholders/artifact.jpg" alt="">
             </article>
             <article class="card">
-                <p class="card-count"></p>
-                <img src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
+                <div class="card-count">
+                    <p class="count-up">+</p>
+                    <p class="count-now">3</p>
+                    <p class="count-down">-</p>
+                    </div>
+                <img class="stack-multi showM cardM" src="./assets/images/placeholders/instant.jpg" alt="">
             </article>
             <article class="card">
-                <p class="card-count"></p>
-                <img src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
+                <div class="card-count">
+                    <p class="count-up">+</p>
+                    <p class="count-now">2</p>
+                    <p class="count-down">-</p>
+                    </div>
+                <img class="stack showM cardM" src="./assets/images/placeholders/sorcery.jpg" alt="">
+            </article>
+            <article class="card">
+                <div class="card-count">
+                    <p class="count-up">+</p>
+                    <p class="count-now">4</p>
+                    <p class="count-down">-</p>
+                    </div>
+                <img class="stack-multi showM cardM" src="./assets/images/placeholders/enchantment.png" alt="">
+            </article>
+            <article class="card">
+                <div class="card-count">
+                    <p class="count-up">+</p>
+                    <p class="count-now">1</p>
+                    <p class="count-down">-</p>
+                    </div>
+                <img class="single showM cardM" src="./assets/images/placeholders/card-types-mtg.jpg" alt="">
             </article>
         </section>
 
@@ -141,7 +181,7 @@
             <button class="hideM">X</button>
             <!-- IFrame moet nog via js aanpasbaar worden
             maar gezien we voorlopig maar 1 carddetail page hebben, heb ik daar nu men tijd niet in gestoken -->
-            <iframe src="./cardDetails.html/" srcdoc="main"></iframe>
+            <iframe src="./cardDetails.html"></iframe>
 
 
         </modal>
