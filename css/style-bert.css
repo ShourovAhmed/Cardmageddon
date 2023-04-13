@@ -95,8 +95,6 @@ select{
     flex-wrap: wrap;
     justify-content: space-evenly;
     gap: 1.5rem;
-    overflow: hidden;
-
 }
 @media all and (width < 423px) {
 *{
@@ -130,12 +128,14 @@ select{
 }
 .card-count{
     font-weight: bold;
-    position: absolute;
-    top: 9%;
-    left: 12%;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; 
+}
+.card-count > p{
+    color: var(--header-colour);
 }
 .count-up{
-    color: white;
     font-size: 2.1rem;
 }
 .count-up:hover{
@@ -143,12 +143,11 @@ select{
     transition: ease-in 0.3s;
 }
 .count-now{
-    color: white;
-    font-size: 3rem;
+    font-size: 2.1rem;
 }
 .count-down{
-    color: white;
     font-size: 2.1rem;
+    margin-bottom: 0.3rem;
 }
 .count-down:hover{
     transform: scale(1.26);
