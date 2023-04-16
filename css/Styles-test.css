@@ -57,7 +57,7 @@ button {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 1.5rem;
 
     margin-top: 5rem;
     
@@ -65,7 +65,7 @@ button {
 }
 #formDraw{
 
-    margin-left: 30%;
+    margin-left: 20%;
     margin-right: auto;
     margin-top: 4rem;
     align-items: center;
@@ -75,4 +75,31 @@ button {
 #drawButton{
     align-self: center;
     padding: 0.3rem;
+    margin-right: 6rem;
 }
+
+#forms-draw{
+
+    display: flex;
+    flex-direction: row;
+}
+
+#draw-chance{
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 4rem;
+    align-items: center;
+
+    background-color: burlywood;
+    padding: 1rem;
+    border-radius: 0.9rem;
+
+    display: flex;
+    flex-direction: column;
+    
+}
+
+
+
+
