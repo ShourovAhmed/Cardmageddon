@@ -13,6 +13,9 @@ status{
     backdrop-filter: invert(60%);
 }
 
+.showM:hover{
+    cursor: pointer;
+}
 
 modal{
     width: fit-content;
