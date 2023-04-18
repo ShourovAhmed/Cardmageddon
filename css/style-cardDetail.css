@@ -1,95 +1,98 @@
-body {
-    background-color:bisque;
-    display: grid;
-    grid-template-areas:    'header header  header'
-                            'mainHead mainHead mainHead'
-                            'aside  main    main'
-                            'footer footer  footer';
-    text-align: center;
-}
-header{
-    grid-area: header;
-    padding: 0.9rem;
-    background-color: rgb(125, 49, 49);
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-header > nav{
-    display: flex;
-    gap: 1.5rem;
-}
-nav > a {
-    background-color: beige;
-    padding: 0.3rem;
-    border-radius: 0.3rem;
-}
-
-
-.cardDetails {
+*{
+    box-sizing: border-box;
     padding: 0;
     margin: 0;
+}
+body{
+    font-size: 1.2rem;
+}
+main{
+    display: grid;
+    grid-template-areas:'left right right';
+    grid-template-columns: 33%;
+    gap: 3rem;
+    padding: 3rem;
+}
+.leftCD{
+    grid-area: left;
+    align-items: center;
+}
+.cardContainer{
+    position: sticky;
+    top: 3rem;
+
+}
+.leftCD > form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+}
+.leftCD > form > select{
+    padding: 0.3rem;
+    font-size: 1.2rem;
+}
+.leftCD > form > button{
+    padding: 0.3rem;
+}
+.rightCD{
+    grid-area: right;
+}
+.cardImage{
     width: 100%;
-    margin-top: 16px;
-    position: relative;
-    border-spacing: 0px;
+}
+.cardDetails {
+
+
+
+
 }
 div {
-    display: block;
+
 }
 .cardDetails .row .columnA {
-    text-align: left;
-    margin-left: 5%;
-    width: 67%;
-    font-size: 30px;
-    color: #393939;
-    font-family: 'open_sansregular';
     background-color:burlywood;
 }
 .cardDetails .row .columnB {
-    text-align: left;
-    margin-left: 32%;
-    width: 67%;
-    font-size: 30px;
-    color: #393939;
-    font-family: 'open_sansregular';
+    padding-left: 12%;
 }
 .cardDetails .leftColumn .rightColumn{
-    vertical-align: top;
+
 }
 table {
-    display: table;
-    border-collapse: separate;
-    box-sizing: border-box;
-    text-indent: initial;
-    border-spacing: 2px;
-    border-color: gray;
+
 
 }
 tr {
-    display: table-row;
-    vertical-align: inherit;
-    border-color: inherit;
+
 }
 .cardtextbox {
-    padding-left:10px;
+
 }
 .flavortextbox {
     font-style: italic;
 }
 option {
-    font-size: 30px;
-    color: #393939;
+
+
 }
 label {
-    font-size: 30px;
-    color: #393939;
+
 }
 .cardImage {
-    border-radius: 30px;
+    border-radius: 6%;
 }
-
+@media all and (width < 804px){
+    main{
+        display: block;
+    }
+    .leftCD{
+        margin-bottom: 3rem;
+    }
+    .cardImage{
+        display: none;
+    }
+}
 /* Butten Fade (WIP)
 .addDeckButton {
     transition: .5s ease;
