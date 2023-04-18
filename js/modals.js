@@ -1,9 +1,6 @@
 //costom terminal
 var dbT = document.getElementById("dbT");
 
-//GET LOGIN STATUS
-let loginStatus = document.getElementById("loginStatus").getElementsByTagName("status")[0]
-let logBtnText = document.getElementById("loginStatus");
 
 //SET Login Status
 const setLoginStatus = () => {
@@ -13,8 +10,6 @@ const setLoginStatus = () => {
     loginStatus.textContent = "1";
     loginM.style.display = "none";
 }
-
-
 
 //GET MODAL BACK
 const modalBack = document.getElementById("modals");
@@ -40,8 +35,11 @@ for (let i = 0; i < openModalBtns.length; i++){
         let eventClasses = event.target.classList;
 
         if (eventClasses.contains("logM")){ //log in out modal 
+            //GET LOGIN STATUS
+            let loginStatus = document.getElementById("loginStatus").getElementsByTagName("status")[0];
+            let logBtnText = document.getElementById("loginStatus");
 
-            if(loginStatus.textContent != "1"){
+            if(loginStatus.textContent == "1"){
                 logoutM.style.display = "flex";
             }
             else{
