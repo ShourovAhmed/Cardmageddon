@@ -4,30 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="./css/style-universal.css">
+    <link rel="stylesheet" href="./css/style-modal.css">
+    <link rel="stylesheet" href="./css/style-header.css">
+    
+    
     <link rel="stylesheet" href="./css/style-home.css">
     <title>Cardmageddon - Home</title>
 </head>
 <body>
     <header>
         <nav>
-            <a href="./homepage.html">Startpagina</a>
-            <a href="./decks.html" class="active">Decks</a>
-            <a href="./drawtest.html">Draw Test</a>
+            <ul>
+                <li class="flex-break"></li>
+                <li class="home-link"><a href="./homepage.html" class="active">Startpagina</a></li>
+                <li class="decks-link"><a href="./decks.html">Decks</a></li>
+                <li class="draw-link"><a href="./drawtest.html">Draw Test</a></li>
+                <li><button class="header-btn showM logM" id="loginStatus">Afnmelden<status>0</status></button></li>
+            </ul> 
         </nav>
-        <button>
-            Afmelden
-        </button>
-    </header>
-
-	<header>
-        <nav>
-            <a href="./homepage.html">Startpagina</a>
-            <a href="./decks.html" class="active">Decks</a>
-            <a href="./drawtest.html">Draw Test</a>
-        </nav>
-        <button>
-            Afmelden
-        </button>
     </header>
 
 	<input type="text" class="search-box" placeholder="Search cards...">
@@ -43,6 +39,57 @@
 		<img class="rare" src="assets\images\placeholders\planeswalkers.jpg">
 		<img class="mythic" src="assets\images\placeholders\artifact.jpg">
 	</div>
+
+    <section id="modals">
+
+        <modal id="loginM">
+
+            <button class="hideM">X</button>
+            <form action="#" onsubmit="setLoginStatus()" class="modal-form">
+                <label for="username">Gebruikersnaam</label>
+                <br>
+                <input type="text" id="username" required>
+                <br>
+                <label for="password">Paswoord</label>
+                <br>
+                <input type="text" id="password" required>
+                <br>
+                <button id="request-login-btn" type="submit">Aanmelden</button>
+            </form>
+
+        </modal>
+
+        <modal id="logoutM">
+ 
+            <button class="hideM">X</button>
+            <form action="./landingpage.html" class="modal-form">
+                <p>Weet u zeker dat u wilt:</p>
+                <br>
+                <button type="submit">Afmelden</button>
+            </form>
+
+        </modal>
+
+        <modal id="cardM">
+ 
+            <button class="hideM">X</button>
+
+            <img src="./cardDetails.html" alt="">
+
+        </modal>
+
+        <modal id="errorM">
+ 
+            <button class="hideM">X</button>
+            <p>
+                U hebt geen toegang to deze pagina.
+            </p>
+
+        </modal>
+
+    </section>
     
 </body>
+
+<script src="./js/modals.js"></script>
 </html>

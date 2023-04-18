@@ -5,9 +5,11 @@ body {
                             'search	search	search'
                             'imageGrid  imageGrid    imageGrid';
     text-align: center;
+    grid-template-columns: auto;
 }
 
-header{
+
+ /* header{
     grid-area: header;
     padding: 0.9rem;
     background-color: rgb(125, 49, 49);
@@ -15,7 +17,10 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
 }
+
+
 
 header > nav{
     display: flex;
@@ -26,7 +31,7 @@ nav > a {
     background-color: beige;
     padding: 0.3rem;
     border-radius: 0.3rem;
-}
+}  */
 
 .search-box {
     grid-area: search;
