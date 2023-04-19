@@ -22,17 +22,17 @@ main{
     top: 3rem;
 
 }
-.leftCD > form{
+.leftCD > .cardContainer > form{
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.6rem;
 }
-.leftCD > form > select{
+.leftCD > .cardContainer > form > select{
     padding: 0.3rem;
     font-size: 1.2rem;
 }
-.leftCD > form > button{
+.leftCD > .cardContainer > form > button{
     padding: 0.3rem;
 }
 .rightCD{
@@ -89,7 +89,7 @@ label {
     .leftCD{
         margin-bottom: 3rem;
     }
-    .cardImage{
+    .cardContainer{
         display: none;
     }
 }
