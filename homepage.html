@@ -21,12 +21,18 @@
                 <li class="home-link"><a href="./homepage.html" class="active">Startpagina</a></li>
                 <li class="decks-link"><a href="./decks.html">Decks</a></li>
                 <li class="draw-link"><a href="./drawtest.html">Draw Test</a></li>
-                <li><button class="header-btn showM logM" id="loginStatus">Afnmelden<status>0</status></button></li>
+                <li><button class="header-btn showM logM" id="loginStatus">Afmelden<status>1</status></button></li>
             </ul> 
         </nav>
     </header>
 
-	<input type="text" class="search-box" placeholder="Search cards...">
+    <div class="search-container">
+        <form action="/search">
+            <input type="text" placeholder="Search cards...">
+            <button type="submit">Search</button>
+          </form>
+    </div>
+
 	<div class="image-grid">
 		<img class="common" src="assets\images\placeholders\creature.png">
 		<img class="uncommon" src="assets\images\placeholders\artifact.jpg">

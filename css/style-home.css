@@ -1,37 +1,54 @@
 body {
     background-color:bisque;
     display: grid;
-    grid-template-areas:    'header header  header'
-                            'search	search	search'
-                            'imageGrid  imageGrid    imageGrid';
+    grid-template-areas:    'header header  '
+                            'search search '
+                            'imageGrid  imageGrid   ';
     text-align: center;
     grid-template-columns: auto;
 }
 
 
- /* header{
-    grid-area: header;
-    padding: 0.9rem;
-    background-color: rgb(125, 49, 49);
-
+.search-container {
+    grid-area: search;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    
-}
-
-
-
-header > nav{
+  }
+  
+  .search-container form {
     display: flex;
-    gap: 1.5rem;
-}
+    align-items: center;
+    padding-top: 50px;
+  }
+  
+  .search-container input[type=text] {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 26pt;
+  }
+  
+  .search-container button[type=submit] {
+    padding: 10px;
+    background-color: rgb(122, 55, 55);
+    border: none;
+    color: white;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 26pt;
+  }
 
-nav > a {
-    background-color: beige;
-    padding: 0.3rem;
-    border-radius: 0.3rem;
-}  */
+  .search-container button:hover {
+    background-color: rgb(91, 32, 32);
+}
+  
+  
+/* .search{
+    text-align: center;
+    padding-left: 100%;
+}
 
 .search-box {
     grid-area: search;
@@ -47,7 +64,8 @@ nav > a {
     display: block;
     margin-top: 50px;
     
-}
+} */
+
 
 .image-grid {
     grid-area: imageGrid;
@@ -59,8 +77,8 @@ nav > a {
 }
 
 .image-grid img {
-    width: 100%;
-    height: 100%;
+    width: 95%;
+    height: 95%;
     object-fit: cover;
     border-radius: 20px;
     border-style: solid;

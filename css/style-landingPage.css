@@ -68,8 +68,6 @@ p{
 
 .project button:hover {
     background-color: rgb(91, 32, 32);
-
-    
 }
 
 .item:nth-child(4n+1) {
