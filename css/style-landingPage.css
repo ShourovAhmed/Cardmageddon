@@ -36,8 +36,8 @@ p{
     flex-basis: calc(25% - 10px);
     height: 450px;
     margin: 5px;
-    background-color: #fff;
-    border: 3px solid #ccc;
+    background-color: rgb(215, 164, 103);
+    border: 5px solid var(--header-colour);;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -49,24 +49,27 @@ p{
 
 .project img {
     width: 100%;
-    height: auto;
+    height:60%;
 
 }
 
 .project button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: rgb(122, 55, 55);
+    color: black;
     padding: 10px;
     border: none;
     border-radius: 5px;
-    font-size: 26px;
+    font-size: 30px;
+    font-weight: bold;
     cursor: pointer;
     
 }
 
 
 .project button:hover {
-    background-color: #3e8e41;
+    background-color: rgb(91, 32, 32);
+
+    
 }
 
 .item:nth-child(4n+1) {
