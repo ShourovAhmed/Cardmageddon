@@ -16,13 +16,13 @@ h1{
     padding-bottom: 0%;
     text-align: center;
     font-size: 75px;
-    color: black;
+    color: chocolate;
 }
-p{
+.msg p{
     padding-bottom: 20px;
     text-align: center;
     font-size: 25px;
-    color: black;
+    color: chocolate;
 }
 
 .container {
