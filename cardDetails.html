@@ -31,21 +31,25 @@
 
     <main>
         <table border="1" class="carddetailTable">
-            <tr>
-                <td rowspan="13">
-                    <div class="cardImage">
-                        <img class="cardImage" title="Emrakul, the Promised End (EMN)" alt="" loading="eager" src="https://cards.scryfall.io/large/front/8/d/8d74a469-c71d-4773-99d3-5456b31df424.jpg?1576383727">
-                        <form action="#">
-                            <label for="decks">Decks: </label>
-                            <select class="addDeckButton" name="decks" id="decks">
-                                <option value="AwsomeDeck">AwsomeDeck</option>
-                                <option value="MonoRedAgro">MonoRedAgro</option>
-                                <option value="GreenStompy">GreenStompy</option>
-                            </select>
-                            <button>Add</button>
-                        </form>
-                    </div>
-                </td>
+            <section>
+                <tr class columnImage>
+                    <td rowspan="13">
+                        <div class="cardImage">
+                            <img class="cardImage" title="Emrakul, the Promised End (EMN)" alt="" loading="eager" src="https://cards.scryfall.io/large/front/8/d/8d74a469-c71d-4773-99d3-5456b31df424.jpg?1576383727">
+                            <form action="#">
+                                <label for="decks">Decks: </label>
+                                <select class="addDeckButton" name="decks" id="decks">
+                                    <option value="AwsomeDeck">AwsomeDeck</option>
+                                    <option value="MonoRedAgro">MonoRedAgro</option>
+                                    <option value="GreenStompy">GreenStompy</option>
+                                </select>
+                                <button>Add</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </section>
+            <section>
                 <td class="columnA">
                     <div class="columnA">
                         Card Name:
@@ -170,7 +174,7 @@
                 <td class="columnB">
                     Eldritch Moon
                     <img src="./assets/images/setSymbol/EldritchMoon.jpg" alt="Emrakul, The Promised End">
-                    Eldritch Moon Remastered
+                    , Eldritch Moon Remastered
                     <img src="./assets/images/setSymbol/EldritchMoonRemastered.jpg" alt="Emrakul, The Promised End">
                 </div>
                 </td>
@@ -209,6 +213,7 @@
                     </div>
                 </td>
             </tr>        
+            </section>      
         </table>
 
         <!--
