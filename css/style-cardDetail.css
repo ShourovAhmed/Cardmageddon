@@ -1,67 +1,41 @@
-*{
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+.carddetailTable {
+    border-collapse: collapse;
+    border-radius: 5px;
+    border-color: chocolate;;
+    margin: 25px auto;
 }
-body{
-    font-size: 1.2rem;
+.carddetailTable tr td div{
+    font-size: 22px;
+    padding: 1px;
 }
-main{
-    display: grid;
-    grid-template-areas:'left right right';
-    grid-template-columns: 33%;
-    gap: 3rem;
-    padding: 3rem;
-}
-.leftCD{
-    grid-area: left;
-    align-items: center;
-}
-.cardContainer{
-    position: sticky;
-    top: 3rem;
-
-}
-.leftCD > .cardContainer > form{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.6rem;
-}
-.leftCD > .cardContainer > form > select{
-    padding: 0.3rem;
-    font-size: 1.2rem;
-}
-.leftCD > .cardContainer > form > button{
-    padding: 0.3rem;
-}
-.rightCD{
-    grid-area: right;
-}
-.cardImage{
-    width: 100%;
-}
-.cardDetails .row .columnA {
-    background-color:burlywood;
-}
-.cardDetails .row .columnB {
-    padding-left: 12%;
+.columnA{
+    font-weight: 600;
 }
 .flavortextbox {
     font-style: italic;
 }
-.cardImage {
-    border-radius: 6%;
-}
-@media all and (width < 804px){
-    main{
-        display: block;
-    }
-    .leftCD{
-        margin-bottom: 3rem;
-    }
-    .cardContainer{
+@media(max-width: 500px){
+    .table {
         display: none;
+    }
+    .table, .table tr, .table td{
+        display: block;
+        width: 100%;
+    }
+    .table tr{
+        margin-bottom: 15px;
+    }
+    .table td{
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+    .table td::before{
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 15px;
+        
     }
 }
 /* Butten Fade (WIP)
