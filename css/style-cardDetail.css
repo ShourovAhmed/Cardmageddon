@@ -41,43 +41,14 @@ main{
 .cardImage{
     width: 100%;
 }
-.cardDetails {
-
-
-
-
-}
-div {
-
-}
 .cardDetails .row .columnA {
     background-color:burlywood;
 }
 .cardDetails .row .columnB {
     padding-left: 12%;
 }
-.cardDetails .leftColumn .rightColumn{
-
-}
-table {
-
-
-}
-tr {
-
-}
-.cardtextbox {
-
-}
 .flavortextbox {
     font-style: italic;
-}
-option {
-
-
-}
-label {
-
 }
 .cardImage {
     border-radius: 6%;
