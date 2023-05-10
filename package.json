@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "mongodb": "^5.4.0",
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "@types/node": "^20.1.2"
+  }
+}
