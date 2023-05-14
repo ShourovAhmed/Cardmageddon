@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="/css/style-universal.css">
+    <link rel="stylesheet" href="/css/style-modal.css">
+    <link rel="stylesheet" href="/css/style-header.css">
+    
+    
+    <link rel="stylesheet" href="/css/home.css">
+    <title>Cardmageddon - Home</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li class="flex-break"></li>
+                <li class="home-link"><a href="./homepage.html" class="active">Startpagina</a></li>
+                <li class="decks-link"><a href="./decks.html">Decks</a></li>
+                <li class="draw-link"><a href="./drawtest.html">Draw Test</a></li>
+                <li><button class="header-btn showM logM" id="loginStatus">Afmelden<status>1</status></button></li>
+            </ul> 
+        </nav>
+    </header>
+
+    <div class="search-container">
+        <form action="/home" method="post" >
+            <input type="text" placeholder="Search cards..." name="search">
+            <button type="submit" id="show-images-btn">Search</button>
+          </form>
+    </div>
+
+
+	<div class="image-grid hidden">
+
+        <%     
+        if(locals.pics){
+        for (let i = 1; i<pics.length; i++){
+        %>
+            <img src="<%= pics[i].img %>" alt="" class="<%= pics[i].rarity %>">
+            <!-- <p><%= pics[i].name %></p> -->
+    
+        <% }}
+        %>
+
+        <%     
+        if(locals.error){
+        %>
+            <div><p>Not enough results!</p></div>
+    
+        <% }
+        %>
+
+		<!-- <img class="common showM cardM" src="https://cards.scryfall.io/large/front/8/d/8d74a469-c71d-4773-99d3-5456b31df424.jpg?1576383727">
+		<img class="uncommon" src="assets\images\placeholders\artifact.jpg">
+		<img class="rare" src="assets\images\placeholders\card-types-mtg.jpg">
+		<img class="mythic" src="assets\images\placeholders\enchantment.png">
+		<img class="uncommon" src="assets\images\placeholders\instant.jpg">
+		<img class="common" src="assets\images\placeholders\land - forest.jpg">
+		<img class="rare" src="assets\images\placeholders\planeswalkers.jpg">
+		<img class="mythic" src="assets\images\placeholders\sorcery.jpg">
+		<img class="rare" src="assets\images\placeholders\planeswalkers.jpg">
+		<img class="mythic" src="assets\images\placeholders\artifact.jpg"> -->
+	</div>
+
+    <section id="modals">
+
+        <modal id="loginM">
+
+            <button class="hideM">X</button>
+            <form action="#" onsubmit="setLoginStatus()" class="modal-form">
+                <label for="username">Gebruikersnaam</label>
+                <br>
+                <input type="text" id="username" required>
+                <br>
+                <label for="password">Paswoord</label>
+                <br>
+                <input type="text" id="password" required>
+                <br>
+                <button id="request-login-btn" type="submit">Aanmelden</button>
+            </form>
+
+        </modal>
+
+        <modal id="logoutM">
+ 
+            <button class="hideM">X</button>
+            <form action="./index.html" class="modal-form">
+                <p>Weet u zeker dat u wilt:</p>
+                <br>
+                <button type="submit">Afmelden</button>
+            </form>
+
+        </modal>
+
+        <modal id="cardM">
+ 
+            <button class="hideM">X</button>
+
+            <!-- IFrame moet nog via js aanpasbaar worden
+            maar gezien we voorlopig maar 1 carddetail page hebben, heb ik daar nu men tijd niet in gestoken -->
+            <iframe src="./cardDetails.html"></iframe>
+
+        </modal>
+
+        <modal id="errorM">
+ 
+            <button class="hideM">X</button>
+            <p>
+                U hebt geen toegang to deze pagina.
+            </p>
+
+        </modal>
+
+    </section>
+    
+</body>
+
+<script src="./js/modals.js"></script>
+</html>
