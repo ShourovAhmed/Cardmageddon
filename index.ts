@@ -38,7 +38,7 @@ app.post("/home", async (req, res) => {
             pics = [{name: '', img: '', rarity: ''}];
             let total_cards = cards.total_cards;
             //console.log(total_cards);
-            let maxCardsPerPage = 175;
+            let maxCardsPerPage = 175; // request limit per pagina van scryfall
             if(total_cards > maxCardsPerPage)
             {        
                 total_cards = maxCardsPerPage;
@@ -50,7 +50,7 @@ app.post("/home", async (req, res) => {
                             pics[i] = {
                                 name: cards.data[i].name,
                                 img: cards.data[i].card_faces[j].image_uris.normal,
-                                rarity: cards.data[i].card_faces[j].rarity
+                                rarity: cards.data[i].rarity
                             };
                         }
 
