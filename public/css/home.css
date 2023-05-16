@@ -76,13 +76,13 @@ body {
 
 /* Elke uiterst linkse kaart, zodat het vergroot naar het midden toe */
 .searchedCard:nth-child(5n+1):hover{
-  transform: scale(1.3) translateX(35px);
+  transform: scale(1.3) translateX(40px);
 }
 
 /* Elke uiterst rechtse kaart, zodat het vergroot naar het midden toe */
 .searchedCard:nth-child(5n):hover{
 
-  transform: scale(1.3) translateX(-35px);
+  transform: scale(1.3) translateX(-40px);
 }
 
 .common{
