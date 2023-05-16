@@ -43,7 +43,7 @@ app.post("/home", async (req, res) => {
             {        
                 total_cards = maxCardsPerPage;
             }
-            for (let i = 0; i < maxCardsPerPage; i++){
+            for (let i = 0; i < total_cards; i++){
                 if(cards.data[i].card_faces){
                     for(let j = 0; j < cards.data[i].card_faces.length; j++){
                         if(cards.data[i].card_faces[j].image_uris){ // Sommige kaarten hebben enkel 1 image, in de main card object. sommige verschillende imgs in de card_faces objecten
