@@ -78,7 +78,7 @@ body {
   height: 95%;
   object-fit: cover;
   border-style: solid;
-  border-width: 6px;
+  border-width: 7px;
   transition: transform .2s;
 
 }
@@ -100,14 +100,14 @@ body {
 }
 
 .common{
-  border-color: white;
+  border-color:gray;
 }
 .uncommon{
-  border-color: blue;
+  border-color:rgb(55, 149, 180);
 }
 .rare{
-  border-color: yellow;
+  border-color: gold;
 }
 .mythic{
-  border-color: red;
+  border-color:crimson;
 }
