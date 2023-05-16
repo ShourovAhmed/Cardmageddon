@@ -9,6 +9,7 @@ body {
     display: grid;
     grid-template-areas:    'header header  '
                             'search search '
+                            'empty empty '
                             'imageGrid  imageGrid   ';
     text-align: center;
     grid-template-columns: auto;
@@ -48,6 +49,19 @@ body {
 
 .search-container button:hover {
   background-color: rgb(91, 32, 32);
+}
+
+.emptySearch{
+  font-weight: bold;
+  font-size: 26pt;
+  align-items: center;
+  display: grid;
+  grid-area: empty;
+  margin-top: 50px;
+
+  background-color: rgb(122, 55, 55);
+  color: white;
+
 }
 
 .image-grid {
