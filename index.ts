@@ -37,11 +37,13 @@ app.post("/home", async (req, res) => {
         if(cards.object != "error"){
             pics = [{name: '', img: '', rarity: ''}];
             let total_cards = cards.total_cards;
-            if(total_cards > 175)
+            //console.log(total_cards);
+            let maxCardsPerPage = 175;
+            if(total_cards > maxCardsPerPage)
             {        
-                total_cards = 175;
+                total_cards = maxCardsPerPage;
             }
-            for (let i = 0; i < total_cards; i++){
+            for (let i = 0; i < maxCardsPerPage; i++){
                 if(cards.data[i].card_faces){
                     for(let j = 0; j < cards.data[i].card_faces.length; j++){
                         if(cards.data[i].card_faces[j].image_uris){ // Sommige kaarten hebben enkel 1 image, in de main card object. sommige verschillende imgs in de card_faces objecten
@@ -73,38 +75,11 @@ app.post("/home", async (req, res) => {
                     
             }
             
-                        for (let i = 0; i < 175; i++){
-                if(cards.data[i].card_faces){
-                    for(let j = 0; j < cards.data[i].card_faces.length; j++){
-                        if(cards.data[i].card_faces[j].image_uris){ // Sommige kaarten hebben enkel 1 image, in de main card object. sommige verschillende imgs in de card_faces objecten
-                            pics[i] = {
-                                name: cards.data[i].name,
-                                img: cards.data[i].card_faces[j].image_uris.normal,
-                                rarity: cards.data[i].card_faces[j].rarity
-                            };
-                        }
-                        
-                        else{
-                            pics[i] = {
-                                name: cards.data[i].name,
-                                img: cards.data[i].image_uris.normal,
-                                rarity: cards.data[i].rarity
-                            };
-                        }
-                    }
                     
-                }
-                else{
-                    pics[i] = {
-                        name: cards.data[i].name,
-                        img: cards.data[i].image_uris.normal,
-                        rarity: cards.data[i].rarity
-                    };
-                }
-
-            }
+                
             console.table(pics, ["name", "rarity"]);
             return res.render("homepage", {pics});
+
         }
 
         else{
