@@ -2,7 +2,10 @@
   "dependencies": {
     "ejs": "^3.1.9",
     "express": "^4.18.2",
-    "node-fetch": "^2.6.11"
+    "node-fetch": "^2.6.11",
+    "crypto-js": "^4.1.1",
+    "mongodb": "^5.4.0",
+    "readline-sync": "^1.4.10"
   },
   "name": "cardmageddon",
   "description": "IT Project",
@@ -16,6 +19,7 @@
   "devDependencies": {
     "@types/ejs": "^3.1.2",
     "@types/express": "^4.17.17",
-    "@types/node-fetch": "^2.6.3"
+    "@types/node-fetch": "^2.6.3",
+    "@types/node": "^20.1.2"
   }
 }
