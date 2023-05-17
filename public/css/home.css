@@ -1,0 +1,113 @@
+*{
+    padding: 0;
+    margin: 0;
+  }
+  
+  
+body {
+    background-color:bisque;
+    display: grid;
+    grid-template-areas:    'header header  '
+                            'search search '
+                            'empty empty '
+                            'imageGrid  imageGrid   ';
+    text-align: center;
+    grid-template-columns: auto;
+}
+  
+  
+.search-container {
+  grid-area: search;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  
+.search-container form {
+  display: flex;
+  align-items: center;
+  padding-top: 50px;
+}
+
+.search-container input[type=text] {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 26pt;
+}
+
+.search-container button {
+  padding: 10px;
+  background-color: rgb(122, 55, 55);
+  border: none;
+  color: white;
+  border-radius: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 26pt;
+}
+
+.search-container button:hover {
+  background-color: rgb(91, 32, 32);
+}
+
+.emptySearch{
+  font-weight: bold;
+  font-size: 26pt;
+  align-items: center;
+  display: grid;
+  grid-area: empty;
+  margin-top: 50px;
+
+  background-color: rgb(122, 55, 55);
+  color: white;
+
+}
+
+.image-grid {
+  grid-area: imageGrid;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-gap: 20px;
+  margin-top: 50px;
+}
+
+.image-grid img {
+  width: 95%;
+  height: 95%;
+  object-fit: cover;
+  border-style: solid;
+  border-width: 7px;
+  transition: transform .2s;
+
+}
+
+/* Elke andere kaart */
+.searchedCard:hover{ 
+  transform: scale(1.3);
+}
+
+/* Elke uiterst linkse kaart, zodat het vergroot naar het midden toe */
+.searchedCard:nth-child(5n+1):hover{
+  transform: scale(1.3) translateX(40px);
+}
+
+/* Elke uiterst rechtse kaart, zodat het vergroot naar het midden toe */
+.searchedCard:nth-child(5n):hover{
+
+  transform: scale(1.3) translateX(-40px);
+}
+
+.common{
+  border-color:gray;
+}
+.uncommon{
+  border-color:rgb(55, 149, 180);
+}
+.rare{
+  border-color: gold;
+}
+.mythic{
+  border-color:crimson;
+}
