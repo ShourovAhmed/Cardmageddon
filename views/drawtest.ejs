@@ -42,6 +42,8 @@
 
 
   <article id="previewDraw">
+
+
     <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
     <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
     <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
@@ -49,6 +51,33 @@
     <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
     <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
     <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
+    
+  </article>
+
+
+  <article id="previewDraw">
+
+    
+
+    <%
+    
+    for(card of decks[0].cards){  %>
+      
+        
+
+    <ul>
+
+      
+      <%= card.id %>
+       
+
+    </ul>
+
+    <% 
+  }
+    %>
+
+    
     
   </article>
 

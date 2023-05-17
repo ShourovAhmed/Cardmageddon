@@ -1,8 +1,10 @@
 import { MongoClient, ObjectId, Collection } from "mongodb";
 import express from "express";
 import ejs from "ejs";
+//const axios=require('axios');
 
 import { Card} from "./dbMode";
+import { log } from "console";
 
 interface Deck{
     _id?: ObjectId,
@@ -44,9 +46,31 @@ app.use('*/public',express.static('public/'));
 
 
 
-app.get('/drawtest',(req,res)=>{
+app.get('/drawtest',async(req,res)=>{
+
+try{
+    await client.connect();
+
+    let deckCollection= client.db("userData").collection("decks");
+
+    let decks= await deckCollection.find<Deck>({}).toArray();
+
+    //axios
+
     
-    res.render("drawtest");
+
+    res.render("drawtest",{
+        decks: decks
+    });
+
+}catch(e){
+    console.error(e);
+}finally{
+    client.close();
+}
+
+    
+    
 
 })
 
