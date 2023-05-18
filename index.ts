@@ -14,22 +14,34 @@ app.use(express.urlencoded({extended: true}));
 let pics = [{name: '', img: '', rarity: ''}];
 
 app.get("/home", (req, res) => {
-    res.render("homepage");
+
+    // Paging
+    const cardsPerPage = 10;
+    const pageNumber: number = parseInt(req.query.page as string) || 1;
+  
+    const startIdx = (pageNumber - 1) * cardsPerPage;
+    const endIdx = startIdx + cardsPerPage;
+    const shownCards = pics.slice(startIdx, endIdx);
+  
+    const totalPages = Math.ceil(pics.length / cardsPerPage);
+
+
+    res.render("homepage", {
+    cards: shownCards,
+    pageNumber,
+    totalPages
+  });
 });
-
-interface Card {
-    name: string,
-    img: string,
-    rarity: string
-}
-
 
 
 app.post("/home", async (req, res) => {
 
     try{
-        let text = req.body.search; 
-        console.log(text);
+
+        // API Request
+        let text = req.body.search;
+        if(text != '')
+            console.log(text);
         let response = await fetch(`https://api.scryfall.com/cards/search?q=lore=${text}`); // Lore zoekt overal op kaart
         let cards = await response.json();
         //console.log(cards);
@@ -37,11 +49,10 @@ app.post("/home", async (req, res) => {
         if(cards.object != "error"){
             pics = [{name: '', img: '', rarity: ''}];
             let total_cards = cards.total_cards;
-            //console.log(total_cards);
-            let maxCardsPerPage = 175; // request limit per pagina van scryfall
-            if(total_cards > maxCardsPerPage)
+            let maxCardsPerRequest = 175; // request limit per pagina van scryfall
+            if(total_cards > maxCardsPerRequest)
             {        
-                total_cards = maxCardsPerPage;
+                total_cards = maxCardsPerRequest;
             }
             for (let i = 0; i < total_cards; i++){
                 if(cards.data[i].card_faces){
@@ -75,12 +86,29 @@ app.post("/home", async (req, res) => {
                     
             }
             
+            // Paging
+            const cardsPerPage = 10;
+            const pageNumber: number = parseInt(req.query.page as string) || 1;
+        
+            const startIdx = (pageNumber - 1) * cardsPerPage;
+            const endIdx = startIdx + cardsPerPage;
+            const shownCards = pics.slice(startIdx, endIdx);
+        
+            const totalPages = Math.ceil(pics.length / cardsPerPage);
+            console.log("Sliced");
+            console.table(shownCards);
                     
                 
             console.table(pics, ["name", "rarity"]);
-            return res.render("homepage", {pics});
+            return res.render("homepage", {
+                cards: shownCards,
+                pageNumber,
+                totalPages
+            });
 
-        }
+        }            
+        
+
 
         else{
             return res.render("homepage", {error: "error"});
