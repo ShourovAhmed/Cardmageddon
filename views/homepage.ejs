@@ -18,7 +18,7 @@
         <nav>
             <ul>
                 <li class="flex-break"></li>
-                <li class="home-link"><a href="./homepage.html" class="active">Startpagina</a></li>
+                <li class="home-link"><a href="/home" class="active">Startpagina</a></li>
                 <li class="decks-link"><a href="./decks.html">Decks</a></li>
                 <li class="draw-link"><a href="./drawtest.html">Draw Test</a></li>
                 <li><button class="header-btn showM logM" id="loginStatus">Afmelden<status>1</status></button></li>
@@ -44,16 +44,42 @@
 	<div class="image-grid">
 
         <%     
-        if(locals.pics){
-        for (let i = 0; i<pics.length; i++){
+        if(locals.cards && locals.cards.length > 1){
+        for (let i = 0; i<cards.length; i++){
         %>
-            <img src="<%= pics[i].img %>" alt="" class="<%= pics[i].rarity %> searchedCard">
-            <!-- <p><%= pics[i].name %></p> -->
-    
+            <img src="<%= cards[i].img %>" alt="" class="<%= cards[i].rarity %> searchedCard">
+            <!-- <p><%= cards[i].name %></p> -->
+
         <% }}
         %>
 
 	</div>
+
+    <div class="pagination">
+
+        <%     
+        if(locals.cards && locals.cards.length > 1){
+        %>   
+
+            <% if (pageNumber > 1) { %>
+                <a href="/home?page=1"><button id="prevButton"><img src="/assets/images/doubleLeft.png" alt="First" class="arrow"></button></a>
+                <a href="/home?page=<%= pageNumber - 1 %>"><button id="prevButton"><img src="/assets/images/left.png" alt="Previous" class="arrow single"></button></a>
+            <% } %>
+
+                <p id="pages">
+                    <%= pageNumber %> / <%= totalPages %>
+                </p>
+
+            <% if (pageNumber < totalPages) { %>
+                <a href="/home?page=<%= pageNumber + 1 %>"><button id="nextButton"><img src="/assets/images/right.png" alt="Next" class="arrow single"></button></a>
+                <a href="/home?page=<%= totalPages %>"><button id="prevButton"><img src="/assets/images/doubleRight.png" alt="Last" class="arrow"></button></a>
+            <% } %>
+
+          <%     
+            }
+          %>
+
+    </div>
 
     <section id="modals">
 
@@ -108,5 +134,5 @@
     
 </body>
 
-<script src="./js/modals.js"></script>
+<script src="/js/modals.js"></script>
 </html>
