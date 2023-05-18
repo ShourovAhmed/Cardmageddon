@@ -13,6 +13,10 @@ app.use(express.urlencoded({extended: true}));
 
 let pics = [{name: '', img: '', rarity: ''}];
 
+app.get("/", (req, res) =>{
+    res.render("landingPage");
+})
+
 app.get("/home", (req, res) => {
 
     // Paging
