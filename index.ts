@@ -136,12 +136,10 @@ app.post("/home", async (req, res) => {
 });
 
 
-
-import { testFunction} from './functions';
 app.get("/decks", (req,res) =>{
 
 
-    res.render("decks", {title: "Decks", testFunction: testFunction, testArray: [1,2,3]});
+    res.render("decks", {title: "Decks"});
 });
 
 app.get("/deck/:id", async(req,res) =>{

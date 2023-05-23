@@ -1,6 +1,6 @@
 import { MongoClient, ObjectId, Collection } from "mongodb";
 import { CardS, Variation, Deck, Card, Set, ImageUris } from "./types";
-const CryptoJS = require('crypto-js');
+import { fullHash, emailHash } from "./functions";
 const readLine = require('readline-sync');
 
 const uri: string =
@@ -26,29 +26,23 @@ interface User {
     decks?: number[] //deck_id array
 }
 
-const hash = (password: string) => {
-    let hashedPasword = CryptoJS.PBKDF2(password, "9", {
-  iterations: 1
-}).toString();
-    return hashedPasword;
-}
 
 const coreUsers : User[] = [
     {id: 0, firstName: "Admin", surname: "Admin"},
-    {id: 1, firstName: "Bert", surname: "Pintjens", email: "b"+hash("ert.pintjens")+"@hotmail.com"},
+    {id: 1, firstName: "Bert", surname: "Pintjens", email: emailHash("bert.pintjens@hotmail.com")},
     {id: 2, firstName: "Narayan", surname: "Ahmed"},
     {id: 3, firstName: "Sascha", surname: "Staelens"},
     {id: 4, firstName: "Shourov", surname: "Vereecken"},
-    {id: 5, firstName: "Jane", surname: "Doe", email: "j"+hash("ane.doe")+"@lost.not"},
+    {id: 5, firstName: "Jane", surname: "Doe", email: emailHash("jane.doe@lost.not")},
 
 ];
 const coreLoginData : LoginData[] = [
-    {id: 0, user_id: 0, username: "Admin", password: hash("Admin123")},
-    {id: 1, user_id: 1, username: "Bert", password: hash("Bert123")},
-    {id: 2, user_id: 2, username: "Narayan", password: hash("Narayan123")},
-    {id: 3, user_id: 3, username: "Sascha", password: hash("Sasha123")},
-    {id: 4, user_id: 4, username: "Shourov", password: hash("Shourov123")},
-    {id: 5, user_id: 5, username: "User1", password: hash("User1123")},
+    {id: 0, user_id: 0, username: "Admin", password: fullHash("Admin123")},
+    {id: 1, user_id: 1, username: "Bert", password: fullHash("Bert123")},
+    {id: 2, user_id: 2, username: "Narayan", password: fullHash("Narayan123")},
+    {id: 3, user_id: 3, username: "Sascha", password: fullHash("Sasha123")},
+    {id: 4, user_id: 4, username: "Shourov", password: fullHash("Shourov123")},
+    {id: 5, user_id: 5, username: "User1", password: fullHash("User1123")},
 ];
 const cardsList = ():Promise<Set> => {
     return fetch("https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Adkm&unique=prints").then((e) => e.json());
