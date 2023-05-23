@@ -1,5 +1,5 @@
 import { MongoClient, ObjectId, Collection } from "mongodb";
-
+import { CardS, Variation, Deck, Card, Set, ImageUris } from "./types";
 const CryptoJS = require('crypto-js');
 const readLine = require('readline-sync');
 
@@ -24,62 +24,6 @@ interface User {
     surname: string,
     email?: string, //semi hashed
     decks?: number[] //deck_id array
-}
-interface Variation{
-    id:     string, // scryfall ID
-    count:  number
-}
-interface CardS {   // kleine samenvatting
-    id:         string, // Oracle ID
-    variations: Variation[],
-    mana:       string[],
-    manacost:   number,
-    isLand:     boolean
-}
-interface Mana{
-    white: number,
-    blue: number,
-    black: number,
-    red: number,
-
-}
-interface Deck{
-    _id?: ObjectId,
-    id: number,
-    name: string,
-    cards?: CardS[],
-    coverCard?: string, //cardID???
-}
-
-export interface ImageUris {
-    small:       string;
-    normal:      string;
-    large:       string;
-    png:         string;
-    art_crop:    string;
-    border_crop: string;
-}
-export interface Card {
-    object:            string;
-    id:                string;
-    oracle_id:         string;
-    multiverse_ids:    string[];
-    name:              string;
-    cmc:               number,
-    image_uris:        ImageUris;
-    color_identity:    string[];
-    set_id:            string;
-    set:               string;
-    set_name:          string;
-    set_type:          string;
-    type_line:         string
-}
-
-export interface Set {
-    object:      string;
-    total_cards: number;
-    has_more:    boolean;
-    data:        Card[];
 }
 
 const hash = (password: string) => {
@@ -127,38 +71,6 @@ cardsList().then((set : Set)=>{
             id: card.id,
             count: 1
         }
-
-        // cards.forEach((includedCard) => {
-
-        //     if(includedCard.id === card.oracle_id){
-
-        //         includedCard.variations.forEach((containedVariation) => {
-
-        //             if(containedVariation.id === card.id){
-        //                 containedVariation.count++;
-        //             }})
-        //     }
-        //     else{
-
-        //     }
-        
-        // });
-
-
-        // if(!testDeck.cards){
-
-        //     return
-
-        // }
-        // else{
-        //     testDeck.cards.forEach((localCard) => {
-        //         if(localCard.id == card.oracle_id){
-        
-        //         }
-        //     })
-        // }
-
-
 
         if(oracleIds.includes(card.oracle_id)){
             cards[oracleIds.indexOf(card.oracle_id)].variations.push(variation);

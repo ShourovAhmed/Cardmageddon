@@ -172,58 +172,9 @@
         </nav>
     </footer>
     
-    
     <section id="modals">
-
-        <modal id="loginM">
-
-            <button class="hideM">X</button>
-            <form action="#" onsubmit="setLoginStatus()" class="modal-form">
-                <label for="username">Gebruikersnaam</label>
-                <br>
-                <input type="text" id="username" required>
-                <br>
-                <label for="password">Paswoord</label>
-                <br>
-                <input type="text" id="password" required>
-                <br>
-                <button id="request-login-btn" type="submit">Aanmelden</button>
-            </form>
-
-        </modal>
-
-        <modal id="logoutM">
- 
-            <button class="hideM">X</button>
-            <form action="./index.html" class="modal-form">
-                <p>Weet u zeker dat u wilt:</p>
-                <br>
-                <button type="submit">Afmelden</button>
-            </form>
-
-        </modal>
-
-        <modal id="cardM">
- 
-            <button class="hideM">X</button>
-
-            <img src="./cardDetails.html" alt="">
-
-        </modal>
-
-        <modal id="errorM">
- 
-            <button class="hideM">X</button>
-            <p>
-                U hebt geen toegang to deze pagina.
-            </p>
-
-        </modal>
-
+        <%-include("partials/modals/card-modal")%>
+        <%-include("partials/modals/error-modal")%>
+        <%-include("partials/modals/logout-modal")%>
     </section>
-
-
-
-<%-include("partials/page-tail")%>
-
-<script src="/js/modals.js"></script>
+    <%-include('partials/page-tail')%>
