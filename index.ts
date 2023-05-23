@@ -1,7 +1,9 @@
 import { MongoClient, ObjectId, Collection } from "mongodb";
 import express from "express";
 import ejs from "ejs";
-//const axios=require('axios');
+import fetch from 'node-fetch';
+
+
 
 import { Card} from "./dbMode";
 import { log } from "console";
@@ -55,8 +57,14 @@ try{
 
     let decks= await deckCollection.find<Deck>({}).toArray();
 
-    //axios
+    let id="51833cff-6519-4806-8d91-0040e9a02189";
 
+    let response = await fetch(`https://api.scryfall.com/cards/${id}`);  //finds car on Id  cant find on id from db but can find it if using variant id
+
+    let card = await response;
+
+    console.log(card);
+    
     
 
     res.render("drawtest",{
