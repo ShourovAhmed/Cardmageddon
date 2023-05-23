@@ -1,5 +1,6 @@
 import express from 'express';
 import fetch from 'node-fetch';
+import {Deck} from 
 
 const app = express();
 
@@ -124,6 +125,31 @@ app.post("/home", async (req, res) => {
     }
     
 });
+
+app.get("/decks", (req,res) =>{
+    res.render("decks", {title: "Decks", testFunction: testFunction, testArray: [1,2,3]});
+});
+
+app.get("/deck/:id", async(req,res) =>{
+    
+    let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
+
+    if (!deck){
+        console.log("fout");
+        console.log(`Ongeldig Deck ID: ${req.params.id}`);
+        res.redirect('/404');
+    }
+    else{
+        res.render('deck', {title: "Deck", deck: deck});
+    }
+
+});
+
+app.use((req, res) => {
+    res.status(404);
+    res.render("bad-request", {title: "404"});
+    }
+  );
 
 app.listen(app.get("port"), () =>
   console.log("[server] http://localhost:" + app.get("port"))
