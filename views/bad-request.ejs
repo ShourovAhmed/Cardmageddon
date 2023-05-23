@@ -1,15 +1,29 @@
 <%-include('partials/page-head')%>
 <%-include('partials/header')%>
+<style>main{display: block;} a::after{display: none;}</style>
+<main>
+    <p>fout</p>
+    <br>
+    <h2>Try going to:</h2>
+    <br>
+    <ul>
+        <li><a href="/">Landing Page</a></li>
+        <li><a href="/home">Homepage</a></li>
+        <li><a href="/decks">Decks</a></li>
+        <br>
+        <ul>
+            <h3>Test Decks</h3>
+            <%for (let i = 0; i < 6; i++){%>
+            <li><a href="/deck/<%=i%>">Test Deck <%=i+1%></a></li>
+            <%}%>
+        </ul>
+    
+    
+    </ul>
+</main>
 
-<p>fout</p>
-<br>
-<p>Try going to:</p>
-<ul>
-    <li><a href="/deck/0">Deck 0</a></li>
-    <li><a href="/deck/1">Deck 1</a></li>
-</ul>
 
-
-
-
+<section id="modals">
+    <%-include("partials/modals/logout-modal")%>
+</section>
 <%-include('partials/page-tail')%>
