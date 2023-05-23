@@ -1,0 +1,117 @@
+<%-include('partials/page-head')%>
+<%-include('partials/header')%>
+
+
+    <main>
+
+        <section class="sub-header">
+            <h1>Deck Details</h1>
+
+            <section class="ff">
+                <label for="cardCl">Select:</label>
+                <section class="" name="cardClass" id="cardClass" multiple size="1">
+                    <button value="all">All</button>
+                    <button value="lands">Lands</button>
+                    <button value="creatures">Creatures</button>
+                    <button value="artifacts">Artifacts</button>
+                    <button value="enchantments">Enchantments</button>
+                    <button value="planeswalkers">Planeswalkers</button>
+                    <button value="instants">Instants</button>
+                    <button value="sorceries">Sorceries</button>
+                </section>
+            </section>
+
+
+            <section class="flex ff">
+                <label for="viewChoise">Weergave:</label>
+                <select name="viewChoise" id="viewChoise" select>
+                    <option value="list">Lijst</option>
+                    <option value="grid">Rooster</option>
+                </select>
+            </section>
+
+        </section>
+
+        <aside>
+            <section class="deck-summary">
+                <h2><%=deck.name%></h2>
+                <ul>
+                    <%
+                    let totalManacost = 0;
+                    let manaCards = 0;
+                    let cardCount = 0;
+                    let mana = [0,0,0,0,0,0]; // W U B R G C
+                    if (deck.cards){
+                        
+                        for (let card of deck.cards){
+                            let manacost = card.manacost;
+                            for (let variation of card.variations){
+                                cardCount += variation.count;
+                                if (card.mana.includes("W")){mana[0]+=variation.count};
+                                if (card.mana.includes("U")){mana[1]+=variation.count};
+                                if (card.mana.includes("B")){mana[2]+=variation.count};
+                                if (card.mana.includes("R")){mana[3]+=variation.count};
+                                if (card.mana.includes("G")){mana[4]+=variation.count};
+                                if (card.mana.includes("C")){mana[5]+=variation.count};
+                                if(manacost > 0){
+                                    totalManacost += manacost*variation.count;
+                                    manaCards += variation.count;
+                                }
+                            }
+                        }
+                    }
+                    %>
+                    <li>Count: <span class="cardCount"><%=cardCount%></span></li>
+                    <li>Avg Manacost: <span class="avgMana"><%=Math.round(totalManacost/manaCards*100)/100%></span></li>
+                </ul>
+                <div class="deck-image-container">
+                    <img class="deck-image" src="https://cards.scryfall.io/art_crop/front/<%=deck.coverCard.substring(0,1)%>/<%=deck.coverCard.substring(1,2)%>/<%=deck.coverCard%>.jpg" alt="" width="471">
+                </div>
+                <ul>
+                    <li><img src="/assets/images/mana/W.png" alt=""><span class="w-mana"><%=mana[0]%></span></li>
+                    <li><img src="/assets/images/mana/U.png" alt=""><span class="u-mana"><%=mana[1]%></span></li>
+                    <li><img src="/assets/images/mana/B.png" alt=""><span class="b-mana"><%=mana[2]%></span></li>
+                    <li><img src="/assets/images/mana/R.png" alt=""><span class="r-mana"><%=mana[3]%></span></li>
+                    <li><img src="/assets/images/mana/G.png" alt=""><span class="g-mana"><%=mana[4]%></span></li>
+                    <li><img src="/assets/images/mana/C.png" alt=""><span class="c-mana"><%=mana[5]%></span></li>
+                </ul>
+            </section>
+        </aside>
+        <section id="cards-view">
+            <%
+            for (let card of deck.cards){
+
+                for (let variation of card.variations){
+                    let stackHight = "single";
+                    if (variation.count === 2){
+                        stackHight = "stack";
+                    }
+                    else if(variation.count > 2){
+                        stackHight = "stack-multi";
+                    }
+                %>
+                <article class="card">
+                <img class="<%=stackHight%> showM cardM" src="https://cards.scryfall.io/normal/front/<%=variation.id.substring(0,1)%>/<%=variation.id.substring(1,2)%>/<%=variation.id%>.jpg" alt="">
+                <section class="card-count">
+                    <p class="count-up">+</p>
+                    <p class="count-now"><%=variation.count%></p>
+                    <p class="count-down">-</p>
+                </section>
+            </article>
+
+            <%}}%>
+        </section>
+
+    </main>
+
+
+
+<section id="modals">
+    <%-include("partials/modals/card-modal")%>
+    <%-include("partials/modals/error-modal")%>
+    <%-include("partials/modals/logout-modal")%>
+</section>
+
+
+<%-include('partials/page-tail')%>
+<script src="/js/modals.js"></script>

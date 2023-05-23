@@ -1,16 +1,25 @@
 import express from 'express';
 import fetch from 'node-fetch';
-import {Deck} from 
+import {MongoClient} from 'mongodb';
+import {Deck} from "./types";
 
+
+//EXPRESS
 const app = express();
-
 app.set("port", 3000);
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-
 // Om uit body te lezen (voor post)
 app.use(express.json({limit: '1mb'}));
 app.use(express.urlencoded({extended: true}));
+
+
+//MONGO
+const uri : string =
+    "mongodb+srv://admin:admin@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri);
+const db = client.db("userData");
+
 
 let pics = [{name: '', img: '', rarity: ''}];
 
@@ -92,7 +101,7 @@ app.post("/home", async (req, res) => {
             }
             
             // Paging
-            const cardsPerPage = 10;
+            const cardsPerPage: number = 10;
             const pageNumber: number = parseInt(req.query.page as string) || 1;
         
             const startIdx = (pageNumber - 1) * cardsPerPage;
@@ -126,7 +135,12 @@ app.post("/home", async (req, res) => {
     
 });
 
+
+
+import { testFunction} from './functions';
 app.get("/decks", (req,res) =>{
+
+
     res.render("decks", {title: "Decks", testFunction: testFunction, testArray: [1,2,3]});
 });
 
