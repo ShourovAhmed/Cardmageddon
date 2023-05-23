@@ -1,34 +1,5 @@
-<!DOCTYPE html>
-<html lang="nl-BE">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="./css/style-universal.css">
-    <link rel="stylesheet" href="./css/style-modal.css">
-    <link rel="stylesheet" href="./css/style-header.css">
-
-
-    <link rel="stylesheet" href="./css/style-bert.css">
-
-    <link rel="icon" type="image/png" href="./assets/images/general/siteIcon.png">
-    <title>Decks</title>
-
-</head>
-
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li class="flex-break"></li>
-                <li class="home-link"><a href="./homepage.html">Startpagina</a></li>
-                <li class="decks-link"><a href="./decks.html" class="active">Decks</a></li>
-                <li class="draw-link"><a href="./drawtest.html">Draw Test</a></li>
-                <li><button class="header-btn showM logM" id="loginStatus">Afmelden<status>1</status></button></li>
-            </ul> 
-        </nav>
-    </header>
+<%-include("partials/page-head")%>
+<%-include("partials/header")%>
 
     <main>
         <section class="sub-header">
@@ -55,7 +26,7 @@
                     <li>Avg Mana: <span class="avgMana">0</span></li>
                 </ul>
                 <div class="deck-image-container">
-                    <img class="deck-image" src="/assets/images/placeholders/planeswalkers.jpg" alt="" width="471">
+                    <img class="deck-image" src="/assets/images/placeholders/planeswalkers.jpg" alt="">
                 </div>
                 <ul>
                     <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
@@ -72,7 +43,7 @@
                     <li>Avg Mana: <span class="avgMana">0</span></li>
                 </ul>
                 <div class="deck-image-container">
-                    <img class="deck-image" src="./assets/images/placeholders/artifact.jpg" alt="" width="471">
+                    <img class="deck-image" src="./assets/images/placeholders/artifact.jpg" alt="">
                 </div>
                 <ul>
                     <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
@@ -191,70 +162,19 @@
 
     <footer>        
         <nav id="page-nav">
-            <button class="change-page-button pre-page"><a href="./decks.html">Vorige</a></button>
+            <button class="change-page-button pre-page disabled">Vorige</button>
             <section class="page-info flex">
                 <p>Pagina</p>
-                <span class="current-page-nr">2</span>
+                <span class="current-page-nr">1</span>
                 <p>Van de <span class="total-pages-count">2</span></p>
             </section>
-            <button class="change-page-button next-page disabled">Vogende</button>
+            <button class="change-page-button next-page"><a href="./decks2.html">Volgende</a></button>
         </nav>
     </footer>
-
-
+    
     <section id="modals">
-
-        <modal id="loginM">
-
-            <button class="hideM">X</button>
-            <form action="#" onsubmit="setLoginStatus()" class="modal-form">
-                <label for="username">Gebruikersnaam</label>
-                <br>
-                <input type="text" id="username" required>
-                <br>
-                <label for="password">Paswoord</label>
-                <br>
-                <input type="text" id="password" required>
-                <br>
-                <button id="request-login-btn" type="submit">Aanmelden</button>
-            </form>
-        </modal>
-
-        <modal id="logoutM">
- 
-            <button class="hideM">X</button>
-            <form action="./index.html" class="modal-form">
-                <p>Weet u zeker dat u wilt:</p>
-                <br>
-                <button type="submit">Afmelden</button>
-            </form>
-
-        </modal>
-
-        <modal id="cardM">
- 
-            <button class="hideM">X</button>
-            <!-- IFrame moet nog via js aanpasbaar worden
-            maar gezien we voorlopig maar 1 carddetail page hebben, heb ik daar nu men tijd niet in gestoken -->
-            <iframe src="./cardDetails.html"></iframe>
-
-
-        </modal>
-
-        <modal id="errorM">
- 
-            <button class="hideM">X</button>
-            <p id="errorMess">sdfhdhyfsdhsdfhfhd</p>
-        </modal>
-
+        <%-include("partials/modals/card-modal")%>
+        <%-include("partials/modals/error-modal")%>
+        <%-include("partials/modals/logout-modal")%>
     </section>
-
-
-</body>
-
-
-<script src="./js/modals.js"></script>
-
-
-</html>
-
+    <%-include('partials/page-tail')%>

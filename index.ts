@@ -1,15 +1,25 @@
 import express from 'express';
 import fetch from 'node-fetch';
+import {MongoClient} from 'mongodb';
+import {Deck} from "./types";
 
+
+//EXPRESS
 const app = express();
-
 app.set("port", 3000);
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-
 // Om uit body te lezen (voor post)
 app.use(express.json({limit: '1mb'}));
 app.use(express.urlencoded({extended: true}));
+
+
+//MONGO
+const uri : string =
+    "mongodb+srv://admin:admin@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri);
+const db = client.db("userData");
+
 
 let pics = [{name: '', img: '', rarity: ''}];
 
@@ -91,7 +101,7 @@ app.post("/home", async (req, res) => {
             }
             
             // Paging
-            const cardsPerPage = 10;
+            const cardsPerPage: number = 10;
             const pageNumber: number = parseInt(req.query.page as string) || 1;
         
             const startIdx = (pageNumber - 1) * cardsPerPage;
@@ -124,6 +134,34 @@ app.post("/home", async (req, res) => {
     }
     
 });
+
+
+app.get("/decks", (req,res) =>{
+
+
+    res.render("decks", {title: "Decks"});
+});
+
+app.get("/deck/:id", async(req,res) =>{
+    
+    let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
+
+    if (!deck){
+        console.log("fout");
+        console.log(`Ongeldig Deck ID: ${req.params.id}`);
+        res.redirect('/404');
+    }
+    else{
+        res.render('deck', {title: "Deck", deck: deck});
+    }
+
+});
+
+app.use((req, res) => {
+    res.status(404);
+    res.render("bad-request", {title: "404"});
+    }
+  );
 
 app.listen(app.get("port"), () =>
   console.log("[server] http://localhost:" + app.get("port"))

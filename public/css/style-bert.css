@@ -153,7 +153,9 @@ select{
     transition: ease-in 0.3s;
 
 }
-
+.deck-image-container, .deck-summary{
+    transition: ease-in-out 0.6s;
+}
 
 .deck-summary:hover{
     background-color: var(--active-colour);
@@ -166,7 +168,7 @@ select{
 
 }
 .deck-summary:hover, .deck-summary:hover > .deck-image-container{
-    transition: ease-in-out 0.6s;
+
 
 }
 .deck-summary {
