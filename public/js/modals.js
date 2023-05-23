@@ -74,11 +74,3 @@ for (let i = 0; i < closeModalBtns.length; i++){
         modalBack.style.display = "none";
         })
     };
-
-//Homepage search button demo
-const showImagesBtn = document.getElementById('show-images-btn');
-const imageGrid = document.querySelector('.image-grid');
-
-showImagesBtn.addEventListener('click', () => {
-  imageGrid.classList.toggle('hidden');
-});
