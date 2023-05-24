@@ -1,6 +1,6 @@
 import { MongoClient, ObjectId, Collection } from "mongodb";
 import { CardS, Variation, Deck, Card, Set, ImageUris } from "./types";
-import { fullHash, emailHash } from "./functions";
+import { fullHash, emailHash, getSet, setToCardSs, cardSsToDeck } from "./functions";
 const readLine = require('readline-sync');
 
 const uri: string =
@@ -44,53 +44,9 @@ const coreLoginData : LoginData[] = [
     {id: 4, user_id: 4, username: "Shourov", password: fullHash("Shourov123")},
     {id: 5, user_id: 5, username: "User1", password: fullHash("User1123")},
 ];
-const cardsList = ():Promise<Set> => {
-    return fetch("https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Adkm&unique=prints").then((e) => e.json());
-};
-let cards : CardS[] = [];
-cardsList().then((set : Set)=>{
+const testDeckUriArr : string[] = ["https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Adkm&unique=prints", "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Apd2&unique=prints", "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Aolgc&unique=prints", "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Amed&unique=prints", "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Ae02&unique=prints", "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Acmm&unique=prints"];
 
-    let oracleIds : string[] = [];
-    
-    
-    for (let card of set.data){
-        let newCard : CardS = {
-            id: "",
-            variations: [],
-            mana: card.color_identity,
-            manacost: card.cmc,
-            isLand: false
-        }
-        let variation : Variation = {
-            id: card.id,
-            count: 1
-        }
 
-        if(oracleIds.includes(card.oracle_id)){
-            cards[oracleIds.indexOf(card.oracle_id)].variations.push(variation);
-        }
-        else{
-            newCard.id = card.oracle_id;
-            newCard.manacost = card.cmc;
-            newCard.variations.push(variation);
-            if(card.type_line.includes("Land")){
-                newCard.isLand = true;
-            }
-            cards.push(newCard);
-            oracleIds.push(card.oracle_id);
-        }
-    }
-
-    console.table(cards);
-     
-}
-);
-const testDeck : Deck = { //58 Cards by scryfall ID's (The Deckmasters Set)
-    id: 0,
-    name: "Test Deck",
-    cards: cards,
-    coverCard: "34eb627d-d711-4c5b-a0b1-744ce0bb0cf0" //Card with highest rarety
-}
 
 const collectionChoise = ():string => {
     let choise : string = readLine.question("\nGo to:\n1:\tUsers\n2:\tDecks\n3:\tLoginData\n> ");
@@ -129,8 +85,34 @@ const main = async() =>{
             console.log("Users And LoginData Where Reset To The Core Values")
         }
         if(readLine.keyInYN('Reset Test Deck?')){
-            await db.collection('decks').updateOne({id: 0}, {$set: testDeck});
-            console.log("Test Deck Is Reset To Standard DKM Set")
+            if(readLine.keyInYN('All Test Decks?')){
+                try{
+                    for(let i : number = 0; i < testDeckUriArr.length; i++){
+                        let currentDeck : Deck = 
+                            cardSsToDeck(i, `Test Deck ${i+1}`, await setToCardSs(
+                                    await getSet(testDeckUriArr[i])));
+                        await db.collection('decks').updateOne({id: i}, {$set: currentDeck});
+                        console.log(`Test Deck ${i+1} Reset To Standard`);
+                    }
+                }
+                catch (e:any){
+                    console.log("failed to reset deck");
+                }
+            }
+            else{
+                try{
+                    let i : number = readLine.question("Deck id van het te resetten deck?");
+                        let currentDeck : Deck = 
+                            cardSsToDeck(i, `Test Deck ${i+1}`, await setToCardSs(
+                                    await getSet(testDeckUriArr[i])));
+                        await db.collection('decks').updateOne({id: i}, {$set: currentDeck});
+                        console.log(`Test Deck ${i+1} Reset To Standard`);
+                    
+                }
+                catch (e:any){
+                    console.log("failed to reset deck");
+                }
+            }
         }
 
         const collectionView = async() => {

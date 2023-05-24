@@ -16,7 +16,7 @@ export interface Deck{
     id: number,
     name: string,
     cards?: CardS[],
-    coverCard?: string, //cardID???
+    coverCard: string|null, //cardID???
 }
 
 export interface Card {    // Om kaarten binne te lezen uit de API

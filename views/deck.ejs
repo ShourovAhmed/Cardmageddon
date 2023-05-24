@@ -37,12 +37,12 @@
                 <h2><%=deck.name%></h2>
                 <ul>
                     <%
+                    let coverImg = "/assets/images/default-deck-image.jpg";
                     let totalManacost = 0;
                     let manaCards = 0;
                     let cardCount = 0;
                     let mana = [0,0,0,0,0,0]; // W U B R G C
                     if (deck.cards){
-                        
                         for (let card of deck.cards){
                             let manacost = card.manacost;
                             for (let variation of card.variations){
@@ -60,12 +60,15 @@
                             }
                         }
                     }
+                    if(deck.coverCard != null){
+                        coverImg = `https://cards.scryfall.io/art_crop/front/${deck.coverCard.substring(0,1)}/${deck.coverCard.substring(1,2)}/${deck.coverCard}.jpg`
+                    }
                     %>
                     <li>Count: <span class="cardCount"><%=cardCount%></span></li>
                     <li>Avg Manacost: <span class="avgMana"><%=Math.round(totalManacost/manaCards*100)/100%></span></li>
                 </ul>
                 <div class="deck-image-container">
-                    <img class="deck-image" src="https://cards.scryfall.io/art_crop/front/<%=deck.coverCard.substring(0,1)%>/<%=deck.coverCard.substring(1,2)%>/<%=deck.coverCard%>.jpg" alt="" width="471">
+                    <img class="deck-image" src="<%=coverImg%>" alt="" width="471">
                 </div>
                 <ul>
                     <li><img src="/assets/images/mana/W.png" alt=""><span class="w-mana"><%=mana[0]%></span></li>
@@ -78,7 +81,7 @@
             </section>
         </aside>
         <section id="cards-view">
-            <%
+            <%if(deck.cards){
             for (let card of deck.cards){
 
                 for (let variation of card.variations){
@@ -91,7 +94,7 @@
                     }
                 %>
                 <article class="card">
-                <img class="<%=stackHight%> showM cardM" src="https://cards.scryfall.io/normal/front/<%=variation.id.substring(0,1)%>/<%=variation.id.substring(1,2)%>/<%=variation.id%>.jpg" alt="">
+                <img class="<%=stackHight%> showM cardM" id="testeke" src="https://cards.scryfall.io/normal/front/<%=variation.id.substring(0,1)%>/<%=variation.id.substring(1,2)%>/<%=variation.id%>.jpg" alt="">
                 <section class="card-count">
                     <p class="count-up">+</p>
                     <p class="count-now"><%=variation.count%></p>
@@ -99,7 +102,7 @@
                 </section>
             </article>
 
-            <%}}%>
+            <%}}}%>
         </section>
 
     </main>

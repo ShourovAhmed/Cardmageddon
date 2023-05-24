@@ -48,6 +48,7 @@ for (let i = 0; i < openModalBtns.length; i++){
         } 
 
         else if (eventClasses.contains("cardM")){
+            document.getElementById("cardMIframe").src = `/cardDetails/${openModalBtns[i].id}`;
             cardM.style.display = "flex";
         }
 
@@ -55,8 +56,11 @@ for (let i = 0; i < openModalBtns.length; i++){
             errorMess.textContent = event.target.getElementsByTagName("status")[0].textContent;
             errorM.style.display = "flex";
         }
+        else if (eventClasses.contains("newDeckM")){
+            newDeckM.style.display = "flex";
+        }
         else{
-            errorMess.textContent = "Fout opgetreden. Contacteer support als dit zich blijft voordoen."
+            errorMess.textContent = "Fout opgetreden. Contacteer support als dit zich blijft voordoen. code: 3.404";
             errorM.style.display = "flex";
         }
     })

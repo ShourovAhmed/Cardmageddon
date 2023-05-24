@@ -2,6 +2,8 @@ import express from 'express';
 import fetch from 'node-fetch';
 import {MongoClient} from 'mongodb';
 import {Deck} from "./types";
+import { render } from 'ejs';
+import { getFreeId } from './functions';
 
 
 //EXPRESS
@@ -18,7 +20,7 @@ app.use(express.urlencoded({extended: true}));
 const uri : string =
     "mongodb+srv://admin:admin@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
-const db = client.db("userData");
+export const db = client.db("userData");
 
 
 let pics = [{name: '', img: '', rarity: ''}];
@@ -136,11 +138,33 @@ app.post("/home", async (req, res) => {
 });
 
 
-app.get("/decks", (req,res) =>{
 
-
-    res.render("decks", {title: "Decks"});
+app.get("/decks", async(req,res) =>{
+    let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
+    res.render("decks", {title: "Decks", decks: decks});
 });
+
+app.post("/decks", async (req,res) =>{
+    let newDeckName : string = req.body.deckName;
+    let newDeck : Deck|any = {
+        id: await getFreeId(),
+        name: req.body.deckName,
+        coverCard: null,
+    }
+    try{
+        db.collection("decks").insertOne(newDeck);
+        let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
+        res.render("decks", {title: "Decks", decks: decks});
+        res.render("decks", {title: "Decks", info: `Deck: "${newDeckName}" Toegevoegd`});
+    }
+    catch(e: any){
+        let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
+        res.render("decks", {title: "Decks", decks: decks});
+        res.render("decks", {title: "Decks", info: `Toevoegen mislukt`});
+    }
+});
+
+
 
 app.get("/deck/:id", async(req,res) =>{
     
@@ -154,7 +178,26 @@ app.get("/deck/:id", async(req,res) =>{
     else{
         res.render('deck', {title: "Deck", deck: deck});
     }
+});
 
+
+app.get("/cardDetails/:id", async(req,res) =>{
+    
+    console.log(req.params.id);
+    res.redirect("/404");
+
+});
+
+
+
+
+
+
+
+
+
+app.get("/drawtest", (req,res) =>{
+    res.render("drawtest", {title: "Drawtest"});
 });
 
 app.use((req, res) => {
