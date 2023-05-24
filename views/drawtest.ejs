@@ -55,13 +55,43 @@
   </article>
 
 
+
+  <article id="previewDraw">
+    <%
+    
+    for(let i =0;i<cardImgs.length; i++){  
+%>
+
+
+    <ul><img src="<%=cardImgs[i]%>" id="drawPile" alt=""></ul>
+    
+    <% 
+  }
+    %>
+  </article>
+
+
+
+
+
   <article id="previewDraw">
 
     
 
+      testing new <br>
+      
+      
+      <ul><img src="<%=cardImg%>" id="drawPile" alt=""></ul>
+      end test
+    
+
     <%
     
-    for(card of decks[0].cards){  %>
+    for(card of decks[0].cards){  
+      
+      
+      
+      %>
       
         
 
@@ -73,7 +103,9 @@
       <br>
       <br>
       <%= card.variations[0].id %>
+      
       <br>
+
       <br>
       <br>
 
