@@ -44,7 +44,13 @@ const coreLoginData : LoginData[] = [
     {id: 4, user_id: 4, username: "Shourov", password: fullHash("Shourov123")},
     {id: 5, user_id: 5, username: "User1", password: fullHash("User1123")},
 ];
-const testDeckUriArr : string[] = ["https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Adkm&unique=prints", "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Apd2&unique=prints", "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Aolgc&unique=prints", "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Amed&unique=prints", "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Ae02&unique=prints", "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Acmm&unique=prints"];
+const testDeckAbreviations : string[] = [
+    "dkm",
+    "pd2",
+    "olgc",
+    "med",
+    "e02",
+    "cmm"];
 
 
 
@@ -78,21 +84,25 @@ const main = async() =>{
         // Fill or reset
         let users : User[] = await db.collection('users').find<User>({}).toArray();
         if(readLine.keyInYN("Reset Users and LoginData? ")){
-            await db.collection('users').deleteMany();
-            await db.collection('users').insertMany(coreUsers);
-            await db.collection('loginData').deleteMany();
-            await db.collection('loginData').insertMany(coreLoginData)
-            console.log("Users And LoginData Where Reset To The Core Values")
+            if(readLine.keyInYN("ARE U SURE???\nReset all user date to default values->")){
+                await db.collection('users').deleteMany();
+                await db.collection('users').insertMany(coreUsers);
+                await db.collection('loginData').deleteMany();
+                await db.collection('loginData').insertMany(coreLoginData)
+                console.log("Users And LoginData Where Reset To The Core Values")
+            }
         }
         if(readLine.keyInYN('Reset Test Deck?')){
+            let deckId : number = -1;
             if(readLine.keyInYN('All Test Decks?')){
                 try{
-                    for(let i : number = 0; i < testDeckUriArr.length; i++){
+                    for(let testDeckAbreviation of testDeckAbreviations){
+                        deckId++;
                         let currentDeck : Deck = 
-                            cardSsToDeck(i, `Test Deck ${i+1}`, await setToCardSs(
-                                    await getSet(testDeckUriArr[i])));
-                        await db.collection('decks').updateOne({id: i}, {$set: currentDeck});
-                        console.log(`Test Deck ${i+1} Reset To Standard`);
+                            cardSsToDeck(deckId, `Test Deck ${deckId+1}`, await setToCardSs(
+                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviation}&unique=prints`)));
+                        await db.collection('decks').updateOne({id: deckId}, {$set: currentDeck});
+                        console.log(`Test Deck ${deckId+1} Reset To Standard`);
                     }
                 }
                 catch (e:any){
@@ -101,12 +111,12 @@ const main = async() =>{
             }
             else{
                 try{
-                    let i : number = readLine.question("Deck id van het te resetten deck?");
+                    deckId = readLine.question("Deck id van het te resetten deck?");
                         let currentDeck : Deck = 
-                            cardSsToDeck(i, `Test Deck ${i+1}`, await setToCardSs(
-                                    await getSet(testDeckUriArr[i])));
-                        await db.collection('decks').updateOne({id: i}, {$set: currentDeck});
-                        console.log(`Test Deck ${i+1} Reset To Standard`);
+                            cardSsToDeck(deckId, `Test Deck ${deckId+1}`, await setToCardSs(
+                                    await getSet(testDeckAbreviations[deckId])));
+                        await db.collection('decks').updateOne({id: deckId}, {$set: currentDeck});
+                        console.log(`Test Deck ${deckId+1} Reset To Standard`);
                     
                 }
                 catch (e:any){

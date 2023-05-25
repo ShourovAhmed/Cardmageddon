@@ -97,8 +97,7 @@ export const cardSsToDeck = (id : number, name : string, cards : CardS[], coverC
                 if(!isIncluded){
                     newDeck.cards[oracleIndex].variations.push(card.variations[0]);
                 }
-    
-                newDeck.cards[oracleIndex].variations.push(card.variations[0]);
+                
             }
             else{
                 newDeck.cards.push(card);

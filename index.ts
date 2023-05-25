@@ -4,6 +4,7 @@ import {MongoClient} from 'mongodb';
 import {Deck} from "./types";
 import { render } from 'ejs';
 import { getFreeId } from './functions';
+import { log } from 'console';
 
 
 //EXPRESS
@@ -154,13 +155,13 @@ app.post("/decks", async (req,res) =>{
     try{
         db.collection("decks").insertOne(newDeck);
         let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
-        res.render("decks", {title: "Decks", decks: decks});
-        res.render("decks", {title: "Decks", info: `Deck: "${newDeckName}" Toegevoegd`});
+
+        res.render("decks", {title: "Decks", decks: decks, info: `Deck: "${newDeckName}" Toegevoegd`});
     }
     catch(e: any){
         let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
-        res.render("decks", {title: "Decks", decks: decks});
-        res.render("decks", {title: "Decks", info: `Toevoegen mislukt`});
+
+        res.render("decks", {title: "Decks", decks: decks, info: `Toevoegen mislukt`});
     }
 });
 
@@ -182,10 +183,8 @@ app.get("/deck/:id", async(req,res) =>{
 
 
 app.get("/cardDetails/:id", async(req,res) =>{
-    
     console.log(req.params.id);
     res.redirect("/404");
-
 });
 
 

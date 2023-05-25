@@ -24,7 +24,7 @@
         <%}%>
         <section id="decks-view">
             <%for(let deck of decks){%>
-            <a class="deck-summary" href="./deckDetail.html">
+            <a class="deck-summary" href="/deck/<%=deck.id%>">
                 <h2><%=deck.name%></h2>
                 <ul>
                     <%
@@ -55,8 +55,8 @@
                         coverImg = `https://cards.scryfall.io/art_crop/front/${deck.coverCard.substring(0,1)}/${deck.coverCard.substring(1,2)}/${deck.coverCard}.jpg`
                     }
                     %>
-                    <li>Count: <span class="cardCount"><%=cardCount%></span></li>
-                    <li>Avg Manacost: <span class="avgMana"><%=Math.round(totalManacost/manaCards*100)/100%></span></li>
+                    <li>Kaarten: <span class="cardCount"><%=cardCount%></span></li>
+                    <li>G.M.K.: <span class="avgMana"><%=Math.round(totalManacost/manaCards*100)/100%></span></li>
                 </ul>
                 <div class="deck-image-container">
                     <img class="deck-image" src="<%=coverImg%>" alt="" width="471">
