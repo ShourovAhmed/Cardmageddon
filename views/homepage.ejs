@@ -44,7 +44,7 @@
 	<div class="image-grid">
 
         <%     
-        if(locals.cards && locals.cards.length > 1){
+        if(locals.cards && locals.cards.length >= 1){
         for (let i = 0; i<cards.length; i++){
         %>
             <img src="<%= cards[i].img %>" alt="" class="<%= cards[i].rarity %> searchedCard showM cardM" id="<%= i %>">
@@ -58,7 +58,7 @@
     <div class="pagination">
 
         <%     
-        if(locals.cards && locals.cards.length > 1){
+        if(locals.cards && locals.cards.length >= 1){
         %>   
 
             <% if (pageNumber > 1) { %>

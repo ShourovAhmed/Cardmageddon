@@ -116,7 +116,7 @@ app.post("/home", async (req, res) => {
         
             const totalPages = Math.ceil(pics.length / cardsPerPage);
             console.log("Sliced");
-            console.table(shownCards);
+            console.table(shownCards, ['name', 'rarity']);
                     
                 
             console.table(pics, ["name", "rarity"]);
@@ -162,7 +162,7 @@ app.get("/cardDetail/:id", async (req, res) => {
 
     //console.log(fullCard);
     let cardText: string[] = fullCard.oracle_text.split("\n");
-    console.log(cardText);
+    console.log(fullCard.legalities.standard);
 
     let card = {
         name: fullCard.name,
