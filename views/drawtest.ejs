@@ -19,7 +19,7 @@
   
     <br><br>
 
-    <button  id="drawButton" type="button">DRAW CARD</button>
+    <button onclick="drawNewCard()"  id="drawButton" type="button">DRAW CARD</button>
 
   
 
@@ -86,36 +86,7 @@
 
 
 
-
-     <!-- <% 
-    
-     for(let i =0;i<ListCardReady.length; i++){  
-%>
-
-
-    
-    
-    <ul>
-      <img src="<%=   ListCardReady[i].image_uris.normal %>" id="drawPile" alt="">
-      <%=ListCardReady.length;%>
-
-      <%  
-
-      
-      ListCardReady.splice(i, 1);
-      ListCardReady.length;
-      %>
-      
-      
-
-    </ul>
-    
-    <% 
-  }
-    %>  -->
-
-<!-- 
-    <ul id="addNewCardElement"></ul> -->
+    <ul id="addNewCardElement"></ul> 
   </article>
 
 
@@ -182,5 +153,5 @@
 </body>
 
 <script src="/public/js/modals.js"></script>
-<!-- <script src="/public/js/drawNewCard.js"></script> -->
+<script src="/public/js/drawNewCard.js"></script> 
 </html>
