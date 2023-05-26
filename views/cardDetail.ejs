@@ -221,19 +221,18 @@
                     </div>
                 </td>
                 <td class="columnB">
-                    <%= card.legality[0] %>
                     <div class="columnB">
-                        <div>Standard: Not Legal</div>
-                        <div>Alchemy: Not Legal</div>
-                        <div>Pioneer: Legal</div>
-                        <div>Explorer: Legal</div>
-                        <div>Modern: Legal</div>
-                        <div>Brawl: Not Legal</div>
-                        <div>Legacy: Legal</div>
-                        <div>Historic: Legal</div>
-                        <div>Vintage: Legal</div>
-                        <div>Pauper: Not Legal</div>
-                        <div>Commander: Legal</div>
+                        <div>Standard: <%= card.legality.standard %></div>
+                        <div>Alchemy: <%= card.legality.alchemy %></div>
+                        <div>Pioneer: <%= card.legality.pioneer %></div>
+                        <div>Explorer: <%= card.legality.explorer %></div>
+                        <div>Modern: <%= card.legality.modern %></div>
+                        <div>Brawl: <%= card.legality.brawl %></div>
+                        <div>Legacy: <%= card.legality.legacy %></div>
+                        <div>Historic: <%= card.legality.historic %></div>
+                        <div>Vintage: <%= card.legality.vintage %></div>
+                        <div>Pauper: <%= card.legality.pauper %></div>
+                        <div>Commander: <%= card.legality.commander %></div>
                     </div>
                 </td>
             </tr>        

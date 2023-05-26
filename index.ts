@@ -164,8 +164,30 @@ app.get("/cardDetail/:id", async (req, res) => {
     let cardManaCost = splitMana(fullCard.mana_cost); //TODO dubbelzijdige hebben mana cost in card_faces
     let cardText: string[] = fullCard.oracle_text.split("\n");
     let cardRarity = capitalizeFirstLetter(fullCard.rarity);
-    
-    console.log(cardText);
+
+    for(let l in fullCard.legalities){
+
+        // Get every value of the object properties and split it (if needed)
+        let legality = fullCard.legalities[l];
+        let splitted = legality.split("_");
+
+        // Put each value in a new capitalized array
+        let capitalized = [];
+        for(let s of splitted){
+            capitalized.push(capitalizeFirstLetter(s));
+        }
+        
+        // Combine each array to one single string, with spaces in between
+        let newLegality = "";
+        for (let c of capitalized){
+            newLegality+=c + " ";
+        }
+        
+        // Replace the old values with the new capitalized and spaced out values
+        fullCard.legalities[l] = newLegality;
+        //console.log(fullCard.legalities[l]);
+  
+    }
 
     let card = {
         name: fullCard.name,
