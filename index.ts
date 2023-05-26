@@ -161,7 +161,7 @@ app.get("/cardDetail/:id", async (req, res) => {
     let fullCard: any = await response.json();
 
     //console.log(fullCard);
-    let cardManaCost = splitMana(fullCard.mana_cost);
+    let cardManaCost = splitMana(fullCard.mana_cost); //TODO dubbelzijdige hebben mana cost in card_faces
     let cardText: string[] = fullCard.oracle_text.split("\n");
     let cardRarity = fullCard.rarity.charAt(0).toUpperCase() + fullCard.rarity.slice(1);
     
@@ -177,7 +177,7 @@ app.get("/cardDetail/:id", async (req, res) => {
         rarity: cardRarity,
         power: fullCard.power,
         toughness: fullCard.toughness,
-        exp: fullCard.set_type, //idfk?
+        exp: fullCard.set_name, 
         flavorText: fullCard.flavor_text,
         artist: fullCard.artist,
         legality: fullCard.legalities,
