@@ -16,17 +16,24 @@
       <option value="">Deck2</option>
       <option value="">Deck3</option>
     </select>
+  
     <br><br>
-    <input type="submit" id="drawButton" value="DRAW CARD">
+
+    <button  id="drawButton" type="button">DRAW CARD</button>
+
+  
+
     <input type="submit" id="drawButton" value="DISCARD">
     <BR></BR>
     <img src="/public/assets/images/backside-card.png" id="drawPile" alt="">
-    <input type="submit" value="RESET">
+    <input type="submit" value="New Hand">
     
     <img src="/public/assets/images/backside-card.png" style="opacity: 60%;" id="drawPile" alt="">
 
-    
   </form>
+
+    
+  
 
   <form id="draw-chance"  action="">
     <label for="drawchance">Calculate chance to draw card</label> <br>
@@ -41,88 +48,82 @@
 
 
 
-  <article id="previewDraw">
-
-
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    
-  </article>
-
-
-
-  <article id="previewDraw">
-    <%
-    
-    for(let i =0;i<cardImgs.length; i++){  
-%>
-
-
-    <ul><img src="<%=cardImgs[i]%>" id="drawPile" alt=""></ul>
-    
-    <% 
-  }
-    %>
-  </article>
-
-
-
-
-
-  <article id="previewDraw">
-
-    
-
-      testing new <br>
-      
-      
-      <ul><img src="<%=cardImg%>" id="drawPile" alt=""></ul>
-      end test
-    
-
-    <%
-    
-    for(card of decks[0].cards){  
-      
-      
-      
-      %>
-      
-        
-
-    <ul>
-
-      
-      <%= card.id %>
-    
-      <br>
-      <br>
-      <%= card.variations[0].id %>
-      
-      <br>
-
-      <br>
-      <br>
-
-       
-
-    </ul>
-
-    <% 
-  }
-    %>
-
-    
-    
-  </article>
+  
 
 
   
+
+<!-- NOTES: TRY USING A POST INSTEAD? -->
+
+
+
+  <article id="previewDraw">
+    <%
+    
+    for(let i =0;i<7; i++){  
+%>
+
+
+    
+    
+    <ul>
+      <img src="<%=   ListCardReady[i].image_uris.normal %>" id="drawPile" alt="">
+      <%=ListCardReady.length;%>
+
+      <%  
+
+      
+      ListCardReady.splice(i, 1);
+      ListCardReady.length;
+      %>
+      
+      
+
+    </ul>
+    
+    <% 
+  }
+    %>
+
+
+
+
+
+     <!-- <% 
+    
+     for(let i =0;i<ListCardReady.length; i++){  
+%>
+
+
+    
+    
+    <ul>
+      <img src="<%=   ListCardReady[i].image_uris.normal %>" id="drawPile" alt="">
+      <%=ListCardReady.length;%>
+
+      <%  
+
+      
+      ListCardReady.splice(i, 1);
+      ListCardReady.length;
+      %>
+      
+      
+
+    </ul>
+    
+    <% 
+  }
+    %>  -->
+
+<!-- 
+    <ul id="addNewCardElement"></ul> -->
+  </article>
+
+
+
+
+
 
 
 </main>
@@ -183,4 +184,5 @@
 </body>
 
 <script src="/public/js/modals.js"></script>
+<!-- <script src="/public/js/drawNewCard.js"></script> -->
 </html>

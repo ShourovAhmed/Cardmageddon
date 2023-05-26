@@ -44,21 +44,44 @@ app.use('*/public',express.static('public/'));
 
 //making funct to get image from certain id (from variation in db)
 
-let getPic= async (varId:string, ) => {
 
 
-    let id= varId;
+let getCardFromApi= async (cardsid:string ) => {
+
+
+    let id= cardsid;
     let response = await fetch(`https://api.scryfall.com/cards/${id}`); 
-    let card = await response.json();
-    let cardImg=card.image_uris.normal
-    //console.log(`getPic:${cardImg}`);
-    return cardImg;     //returns the img src needed. 
+    let cardFromApi: string[]=[];
+    cardFromApi = await response.json();
     
     
+    return cardFromApi;     //returns the img src needed.  
+}
+let makeCardListFromApi =async(cardsIds:string[]) => {
+
+
+    let ListCardReady: any[]=[];      //change anytype later 
+    for(let i=0;i<cardsIds.length;i++){
+
+        
+        let cardObject=await getCardFromApi(cardsIds[i]);
+
+        ListCardReady.push(cardObject);       
+
+
+    }
+
+    //random ordering:
+    let randomizedListCardReady = ListCardReady
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
+   
+    return randomizedListCardReady;
 }
 
 
-let makeIdList=(cards:CardS[],cardsIds:string[]) => {
+let makeIdList=(cards:CardS[],cardsIds:string[]) => {//remove
 
     
 
@@ -81,7 +104,7 @@ let makeIdList=(cards:CardS[],cardsIds:string[]) => {
 
 }
 
-let makeImgList =async(cardsIds:string[],cardImgs:string[]) => {
+let makeImgList =async(cardsIds:string[],cardImgs:string[]) => { //remove
 
     for(let i=0;i<cardsIds.length;i++){
 
@@ -96,6 +119,18 @@ let makeImgList =async(cardsIds:string[],cardImgs:string[]) => {
 
 
 }
+let getPic= async (varId:string, ) => {//remove
+
+
+    let id= varId;
+    let response = await fetch(`https://api.scryfall.com/cards/${id}`); 
+    let card = await response.json();
+    let cardImg=card.image_uris.normal
+    //console.log(`getPic:${cardImg}`);
+    return cardImg;     //returns the img src needed. 
+    
+    
+}
 
 
 
@@ -106,28 +141,37 @@ try{
 
     let deckCollection= client.db("userData").collection("decks");
 
-    let decks =await deckCollection.find<Deck>({}).toArray();//REMOVE only needed TEMP untill removind decks
+    
 
 
 
     let decksDatabase= await deckCollection.find<Deck>({}).toArray();
     
     let chosenDeck=decksDatabase[0];//later deckkeuze aanmaken
-    let cards:CardS[]= chosenDeck.cards!    //non-null assertion operator ? might work now
+    let cards:CardS[]= chosenDeck.cards!    //non-null assertion operator ? should work 
+    //console.log(cards);
 
     
     let cardsIds:string[]=[]; 
     cardsIds=makeIdList(cards,cardsIds);    //this array only contains variableIds used for api//also allows deleting in later uses without touching original Database
 
 
-    let cardImgs:string[]=[]; 
-    cardImgs=await makeImgList(cardsIds,cardImgs); 
+    // let cardImgs:string[]=[]; 
+    // cardImgs=await makeImgList(cardsIds,cardImgs); 
 
     //console.log("All Ids deck 1:"+ cardsIds);
     
 
+//////TESTING APICALL FULL OBJECT THING
 
 
+
+let ListCardReady=await makeCardListFromApi(cardsIds);
+
+
+
+
+//////END TESTING AREA API
 
 
 
@@ -149,7 +193,7 @@ try{
 
     // console.log(card.image_uris.normal);
 
-    let cardImg= await getPic("5e2465d3-405d-487d-b6e9-d2ec8b920201");
+    //let cardImg= await getPic("5e2465d3-405d-487d-b6e9-d2ec8b920201");
 
 
 
@@ -171,9 +215,10 @@ try{
     
 
     res.render("drawtest",{
-        decks: decks,
-        cardImg,    //remove later
-        cardImgs:cardImgs
+        //decks: decks,
+        //cardImg,    //remove later
+        //cardImgs:cardImgs,
+        ListCardReady
     });
 
 }catch(e){
@@ -185,6 +230,27 @@ try{
     
     
 
-})
+});
+
+// app.post("/drawtest", async(req,res)=>{
+
+
+//     try{
+
+
+
+
+      
+//     }catch(e){
+//       console.error(e);
+  
+//     }finally{
+      
+//     }
+  
+    
+    
+  
+//   });
 
 app.listen(app.get("port"), ()=>console.log( `[server] http://localhost:` + app.get("port")));
