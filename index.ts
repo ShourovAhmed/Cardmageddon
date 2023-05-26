@@ -22,6 +22,9 @@ const db = client.db("userData");
 
 
 let pics = [{name: '', img: '', rarity: '', id: ''}];
+let pageNumber: number = 0;
+
+
 
 app.get("/", (req, res) =>{
     res.render("landingPage");
@@ -31,7 +34,7 @@ app.get("/home", (req, res) => {
 
     // Paging
     const cardsPerPage = 10;
-    const pageNumber: number = parseInt(req.query.page as string) || 1;
+    pageNumber = parseInt(req.query.page as string) || 1;
   
     const startIdx = (pageNumber - 1) * cardsPerPage;
     const endIdx = startIdx + cardsPerPage;
@@ -105,7 +108,7 @@ app.post("/home", async (req, res) => {
             
             // Paging
             const cardsPerPage: number = 10;
-            const pageNumber: number = parseInt(req.query.page as string) || 1;
+            pageNumber = parseInt(req.query.page as string) || 1;
         
             const startIdx = (pageNumber - 1) * cardsPerPage;
             const endIdx = startIdx + cardsPerPage;
@@ -138,6 +141,51 @@ app.post("/home", async (req, res) => {
     
 });
 
+// app.get("/cardDetail/:id", (req, res) => {
+
+//     res.render("cardDetail"); 
+    
+    
+// });
+
+app.get("/cardDetail/:id", async (req, res) => {
+
+    let id: number = parseInt(req.params.id);
+    if(pageNumber > 1){
+        id += (pageNumber - 1) * 10;
+    }
+    // console.log("page: " + pageNumber);
+    // console.log("id: " + id);
+
+    let response = await fetch(`https://api.scryfall.com/cards/${pics[id].id}`);
+    let fullCard: any = await response.json();
+
+    //console.log(fullCard);
+    let cardText: string[] = fullCard.oracle_text.split("\n");
+    console.log(cardText);
+
+    let card = {
+        name: fullCard.name,
+        manaCost: fullCard.mana_cost,
+        cmc: fullCard.cmc,
+        colorId: fullCard.color_identity,
+        type: fullCard.type_line,
+        keywords: cardText[0],
+        text: cardText[1],
+        rarity: fullCard.rarity,
+        power: fullCard.power,
+        toughness: fullCard.toughness,
+        exp: fullCard.set_type, //idfk?
+        flavorText: fullCard.flavor_text,
+        artist: fullCard.artist,
+        legality: fullCard.legalities,
+    }
+
+    res.render("cardDetail", {card: card, localCard: pics[id]});
+
+    
+});
+
 
 app.get("/decks", (req,res) =>{
 
@@ -160,11 +208,11 @@ app.get("/deck/:id", async(req,res) =>{
 
 });
 
-app.use((req, res) => {
-    res.status(404);
-    res.render("bad-request", {title: "404"});
-    }
-  );
+// app.use((req, res) => {
+//     res.status(404);
+//     res.render("bad-request", {title: "404"});
+//     }
+//   );
 
 app.listen(app.get("port"), () =>
   console.log("[server] http://localhost:" + app.get("port"))

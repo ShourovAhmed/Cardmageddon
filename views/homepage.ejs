@@ -83,7 +83,18 @@
 
     <section id="modals">
 
-        <%-include("partials/modals/card-modal")%>
+        <modal id="cardM">
+ 
+            <button class="hideM">X</button>
+            
+            <!-- IFrame moet nog via js aanpasbaar worden
+            maar gezien we voorlopig maar 1 carddetail page hebben, heb ik daar nu men tijd niet in gestoken -->
+
+            <iframe id="cardDetailFrame" src= "/cardDetail"></iframe>
+
+
+        </modal>
+
         <%-include("partials/modals/logout-modal")%>
 
     </section>
