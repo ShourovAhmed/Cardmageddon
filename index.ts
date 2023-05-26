@@ -21,7 +21,7 @@ const client = new MongoClient(uri);
 const db = client.db("userData");
 
 
-let pics = [{name: '', img: '', rarity: ''}];
+let pics = [{name: '', img: '', rarity: '', id: ''}];
 
 app.get("/", (req, res) =>{
     res.render("landingPage");
@@ -61,7 +61,7 @@ app.post("/home", async (req, res) => {
         //console.log(cards);
 
         if(cards.object != "error"){
-            pics = [{name: '', img: '', rarity: ''}];
+            pics = [{name: '', img: '', rarity: '', id: ''}];
             let total_cards = cards.total_cards;
             let maxCardsPerRequest = 175; // request limit per pagina van scryfall
             if(total_cards > maxCardsPerRequest)
@@ -75,7 +75,8 @@ app.post("/home", async (req, res) => {
                             pics[i] = {
                                 name: cards.data[i].name,
                                 img: cards.data[i].card_faces[j].image_uris.normal,
-                                rarity: cards.data[i].rarity
+                                rarity: cards.data[i].rarity,
+                                id: cards.data[i].id
                             };
                         }
 
@@ -83,7 +84,8 @@ app.post("/home", async (req, res) => {
                             pics[i] = {
                                 name: cards.data[i].name,
                                 img: cards.data[i].image_uris.normal,
-                                rarity: cards.data[i].rarity
+                                rarity: cards.data[i].rarity,
+                                id: cards.data[i].id
                             };
                         }
                     }
@@ -94,7 +96,8 @@ app.post("/home", async (req, res) => {
                     pics[i] = {
                         name: cards.data[i].name,
                         img: cards.data[i].image_uris.normal,
-                        rarity: cards.data[i].rarity
+                        rarity: cards.data[i].rarity,
+                        id: cards.data[i].id
                     };
                 }
                     
