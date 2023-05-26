@@ -80,7 +80,18 @@
                 </td>
                 <td class="columnB">
                     <div class="columnB">
-                        <img src="./assets/images/mana/13C.jpg" alt="13">
+                        <% for(let i=0; i<card.manaCost.length; i++){
+                            const mana = ['W', 'U', 'B', 'R', 'G'];
+                            if (!mana.includes(card.manaCost[i])){
+                        %>
+
+                                <%= card.manaCost[i] %>
+                        <%
+                            }
+                            else{                   
+                        %>
+                            <img src="/assets/images/mana/<%= card.manaCost[i]%>.png" alt="">
+                        <% }} %>
                     </div>
                 </td>
             </tr>

@@ -74,7 +74,7 @@ app.post("/home", async (req, res) => {
             for (let i = 0; i < total_cards; i++){
                 if(cards.data[i].card_faces){
                     for(let j = 0; j < cards.data[i].card_faces.length; j++){
-                        if(cards.data[i].card_faces[j].image_uris){ // Sommige kaarten hebben enkel 1 image, in de main card object. sommige verschillende imgs in de card_faces objecten
+                        if(cards.data[i].card_faces[j].image_uris){ // Sommige kaarten hebben enkel 1 image, in de main card object. sommige verschillende imgs in de card_faces objecten                            
                             pics[i] = {
                                 name: cards.data[i].name,
                                 img: cards.data[i].card_faces[j].image_uris.normal,
@@ -116,7 +116,7 @@ app.post("/home", async (req, res) => {
         
             const totalPages = Math.ceil(pics.length / cardsPerPage);
             console.log("Sliced");
-            console.table(shownCards, ['name', 'rarity']);
+            //console.table(shownCards, ['name', 'rarity']);
                     
                 
             console.table(pics, ["name", "rarity"]);
@@ -162,11 +162,12 @@ app.get("/cardDetail/:id", async (req, res) => {
 
     //console.log(fullCard);
     let cardText: string[] = fullCard.oracle_text.split("\n");
-    console.log(fullCard.legalities.standard);
+    let cardManaCost = splitMana(fullCard.mana_cost);
+    console.log(cardManaCost);
 
     let card = {
         name: fullCard.name,
-        manaCost: fullCard.mana_cost,
+        manaCost: cardManaCost,
         cmc: fullCard.cmc,
         colorId: fullCard.color_identity,
         type: fullCard.type_line,
@@ -217,3 +218,10 @@ app.get("/deck/:id", async(req,res) =>{
 app.listen(app.get("port"), () =>
   console.log("[server] http://localhost:" + app.get("port"))
 );
+
+const splitMana = (mana: string) => {
+    let splitted = mana.split(/[{}]/g).filter(item => item !== ''); // doet de '{' en '}' symbolen weg en filtert dan ook de lege plekken uit de array
+    //TODO ook de half mana symbolen toevoegen bv B/R
+    
+    return splitted;
+}
