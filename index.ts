@@ -161,8 +161,10 @@ app.get("/cardDetail/:id", async (req, res) => {
     let fullCard: any = await response.json();
 
     //console.log(fullCard);
-    let cardText: string[] = fullCard.oracle_text.split("\n");
     let cardManaCost = splitMana(fullCard.mana_cost);
+    let cardText: string[] = fullCard.oracle_text.split("\n");
+    let cardRarity = fullCard.rarity.charAt(0).toUpperCase() + fullCard.rarity.slice(1);
+    
     console.log(cardText);
 
     let card = {
@@ -171,9 +173,8 @@ app.get("/cardDetail/:id", async (req, res) => {
         cmc: fullCard.cmc,
         colorId: fullCard.color_identity,
         type: fullCard.type_line,
-        keywords: fullCard.oracle_text,
         text: cardText,
-        rarity: fullCard.rarity,
+        rarity: cardRarity,
         power: fullCard.power,
         toughness: fullCard.toughness,
         exp: fullCard.set_type, //idfk?
