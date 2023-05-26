@@ -115,7 +115,10 @@
                 </td>
                 <td class="columnB">
                     <div class="columnB">
-                        <img src="./assets/images/mana/C.png" style="width: 30px;">
+                        <% for(let i=0; i<card.colorId.length; i++){
+                        %>
+                        <img src="/assets/images/mana/<%= card.colorId[i]%>.png">
+                        <% } %>
                     </div>
                 </td>
             </tr>

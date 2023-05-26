@@ -163,7 +163,7 @@ app.get("/cardDetail/:id", async (req, res) => {
     //console.log(fullCard);
     let cardText: string[] = fullCard.oracle_text.split("\n");
     let cardManaCost = splitMana(fullCard.mana_cost);
-    console.log(cardManaCost);
+    console.log(fullCard.color_identity);
 
     let card = {
         name: fullCard.name,
