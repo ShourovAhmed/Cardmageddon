@@ -181,22 +181,41 @@ app.get("/deck/:id", async(req,res) =>{
     }
 });
 
+app.post("/deck/:deckId", async(req,res)=>{
+    await db.collection("decks").updateOne({id: parseInt(req.params.deckId)},{$set:{name: req.body.deckName}});
+    res.redirect(`/deck/${req.params.deckId}`);
+});
+
+app.get("/deckImage/:id", async(req,res) =>{
+    
+    let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
+
+    if (!deck){
+        console.log("fout");
+        console.log(`Ongeldig Deck ID: ${req.params.id}`);
+        res.redirect('/404');
+    }
+    else{
+        res.render('deck-image', {title: "Deck", deck: deck});
+    }
+});
+app.post("/deckImage/:deckId", async(req,res) =>{
+    if(req.body.next){
+
+    }
+    else if(req.body.previous){
+        res.render("")
+    }
+});
+
+
 
 app.get("/cardDetails/:id", async(req,res) =>{
     console.log(req.params.id);
     res.redirect("/404");
 });
-
-
-
-
-
-
-
-
-
-app.get("/drawtest", (req,res) =>{
-    res.render("drawtest", {title: "Drawtest"});
+app.get("/drawtest/:deckId", async(req,res) => {
+    res.redirect("/404");
 });
 
 app.use((req, res) => {

@@ -5,7 +5,7 @@
     <main>
 
         <section class="sub-header">
-            <h1>Deck Details</h1>
+            <h1><%=deck.name%></h1>
 
             <section class="ff">
                 <label for="cardCl">Select:</label>
@@ -29,12 +29,13 @@
                     <option value="grid">Rooster</option>
                 </select>
             </section>
-
+            <button class="header-btn showM deckNameM">Decknaam</button>
+            <button class="header-btn showM deckImgM">Deckafbeelding</button>
         </section>
 
         <aside>
             <section class="deck-summary">
-                <h2><%=deck.name%></h2>
+                <h2><div><%=deck.name%></div></h2>
                 <ul>
                     <%
                     let coverImg = "/assets/images/default-deck-image.jpg";
@@ -62,6 +63,9 @@
                     }
                     if(deck.coverCard != null){
                         coverImg = `https://cards.scryfall.io/art_crop/front/${deck.coverCard.substring(0,1)}/${deck.coverCard.substring(1,2)}/${deck.coverCard}.jpg`
+                    }
+                    if(manaCards === 0){
+                        manaCards = 1;
                     }
                     %>
                     <li>Count: <span class="cardCount"><%=cardCount%></span></li>
@@ -102,7 +106,10 @@
                 </section>
             </article>
 
-            <%}}}%>
+            <%}}}else{%>
+                <p>No cards in this deck jet:<br>
+                Go to => <a href="/">Homepage</a><br>to search for cards to add</p>
+                <%}%>
         </section>
 
     </main>
@@ -113,5 +120,7 @@
     <%-include("partials/modals/card-modal")%>
     <%-include("partials/modals/error-modal")%>
     <%-include("partials/modals/logout-modal")%>
+    <%-include("partials/modals/deckImg-modal")%>
+    <%-include("partials/modals/deckName-modal")%>
 </section>
 <%-include('partials/page-tail')%>
