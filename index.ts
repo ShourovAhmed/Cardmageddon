@@ -163,7 +163,7 @@ app.get("/cardDetail/:id", async (req, res) => {
     //console.log(fullCard);
     let cardManaCost = splitMana(fullCard.mana_cost); //TODO dubbelzijdige hebben mana cost in card_faces
     let cardText: string[] = fullCard.oracle_text.split("\n");
-    let cardRarity = fullCard.rarity.charAt(0).toUpperCase() + fullCard.rarity.slice(1);
+    let cardRarity = capitalizeFirstLetter(fullCard.rarity);
     
     console.log(cardText);
 
@@ -225,4 +225,8 @@ const splitMana = (mana: string) => {
     //TODO ook de half mana symbolen toevoegen bv B/R
     
     return splitted;
+}
+
+const capitalizeFirstLetter = (text: string) => {
+    return text.charAt(0).toUpperCase() + text.slice(1);
 }
