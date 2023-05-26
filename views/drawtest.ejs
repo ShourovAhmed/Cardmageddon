@@ -53,12 +53,14 @@
 
   
 
-<!-- NOTES: TRY USING A POST INSTEAD? -->
+
 
 
 
   <article id="previewDraw">
     <%
+
+
     
     for(let i =0;i<7; i++){  
 %>
@@ -67,15 +69,11 @@
     
     
     <ul>
-      <img src="<%=   ListCardReady[i].image_uris.normal %>" id="drawPile" alt="">
-      <%=ListCardReady.length;%>
+      <img src="<%=   ListCardReady[0].image_uris.normal %>" id="drawPile" alt="">
+     
 
-      <%  
-
-      
-      ListCardReady.splice(i, 1);
-      ListCardReady.length;
-      %>
+      <% ListCardReady.splice(0, 1);%> 
+      <%=ListCardReady.length;  %>
       
       
 
