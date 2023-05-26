@@ -163,7 +163,7 @@ app.get("/cardDetail/:id", async (req, res) => {
     //console.log(fullCard);
     let cardText: string[] = fullCard.oracle_text.split("\n");
     let cardManaCost = splitMana(fullCard.mana_cost);
-    console.log(fullCard.color_identity);
+    console.log(cardText);
 
     let card = {
         name: fullCard.name,
@@ -171,8 +171,8 @@ app.get("/cardDetail/:id", async (req, res) => {
         cmc: fullCard.cmc,
         colorId: fullCard.color_identity,
         type: fullCard.type_line,
-        keywords: cardText[0],
-        text: cardText[1],
+        keywords: fullCard.oracle_text,
+        text: cardText,
         rarity: fullCard.rarity,
         power: fullCard.power,
         toughness: fullCard.toughness,

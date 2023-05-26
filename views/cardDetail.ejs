@@ -142,12 +142,16 @@
                 </td>
                 <td>
                     <div class="columnB">
+                        <% for(let i=0; i<card.text.length; i++){
+                        %>
                         <div class="cardtextbox">
-                            <%= card.keywords %>
+                            <%= card.text[i]%>
                         </div>
-                        <div class="cardtextbox">
-                            <%= card.text %>
-                        </div>
+                        <% if (i != card.text.length - 1){ // geen break na laatste element
+                        %>
+                        <br>
+                        <% }} %>
+
                     </div>
                 </td>
             </tr>
