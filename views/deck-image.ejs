@@ -1,0 +1,23 @@
+<%-include("partials/page-head")%>
+<form method="post" class="modal-form">
+<%
+let cardIdArr = [];
+let i = 0;
+for(let card of deck.cards){
+    for(let variation of card.variations){
+        cardIdArr.push(variation.id);
+}}%>
+<form method="post">
+<input id="previous" value="-1" hidden>
+<button type="submit"><img src="/assets/images/left.png"></button>
+</form>
+
+<img class="deck-image" src="https://cards.scryfall.io/art_crop/front/<%=cardIdArr[i].substring(0,1)%>/<%=cardIdArr[i].substring(1,2)%>/<%=cardIdArr[i]%>.jpg" alt="" width="210">
+
+
+<form method="post">
+    <input id="next" value="1" hidden>
+<button type="submit"><img src="/assets/images/right.png"></button>
+</form>
+
+<%-include("partials/page-tail")%>

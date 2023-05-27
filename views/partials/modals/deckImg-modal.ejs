@@ -1,0 +1,20 @@
+    <modal id="deckImgM">
+    
+        <button class="hideM">X</button>
+
+        <%if(deck.cards){%>
+            <iframe src="/deckImage/<%=deck.id%>" frameborder="0"></iframe>
+            
+        <%}else{%>
+            <form method="post" class="modal-form" action="/home">
+            <p>Er zijn geen kaarten in dit deck<br>om een afbeelding van te kiezen</p>
+            <label for="search">Zoek kaarten:</label>
+            <input type="text" placeholder="Search cards..." name="search">
+            <button type="submit">Bevestigen</button>
+            <%}%>
+        </form>
+    </modal>
+
+
+           
+

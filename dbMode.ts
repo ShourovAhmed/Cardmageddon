@@ -1,6 +1,6 @@
 import { MongoClient, ObjectId, Collection } from "mongodb";
 import { CardS, Variation, Deck, Card, Set, ImageUris } from "./types";
-import { fullHash, emailHash } from "./functions";
+import { fullHash, emailHash, getSet, setToCardSs, cardSsToDeck } from "./functions";
 const readLine = require('readline-sync');
 
 const uri: string =
@@ -44,53 +44,15 @@ const coreLoginData : LoginData[] = [
     {id: 4, user_id: 4, username: "Shourov", password: fullHash("Shourov123")},
     {id: 5, user_id: 5, username: "User1", password: fullHash("User1123")},
 ];
-const cardsList = ():Promise<Set> => {
-    return fetch("https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Adkm&unique=prints").then((e) => e.json());
-};
-let cards : CardS[] = [];
-cardsList().then((set : Set)=>{
+const testDeckAbreviations : string[] = [
+    "dkm",
+    "pd2",
+    "olgc",
+    "med",
+    "e02",
+    "cmm"];
 
-    let oracleIds : string[] = [];
-    
-    
-    for (let card of set.data){
-        let newCard : CardS = {
-            id: "",
-            variations: [],
-            mana: card.color_identity,
-            manacost: card.cmc,
-            isLand: false
-        }
-        let variation : Variation = {
-            id: card.id,
-            count: 1
-        }
 
-        if(oracleIds.includes(card.oracle_id)){
-            cards[oracleIds.indexOf(card.oracle_id)].variations.push(variation);
-        }
-        else{
-            newCard.id = card.oracle_id;
-            newCard.manacost = card.cmc;
-            newCard.variations.push(variation);
-            if(card.type_line.includes("Land")){
-                newCard.isLand = true;
-            }
-            cards.push(newCard);
-            oracleIds.push(card.oracle_id);
-        }
-    }
-
-    console.table(cards);
-     
-}
-);
-const testDeck : Deck = { //58 Cards by scryfall ID's (The Deckmasters Set)
-    id: 0,
-    name: "Test Deck",
-    cards: cards,
-    coverCard: "34eb627d-d711-4c5b-a0b1-744ce0bb0cf0" //Card with highest rarety
-}
 
 const collectionChoise = ():string => {
     let choise : string = readLine.question("\nGo to:\n1:\tUsers\n2:\tDecks\n3:\tLoginData\n> ");
@@ -122,15 +84,45 @@ const main = async() =>{
         // Fill or reset
         let users : User[] = await db.collection('users').find<User>({}).toArray();
         if(readLine.keyInYN("Reset Users and LoginData? ")){
-            await db.collection('users').deleteMany();
-            await db.collection('users').insertMany(coreUsers);
-            await db.collection('loginData').deleteMany();
-            await db.collection('loginData').insertMany(coreLoginData)
-            console.log("Users And LoginData Where Reset To The Core Values")
+            if(readLine.keyInYN("ARE U SURE???\nReset all user date to default values->")){
+                await db.collection('users').deleteMany();
+                await db.collection('users').insertMany(coreUsers);
+                await db.collection('loginData').deleteMany();
+                await db.collection('loginData').insertMany(coreLoginData)
+                console.log("Users And LoginData Where Reset To The Core Values")
+            }
         }
         if(readLine.keyInYN('Reset Test Deck?')){
-            await db.collection('decks').updateOne({id: 0}, {$set: testDeck});
-            console.log("Test Deck Is Reset To Standard DKM Set")
+            let deckId : number = -1;
+            if(readLine.keyInYN('All Test Decks?')){
+                try{
+                    for(let testDeckAbreviation of testDeckAbreviations){
+                        deckId++;
+                        let currentDeck : Deck = 
+                            cardSsToDeck(deckId, `Test Deck ${deckId+1}`, await setToCardSs(
+                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviation}&unique=prints`)));
+                        await db.collection('decks').updateOne({id: deckId}, {$set: currentDeck});
+                        console.log(`Test Deck ${deckId+1} Reset To Standard`);
+                    }
+                }
+                catch (e:any){
+                    console.log("failed to reset deck");
+                }
+            }
+            else{
+                try{
+                    deckId = parseInt(readLine.question("Deck id van het te resetten deck?"));
+                        let currentDeck : Deck = 
+                            cardSsToDeck(deckId, `Test Deck ${deckId+1}`, await setToCardSs(
+                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviations[deckId]}&unique=prints`)));
+                        await db.collection('decks').insertOne(currentDeck);
+                        console.log(`Test Deck ${deckId+1} Reset To Standard`);
+                    
+                }
+                catch (e:any){
+                    console.log("failed to reset deck");
+                }
+            }
         }
 
         const collectionView = async() => {

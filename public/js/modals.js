@@ -15,6 +15,8 @@ const setLoginStatus = () => {
 const modalBack = document.getElementById("modals");
 
 //GET THE MODALSFRONTS AND ATTRIBUTES
+// -> KAN DIT WEG GELATEN WORDEN??
+// deckImg newDEck en deckName werken zo ook
 const loginM = document.getElementById("loginM");
 const logoutM = document.getElementById("logoutM");
 const cardM = document.getElementById("cardM");
@@ -48,6 +50,7 @@ for (let i = 0; i < openModalBtns.length; i++){
         } 
 
         else if (eventClasses.contains("cardM")){
+            document.getElementById("cardMIframe").src = `/cardDetails/${openModalBtns[i].id}`;
             cardM.style.display = "flex";
         }
 
@@ -55,8 +58,17 @@ for (let i = 0; i < openModalBtns.length; i++){
             errorMess.textContent = event.target.getElementsByTagName("status")[0].textContent;
             errorM.style.display = "flex";
         }
+        else if (eventClasses.contains("newDeckM")){
+            newDeckM.style.display = "flex";
+        }
+        else if (eventClasses.contains("deckImgM")){
+            deckImgM.style.display = "flex";
+        }
+        else if (eventClasses.contains("deckNameM")){
+            deckNameM.style.display = "flex";
+        }
         else{
-            errorMess.textContent = "Fout opgetreden. Contacteer support als dit zich blijft voordoen."
+            errorMess.textContent = "Fout opgetreden. Contacteer support als dit zich blijft voordoen. code: 3.404";
             errorM.style.display = "flex";
         }
     })

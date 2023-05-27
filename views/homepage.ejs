@@ -47,6 +47,7 @@
         if(locals.cards && locals.cards.length > 1){
         for (let i = 0; i<cards.length; i++){
         %>
+            
             <img src="<%= cards[i].img %>" alt="" class="<%= cards[i].rarity %> searchedCard">
             <!-- <p><%= cards[i].name %></p> -->
 
@@ -62,8 +63,8 @@
         %>   
 
             <% if (pageNumber > 1) { %>
-                <a href="/home?page=1"><button id="prevButton"><img src="/assets/images/doubleLeft.png" alt="First" class="arrow"></button></a>
-                <a href="/home?page=<%= pageNumber - 1 %>"><button id="prevButton"><img src="/assets/images/left.png" alt="Previous" class="arrow single"></button></a>
+                <a href="?page=1"><button id="prevButton"><img src="/assets/images/doubleLeft.png" alt="First" class="arrow"></button></a>
+                <a href="?page=<%= pageNumber - 1 %>"><button id="prevButton"><img src="/assets/images/left.png" alt="Previous" class="arrow single"></button></a>
             <% } %>
 
                 <p id="pages">
@@ -71,8 +72,8 @@
                 </p>
 
             <% if (pageNumber < totalPages) { %>
-                <a href="/home?page=<%= pageNumber + 1 %>"><button id="nextButton"><img src="/assets/images/right.png" alt="Next" class="arrow single"></button></a>
-                <a href="/home?page=<%= totalPages %>"><button id="prevButton"><img src="/assets/images/doubleRight.png" alt="Last" class="arrow"></button></a>
+                <a href="?page=<%= pageNumber + 1 %>"><button id="nextButton"><img src="/assets/images/right.png" alt="Next" class="arrow single"></button></a>
+                <a href="?page=<%= totalPages %>"><button id="prevButton"><img src="/assets/images/doubleRight.png" alt="Last" class="arrow"></button></a>
             <% } %>
 
           <%     
