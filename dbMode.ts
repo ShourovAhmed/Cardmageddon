@@ -111,11 +111,11 @@ const main = async() =>{
             }
             else{
                 try{
-                    deckId = readLine.question("Deck id van het te resetten deck?");
+                    deckId = parseInt(readLine.question("Deck id van het te resetten deck?"));
                         let currentDeck : Deck = 
                             cardSsToDeck(deckId, `Test Deck ${deckId+1}`, await setToCardSs(
-                                    await getSet(testDeckAbreviations[deckId])));
-                        await db.collection('decks').updateOne({id: deckId}, {$set: currentDeck});
+                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviations[deckId]}&unique=prints`)));
+                        await db.collection('decks').insertOne(currentDeck);
                         console.log(`Test Deck ${deckId+1} Reset To Standard`);
                     
                 }

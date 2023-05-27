@@ -1,5 +1,6 @@
-import { Deck, CardS, Set, Card } from "./types";
+import { Deck, CardS, Set, Card, CardFace } from "./types";
 import { db } from "./index";
+import { log } from "console";
 const CryptoJS = require('crypto-js');
 export const fullHash = (text: string):string => {
     let hashed = CryptoJS.PBKDF2(text, "9", {
@@ -27,16 +28,35 @@ export const getFreeId = async() => {
 
 const cardToCardS = (card : Card): CardS => {
 
+    
     let isLand : boolean = false;
-    if(card.type_line.includes("Land")){
+    let isDblSided : boolean = false;
+    if(card.type_line.split("//")[0].includes("Land")){
         isLand = true;
     }
+
+    if(card.card_faces){
+        if(!card.card_faces[0].image_uris){
+            return{
+                id: card.oracle_id,
+                variations: [{id: card.id, count: 1}],
+                mana: card.color_identity,
+                manacost: card.cmc,
+                isLand: isLand,
+            }
+        }
+        else{
+            isDblSided = true;
+        }
+    }
+
     return{
         id: card.oracle_id,
         variations: [{id: card.id, count: 1}],
         mana: card.color_identity,
         manacost: card.cmc,
-        isLand: isLand
+        isLand: isLand,
+        isDblSided: isDblSided
     }
 };
 
@@ -52,17 +72,11 @@ export const setToCardSs = (set : Set, baseCards? : CardS[]):CardS[] => {
     }
 
     for (let card of set.data){
+        console.log("test1");
+        console.table(cardToCardS(card));
         cards.push(cardToCardS(card));
-        // let isLand : boolean = false;
-        // if(card.type_line.includes("Land")){
-        //     isLand = true;
-        // }
-        // cards.push({
-        //     id: card.oracle_id,
-        //     variations: [{id: card.id, count: 1}],
-        //     mana: card.color_identity,
-        //     manacost: card.cmc,
-        //     isLand: isLand});
+        console.log("test2");
+        
         }
         return cards;
     }
