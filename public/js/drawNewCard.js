@@ -21,17 +21,33 @@
 
 
 
-function drawNewCard() {
+// function drawNewCard() {
     
+//     let ListCardReadylength;
+
     
-    let newCard = document.createElement('ul');
-    newCard.innerHTML = 'Hello, World!';
+
+//     let newCard = document.createElement('ul');
+//     newCard.innerHTML = ListCardReadylength;
    
     
-    let table = document.getElementById('previewDraw');
-    table.appendChild(newCard);
+//     let table = document.getElementById('previewDraw');
+//     table.appendChild(newCard);
+
+    
 
 
-  }
+//   }
+
+
+// function drawNewCard() {
+
+
+
+// }
+
+
+
+
 
   

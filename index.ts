@@ -81,7 +81,7 @@ let makeCardListFromApi =async(cardsIds:string[]) => {
 }
 
 
-let makeIdList=(cards:CardS[],cardsIds:string[]) => {//remove
+let makeIdList=(cards:CardS[],cardsIds:string[]) => {
 
     
 
@@ -104,33 +104,7 @@ let makeIdList=(cards:CardS[],cardsIds:string[]) => {//remove
 
 }
 
-let makeImgList =async(cardsIds:string[],cardImgs:string[]) => { //remove
 
-    for(let i=0;i<cardsIds.length;i++){
-
-        let cardImage=await getPic(cardsIds[i]);
-
-        cardImgs.push(cardImage);       
-
-
-    }
-    //console.log(`listimages: ${cardImgs}`);
-    return cardImgs;
-
-
-}
-let getPic= async (varId:string, ) => {//remove
-
-
-    let id= varId;
-    let response = await fetch(`https://api.scryfall.com/cards/${id}`); 
-    let card = await response.json();
-    let cardImg=card.image_uris.normal
-    //console.log(`getPic:${cardImg}`);
-    return cardImg;     //returns the img src needed. 
-    
-    
-}
 
 
 

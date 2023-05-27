@@ -50,7 +50,7 @@
 
   
 
-
+<%let click=true%>
   
 
 
@@ -60,8 +60,6 @@
   <article id="previewDraw">
     <%
 
-
-    
     for(let i =0;i<7; i++){  
 %>
 
@@ -86,10 +84,67 @@
 
 
 
-    <ul id="addNewCardElement"></ul> 
+    <%
+
+    if(click){  
+%>
+
+
+
+
+
+
+
+
+
+
+
+    
+    <ul>
+      <img src="<%=   ListCardReady[0].image_uris.normal %>" id="drawPile" alt="">
+     
+
+      <% ListCardReady.splice(0, 1);%> 
+      <%=ListCardReady.length;  %>
+      
+      
+
+    </ul>
+    
+    <% 
+  }
+    %>
+    
+    
+
+    
+
+    
+
+
+
+
+    
   </article>
 
-
+  <!-- <% 
+  function drawNewCard() {
+      
+    
+  
+    
+  
+    let newCard = document.createElement('ul');
+    newCard.innerHTML = "ListCardReady.length;"
+   
+    
+    let table = document.getElementById('previewDraw');
+    table.appendChild(newCard);
+  
+    
+  
+  
+  }%> -->
 
 
 
