@@ -1,23 +1,17 @@
 <%-include("partials/page-head")%>
-<form method="post" class="modal-form">
-<%
-let cardIdArr = [];
-let i = 0;
-for(let card of deck.cards){
-    for(let variation of card.variations){
-        cardIdArr.push(variation.id);
-}}%>
-<form method="post">
-<input id="previous" value="-1" hidden>
-<button type="submit"><img src="/assets/images/left.png"></button>
+<section class="image-chooser">
+<form class="left-form" method="post">
+<input id="previous" name="previous" value="-1" hidden>
+<button id="nextButton" type="submit"><img src="/assets/images/left.png"></button>
 </form>
 
-<img class="deck-image" src="https://cards.scryfall.io/art_crop/front/<%=cardIdArr[i].substring(0,1)%>/<%=cardIdArr[i].substring(1,2)%>/<%=cardIdArr[i]%>.jpg" alt="" width="210">
+<img src="https://cards.scryfall.io/art_crop/front/<%=image.substring(0,1)%>/<%=image.substring(1,2)%>/<%=image%>.jpg" alt="" width="210">
+<%-include("partials/page-tail")%>
+<input type="text" name="cardId" id="cardId" value="<%=image%>" hidden>
 
-
-<form method="post">
-    <input id="next" value="1" hidden>
-<button type="submit"><img src="/assets/images/right.png"></button>
+<form class="right-form" method="post">
+    <input id="next" name="next" value="1" hidden>
+<button id="prevButton" type="submit"><img src="/assets/images/right.png"></button>
 </form>
-
+</section>
 <%-include("partials/page-tail")%>

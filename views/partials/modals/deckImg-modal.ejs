@@ -1,17 +1,23 @@
     <modal id="deckImgM">
     
         <button class="hideM">X</button>
-
+        <form method="post" class="modal-form"
         <%if(deck.cards){%>
+            action="/deckImage/<%=deck.id%>">
             <iframe src="/deckImage/<%=deck.id%>" frameborder="0"></iframe>
             
+            <input type="hidden" name="pickImage" id="pickImage" value="1">
+
         <%}else{%>
-            <form method="post" class="modal-form" action="/home">
+             action="/home">
             <p>Er zijn geen kaarten in dit deck<br>om een afbeelding van te kiezen</p>
             <label for="search">Zoek kaarten:</label>
             <input type="text" placeholder="Search cards..." name="search">
-            <button type="submit">Bevestigen</button>
+            
+            
             <%}%>
+            <button type="submit">Bevestigen</button>
+
         </form>
     </modal>
 

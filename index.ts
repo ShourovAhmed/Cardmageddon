@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import {MongoClient} from 'mongodb';
 import {Deck} from "./types";
 import { render } from 'ejs';
-import { getFreeId } from './functions';
+import { getFreeId, getDeckImages } from './functions';
 import { log } from 'console';
 
 
@@ -215,6 +215,9 @@ app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
                 getAllInfo = true;
                 if(variation.count === 0 && amount === -1){
                     remove = true;
+                    if(deck.coverCard === variation.id){
+                        deck.coverCard = null;
+                    }
                 }
             };
             totalVariationCount += variation.count;
@@ -268,27 +271,50 @@ app.post("/deck/:deckId", async(req,res)=>{
 
 
 
-
+let deckImages : string[] = [];
+let imageIndex : number = 0;
 app.get("/deckImage/:id", async(req,res) =>{
     
     let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
 
     if (!deck){
-        console.log("fout");
+        console.log("fout"); 
         console.log(`Ongeldig Deck ID: ${req.params.id}`);
         res.redirect('/404');
     }
+    else if(!deck.cards){
+        console.log("fout");
+        console.log(`Geen kaarten in dit deck`);
+        res.redirect('/404');
+    }
     else{
-        res.render('deck-image', {title: "Deck", deck: deck});
+        deckImages = getDeckImages(deck);
     }
+    res.render('deck-image', {title: "Deck Image", image: deckImages[imageIndex]});
 });
-app.post("/deckImage/:deckId", async(req,res) =>{
-    if(req.body.next){
+app.post("/deckImage/:deckId/", async(req,res) =>{
 
+    if(req.body.pickImage){
+        console.log(deckImages[imageIndex]);
+        await db.collection("decks").updateOne({id: parseInt(req.params.deckId)}, {$set: {coverCard: deckImages[imageIndex]}});
+        res.redirect(`/deck/${req.params.deckId}`);
     }
-    else if(req.body.previous){
-        res.render("")
+    else{
+        if(req.body.next){
+            imageIndex++;
+            if(imageIndex >= deckImages.length){ 
+                imageIndex = 0;
+            }
+        }
+        else if(req.body.previous){
+            imageIndex--;
+            if(imageIndex < 0){
+                imageIndex = deckImages.length-1;
+            }
+        }
+        res.render("deck-image", {title: "Deck Image", image: deckImages[imageIndex]});
     }
+ 
 });
 
 

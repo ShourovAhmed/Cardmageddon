@@ -1,6 +1,6 @@
 import { Deck, CardS, Set, Card, CardFace } from "./types";
 import { db } from "./index";
-import { log } from "console";
+import { error, log } from "console";
 const CryptoJS = require('crypto-js');
 export const fullHash = (text: string):string => {
     let hashed = CryptoJS.PBKDF2(text, "9", {
@@ -72,11 +72,7 @@ export const setToCardSs = (set : Set, baseCards? : CardS[]):CardS[] => {
     }
 
     for (let card of set.data){
-        console.log("test1");
-        console.table(cardToCardS(card));
         cards.push(cardToCardS(card));
-        console.log("test2");
-        
         }
         return cards;
     }
@@ -122,4 +118,19 @@ export const cardSsToDeck = (id : number, name : string, cards : CardS[], coverC
     }
 
     return newDeck;
+}
+
+export const getDeckImages = (deck : Deck):string[] =>{
+    if(!deck.cards){
+        throw error("No cards in deck");
+    }
+    let deckImages : string[] = [];
+    for(let card of deck.cards){
+        for(let variation of card.variations){
+            if(variation.count > 0){
+                deckImages.push(variation.id);
+            }
+        }
+    }
+    return deckImages;
 }
