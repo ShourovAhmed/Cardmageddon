@@ -21,7 +21,7 @@ const client = new MongoClient(uri);
 const db = client.db("userData");
 
 
-let pics = [{name: '', img: '', rarity: '', id: ''}];
+let pics = [{name: '', img: '', rarity: '', id: '', }]; //add boolean of het dubbelzijdig is of ni
 let pageNumber: number = 0;
 
 
@@ -64,46 +64,57 @@ app.post("/home", async (req, res) => {
         //console.log(cards);
 
         if(cards.object != "error"){
-            pics = [{name: '', img: '', rarity: '', id: ''}];
+            pics = [];
             let total_cards = cards.total_cards;
             let maxCardsPerRequest = 175; // request limit per pagina van scryfall
             if(total_cards > maxCardsPerRequest)
             {        
                 total_cards = maxCardsPerRequest;
             }
+
             for (let i = 0; i < total_cards; i++){
-                if(cards.data[i].card_faces){
-                    for(let j = 0; j < cards.data[i].card_faces.length; j++){
-                        if(cards.data[i].card_faces[j].image_uris){ // Sommige kaarten hebben enkel 1 image, in de main card object. sommige verschillende imgs in de card_faces objecten                            
-                            pics[i] = {
-                                name: cards.data[i].name,
-                                img: cards.data[i].card_faces[j].image_uris.normal,
-                                rarity: cards.data[i].rarity,
-                                id: cards.data[i].id
-                            };
-                        }
 
-                        else{
-                            pics[i] = {
-                                name: cards.data[i].name,
-                                img: cards.data[i].image_uris.normal,
-                                rarity: cards.data[i].rarity,
-                                id: cards.data[i].id
-                            };
-                        }
-                    }
-                    
-                }
-
-                else{
-                    pics[i] = {
+                // 1. Normale kaarten
+                if(!cards.data[i].card_faces){
+                    pics.push({
                         name: cards.data[i].name,
                         img: cards.data[i].image_uris.normal,
                         rarity: cards.data[i].rarity,
                         id: cards.data[i].id
-                    };
+                    });
                 }
-                    
+
+                // 2. Niet normale kaarten
+                else{
+                    let doubleSided = false;
+                    for(let j = 0; j < cards.data[i].card_faces.length; j++){
+                        if(cards.data[i].card_faces[j].image_uris){
+                            doubleSided = true;
+                        }
+                    }
+
+                    // 2.1 Kaarten met 2 (of meer??) kaarten aan 1 kant
+                    if(!doubleSided){
+                        pics.push({
+                            name: cards.data[i].name,
+                            img: cards.data[i].image_uris.normal,
+                            rarity: cards.data[i].rarity,
+                            id: cards.data[i].id
+                        });
+                    }
+
+                    // 2.2 Dubbelzijdige kaarten
+                    else{
+                        for(let j = 0; j < cards.data[i].card_faces.length; j++){
+                            pics.push({
+                                name: cards.data[i].name,
+                                img: cards.data[i].card_faces[j].image_uris.normal,
+                                rarity: cards.data[i].rarity,
+                                id: cards.data[i].id
+                            });
+                        }
+                    }
+                }       
             }
             
             // Paging
@@ -131,7 +142,7 @@ app.post("/home", async (req, res) => {
 
 
         else{
-            return res.render("homepage", {error: "error"});
+            return res.render("homepage", {error: "Your query didn’t match any cards"});
         }
     }
 
@@ -205,7 +216,7 @@ app.get("/cardDetail/:id", async (req, res) => {
         legality: fullCard.legalities,
     }
 
-    res.render("cardDetail", {card: card, localCard: pics[id]});
+    res.render("cardDetail2", {card: card, localCard: pics[id]});
 
     
 });
@@ -232,11 +243,11 @@ app.get("/deck/:id", async(req,res) =>{
 
 });
 
-// app.use((req, res) => {
-//     res.status(404);
-//     res.render("bad-request", {title: "404"});
-//     }
-//   );
+app.use((req, res) => {
+    res.status(404);
+    res.render("bad-request", {title: "404"});
+    }
+  );
 
 app.listen(app.get("port"), () =>
   console.log("[server] http://localhost:" + app.get("port"))
