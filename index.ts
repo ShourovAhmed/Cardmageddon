@@ -203,6 +203,7 @@ app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
     }
     //count total cards and get info on card to add/remove
     let i : number = 0;
+    let remove : boolean = false;
     for (let card of deck.cards){
         let j : number = 0;
         let totalVariationCount : number = 0;
@@ -213,8 +214,7 @@ app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
                 variationIndex = j;
                 getAllInfo = true;
                 if(variation.count === 0 && amount === -1){
-                    res.redirect("/404");
-                    return;
+                    remove = true;
                 }
             };
             totalVariationCount += variation.count;
@@ -231,16 +231,25 @@ app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
         }
         i++;
     }
-    if((cardIndex === -1 || variationIndex === -1) || (amount === -1 && cardCount <= 0) || (amount === 1 && cardCount >= 60)){
+    if((cardIndex === -1 || variationIndex === -1) || (amount === -1 && cardCount < 0) || (amount === 1 && cardCount >= 60)){
         res.redirect("/404");
         return;
     }
     console.table(deck.cards[0].variations);
     console.log(cardIndex);
     console.log(variationIndex);
-    
-    
-    deck.cards[cardIndex].variations[variationIndex].count += amount;
+
+    if(remove){
+        if(cardAmount === 0){
+            deck.cards.splice(cardIndex,1);
+        }
+        else{
+            deck.cards[cardIndex].variations.splice(variationIndex,1);
+        }
+    }
+    else{
+        deck.cards[cardIndex].variations[variationIndex].count += amount;
+    }
 
     await db.collection("decks").replaceOne({id: deckId}, deck);
 
