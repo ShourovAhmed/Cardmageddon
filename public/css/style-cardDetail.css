@@ -1,3 +1,4 @@
+/*
 .carddetailTable {
     border-collapse: collapse;
     border-radius: 5px;
@@ -41,13 +42,13 @@
     height: auto;
     display: inline-block;
 }
-*/
 .card img{
     vertical-align: center;
     max-width: 100%;
     height: auto;
     display: inline-block;
 }
+*/
 /*Slideshow*/
 .splide {
     margin: 0 auto;

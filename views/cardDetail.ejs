@@ -26,11 +26,20 @@
                     <td rowspan="13">
                         <section>
                             <div class="cardColumn" class="splide__track">
-                                <div class="cardImage" class="splide__list">
-                                    <div class="card"> 
+                                <ul class="cardImage" class="splide__list">
+                                    <li class="card"> 
                                         <img src="<%= localCard.img %>">
-                                    </div>
-                                </div>
+                                    </li>
+                                    <li class="card">
+                                        <img src="<%= localCard.img %>">
+                                    </li>
+                                    <li class="card">
+                                        <img src="<%= localCard.img %>">
+                                    </li>
+                                    <li class="card">
+                                        <img src="<%= localCard.img %>">
+                                    </li>
+                                </ul>
                                 <form action="#">
                                     <label for="decks">Decks: </label>
                                     <select class="addDeckButton" name="decks" id="decks">
@@ -241,10 +250,9 @@
             </tr>        
             </section>      
         </table>
-    </main>
-
+        
     <script>
-        var splide = new Splide("#main-slider", {
+    var splide = new Splide("#main-slider", {
           width: 650,
           height: 900,
           pagination: false,
@@ -287,8 +295,9 @@
         });
   
         splide.mount();
-      </script>
-      
+    </script>
+
+    </main>
 </body>
 
 
