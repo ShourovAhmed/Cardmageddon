@@ -21,7 +21,7 @@ const client = new MongoClient(uri);
 const db = client.db("userData");
 
 
-let pics = [{name: '', img: '', rarity: '', id: ''}]; //add boolean of het dubbelzijdig is of ni
+let pics = [{name: '', img: '', rarity: '', id: '', }]; //add boolean of het dubbelzijdig is of ni
 let pageNumber: number = 0;
 
 
@@ -74,7 +74,7 @@ app.post("/home", async (req, res) => {
 
             for (let i = 0; i < total_cards; i++){
 
-                // Normale kaarten
+                // 1. Normale kaarten
                 if(!cards.data[i].card_faces){
                     pics.push({
                         name: cards.data[i].name,
@@ -83,6 +83,8 @@ app.post("/home", async (req, res) => {
                         id: cards.data[i].id
                     });
                 }
+
+                // 2. Niet normale kaarten
                 else{
                     let doubleSided = false;
                     for(let j = 0; j < cards.data[i].card_faces.length; j++){
@@ -91,7 +93,7 @@ app.post("/home", async (req, res) => {
                         }
                     }
 
-                    // Kaarten met 2 kaarten aan 1 kant
+                    // 2.1 Kaarten met 2 (of meer??) kaarten aan 1 kant
                     if(!doubleSided){
                         pics.push({
                             name: cards.data[i].name,
@@ -101,7 +103,7 @@ app.post("/home", async (req, res) => {
                         });
                     }
 
-                    // Dubbelzijdige kaarten
+                    // 2.2 Dubbelzijdige kaarten
                     else{
                         for(let j = 0; j < cards.data[i].card_faces.length; j++){
                             pics.push({
@@ -112,11 +114,7 @@ app.post("/home", async (req, res) => {
                             });
                         }
                     }
-                }
-
-
-                
-                    
+                }       
             }
             
             // Paging
@@ -218,7 +216,7 @@ app.get("/cardDetail/:id", async (req, res) => {
         legality: fullCard.legalities,
     }
 
-    res.render("cardDetail", {card: card, localCard: pics[id]});
+    res.render("cardDetail2", {card: card, localCard: pics[id]});
 
     
 });
