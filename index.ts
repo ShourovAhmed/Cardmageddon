@@ -73,6 +73,11 @@ app.post("/home", async (req, res) => {
 
             for (let i = 0; i < total_cards; i++){
 
+                if(cards.data[i].layout == "art_series"){
+                    total_cards--;
+                    continue;
+                }
+
                 // 1. Normale kaarten
                 if(!cards.data[i].card_faces){
                     pics.push({
