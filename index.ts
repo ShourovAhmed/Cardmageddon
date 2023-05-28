@@ -20,8 +20,7 @@ const uri : string =
 const client = new MongoClient(uri);
 const db = client.db("userData");
 
-
-let pics = [{name: '', img: '', rarity: '', id: '', }]; //add boolean of het dubbelzijdig is of ni
+let pics = [{name: '', img: '', rarity: '', id: '', multipleCards: false, doubleSided: false, cardFace: 0 }];
 let pageNumber: number = 0;
 
 
@@ -80,7 +79,10 @@ app.post("/home", async (req, res) => {
                         name: cards.data[i].name,
                         img: cards.data[i].image_uris.normal,
                         rarity: cards.data[i].rarity,
-                        id: cards.data[i].id
+                        id: cards.data[i].id,
+                        multipleCards: false,
+                        doubleSided: false,
+                        cardFace: 0
                     });
                 }
 
@@ -99,7 +101,10 @@ app.post("/home", async (req, res) => {
                             name: cards.data[i].name,
                             img: cards.data[i].image_uris.normal,
                             rarity: cards.data[i].rarity,
-                            id: cards.data[i].id
+                            id: cards.data[i].id,
+                            multipleCards: true,
+                            doubleSided: false,
+                            cardFace: 0
                         });
                     }
 
@@ -110,7 +115,10 @@ app.post("/home", async (req, res) => {
                                 name: cards.data[i].name,
                                 img: cards.data[i].card_faces[j].image_uris.normal,
                                 rarity: cards.data[i].rarity,
-                                id: cards.data[i].id
+                                id: cards.data[i].id,
+                                multipleCards: true,
+                                doubleSided: true,
+                                cardFace: j
                             });
                         }
                     }
@@ -130,7 +138,7 @@ app.post("/home", async (req, res) => {
             //console.table(shownCards, ['name', 'rarity']);
                     
                 
-            console.table(pics, ["name", "rarity"]);
+            console.table(pics, ["name", "multipleCards", "doubleSided"]);
             return res.render("homepage", {
                 cards: shownCards,
                 pageNumber,
@@ -152,13 +160,6 @@ app.post("/home", async (req, res) => {
     
 });
 
-// app.get("/cardDetail/:id", (req, res) => {
-
-//     res.render("cardDetail"); 
-    
-    
-// });
-
 app.get("/cardDetail/:id", async (req, res) => {
 
     let id: number = parseInt(req.params.id);
@@ -172,10 +173,10 @@ app.get("/cardDetail/:id", async (req, res) => {
     let fullCard: any = await response.json();
 
     //console.log(fullCard);
-    let cardManaCost = splitMana(fullCard.mana_cost); //TODO dubbelzijdige hebben mana cost in card_faces
-    let cardText: string[] = fullCard.oracle_text.split("\n");
+
     let cardRarity = capitalizeFirstLetter(fullCard.rarity);
 
+    // Capitalize and space out all legalities
     for(let l in fullCard.legalities){
 
         // Get every value of the object properties and split it (if needed)
@@ -200,20 +201,50 @@ app.get("/cardDetail/:id", async (req, res) => {
   
     }
 
-    let card = {
-        name: fullCard.name,
-        manaCost: cardManaCost,
-        cmc: fullCard.cmc,
-        colorId: fullCard.color_identity,
-        type: fullCard.type_line,
-        text: cardText,
-        rarity: cardRarity,
-        power: fullCard.power,
-        toughness: fullCard.toughness,
-        exp: fullCard.set_name, 
-        flavorText: fullCard.flavor_text,
-        artist: fullCard.artist,
-        legality: fullCard.legalities,
+    let card = {};
+
+    // Normale kaart
+    if(!pics[id].multipleCards && !pics[id].doubleSided){
+        
+        let cardManaCost = splitMana(fullCard.mana_cost);
+        let cardText: string[] = fullCard.oracle_text.split("\n");
+
+        card = {
+            name: fullCard.name,
+            manaCost: cardManaCost,
+            cmc: fullCard.cmc,
+            colorId: fullCard.color_identity,
+            type: fullCard.type_line,
+            text: cardText,
+            rarity: cardRarity,
+            power: fullCard.power,
+            toughness: fullCard.toughness,
+            exp: fullCard.set_name, 
+            flavorText: fullCard.flavor_text,
+            artist: fullCard.artist,
+            legality: fullCard.legalities,
+        }
+    }
+    else{
+
+        let cardManaCost = splitMana(fullCard.card_faces[pics[id].cardFace].mana_cost);
+        let cardText: string[] = fullCard.card_faces[pics[id].cardFace].oracle_text.split("\n");
+
+        card = {
+            name: fullCard.card_faces[pics[id].cardFace].name,
+            manaCost: cardManaCost,
+            cmc: fullCard.cmc,
+            colorId: fullCard.color_identity,
+            type: fullCard.card_faces[pics[id].cardFace].type_line,
+            text: cardText,
+            rarity: cardRarity,
+            power: fullCard.card_faces[pics[id].cardFace].power,
+            toughness: fullCard.card_faces[pics[id].cardFace].toughness,
+            exp: fullCard.set_name,
+            flavorText: fullCard.card_faces[pics[id].cardFace].flavor_text,
+            artist: fullCard.artist,
+            legality: fullCard.legalities,
+        }
     }
 
     res.render("cardDetail2", {card: card, localCard: pics[id]});
