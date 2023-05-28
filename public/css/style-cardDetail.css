@@ -80,7 +80,7 @@
     height: 100%;
 }
 
-@media(max-width: 650px){
+/* @media(max-width: 650px){
     .table {
         display: none;
     }
@@ -99,4 +99,4 @@
         width: 50%;
         padding-left: 15px;
     }
-}
+} */

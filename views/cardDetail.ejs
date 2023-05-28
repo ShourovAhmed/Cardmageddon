@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="nl-BE">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/css/style-universal.css">
+    <link rel="stylesheet" href="/css/style-modal.css">
+    <link rel="stylesheet" href="/css/style-cardDetail.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.1/dist/css/themes/splide-skyblue.min.css">
+    <script>
+        type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.1/dist/js/splide.min.js"
+    </script>
+
+    <title>Card Details</title>
+</head>
+
+<body>
+
+    <main>
+        <table border="1" class="carddetailTable">
+            <section id="main-slider" class="splide">
+                <tr>
+                    <td rowspan="13">
+                        <section>
+                            <div class="cardColumn" class="splide__track">
+                                <ul class="cardImage" class="splide__list">
+                                    <li class="card"> 
+                                        <img src="<%= localCard.img %>">
+                                    </li>
+                                    <li class="card">
+                                        <img src="<%= localCard.img %>">
+                                    </li>
+                                    <li class="card">
+                                        <img src="<%= localCard.img %>">
+                                    </li>
+                                    <li class="card">
+                                        <img src="<%= localCard.img %>">
+                                    </li>
+                                </ul>
+                                <form action="#">
+                                    <label for="decks">Decks: </label>
+                                    <select class="addDeckButton" name="decks" id="decks">
+                                        <option value="AwsomeDeck">AwsomeDeck</option>
+                                        <option value="MonoRedAgro">MonoRedAgro</option>
+                                        <option value="GreenStompy">GreenStompy</option>
+                                    </select>
+                                    <button>Add</button>
+                                </form>
+                            </div>
+                        </section>
+                        <ul id="thumbnails" class="thumbnails">
+                            <li class="thumbnail">
+                                <img src="<%= localCard.img %>">
+                            </li>
+                            <li class="thumbnail">
+                                <img src="<%= localCard.img %>">
+                            </li>
+                            <li class="thumbnail">
+                                <img src="<%= localCard.img %>">
+                            </li>
+                            <li class="thumbnail">
+                                <img src="<%= localCard.img %>">
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </section>
+            <section>
+                <td class="columnA">
+                    <div class="columnA">
+                        Card Name:
+                    </div>
+                </td>
+                <td class="columnB">
+                    <div class="columnB">
+                        <%= card.name %>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="columnA">
+                    <div class="columnA">
+                        Mana Cost:
+                    </div>
+                </td>
+                <td class="columnB">
+                    <div class="columnB">
+                        <% for(let i=0; i<card.manaCost.length; i++){
+                            const mana = ['W', 'U', 'B', 'R', 'G'];
+                            if (!mana.includes(card.manaCost[i])){
+                        %>
+
+                                <%= card.manaCost[i] %>
+                        <%
+                            }
+                            else{                   
+                        %>
+                            <img src="/assets/images/mana/<%= card.manaCost[i]%>.png" alt="">
+                        <% }} %>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="columnA">
+                    <div class="columnA">
+                        Converted Mana Cost:
+                    </div>
+                </td>
+                <td class="columnB">
+                    <div class="columnB">
+                        <%= card.cmc %>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="columnA">
+                    <div class="columnA">
+                        Color Identity:
+                    </div>
+                </td>
+                <td class="columnB">
+                    <div class="columnB">
+                        <% for(let i=0; i<card.colorId.length; i++){
+                        %>
+                        <img src="/assets/images/mana/<%= card.colorId[i]%>.png">
+                        <% } %>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="columnA">
+                    <div class="columnA">
+                        Types:
+                    </div>
+                </td>
+                <td class="columnB">
+                    <div class="columnB">
+                        <%= card.type %>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="columnA">
+                    <div class="columnA">
+                        Card Text:
+                    </div>
+                </td>
+                <td>
+                    <div class="columnB">
+                        <% for(let i=0; i<card.text.length; i++){
+                        %>
+                        <div class="cardtextbox">
+                            <%= card.text[i]%>
+                        </div>
+                        <% if (i != card.text.length - 1){ // geen break na laatste element
+                        %>
+                        <br>
+                        <% }} %>
+
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="columnA">
+                    <div class="columnA">
+                        Rarity:
+                    </div>
+                </td>
+                <td class="columnB">
+                    <div class="columnB">
+                        <%= card.rarity %>
+                    </div>
+                </td>
+            </tr>
+            <% if(card.power && card.toughness){ %>
+            <tr>
+                <td class="columnA">
+                    <div class="columnA">
+                        Power / Toughness:
+                    </div>
+                </td>
+                <td class="columnB">
+                    <div class="columnB">
+                        <%= card.power %> / <%= card.toughness %>
+                    </div>
+                </td>
+            </tr>
+            <% } %>
+            <% if(card.flavorText){ %>
+            <tr>
+                <td class="columnA">
+                    <div class="columnA">
+                        Flavor Text:
+                    </div>
+                </td>
+                <td class="columnB">
+                    <div class="columnB">
+                        <div class="flavortextbox"> <%= card.flavorText %> </div>
+                    </div>
+                </td>
+            </tr>
+            <% } %>
+            <tr>
+                <td class="columnA">
+                    <div class="columnA">
+                        Expansion:
+                    </div>
+                </td>
+                <td class="columnB">
+                    <%= card.exp %>
+                </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="columnA">
+                    <div class="columnA">
+                        Artist:
+                    </div>
+                </td>
+                <td class="columnB">
+                    <div class="columnB">
+                        <%= card.artist %>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="columnA">
+                    <div class="columnA">
+                        Legality:
+                    </div>
+                </td>
+                <td class="columnB">
+                    <div class="columnB">
+                        <div>Standard: <%= card.legality.standard %></div>
+                        <div>Alchemy: <%= card.legality.alchemy %></div>
+                        <div>Pioneer: <%= card.legality.pioneer %></div>
+                        <div>Explorer: <%= card.legality.explorer %></div>
+                        <div>Modern: <%= card.legality.modern %></div>
+                        <div>Brawl: <%= card.legality.brawl %></div>
+                        <div>Legacy: <%= card.legality.legacy %></div>
+                        <div>Historic: <%= card.legality.historic %></div>
+                        <div>Vintage: <%= card.legality.vintage %></div>
+                        <div>Pauper: <%= card.legality.pauper %></div>
+                        <div>Commander: <%= card.legality.commander %></div>
+                    </div>
+                </td>
+            </tr>        
+            </section>      
+        </table>
+        
+    <script>
+    var splide = new Splide("#main-slider", {
+          width: 650,
+          height: 900,
+          pagination: false,
+          cover: true,
+          //navigation options
+          drag: true,
+          dragMinThreshold: {
+            mouse: 0,
+            Touch: 10,
+          },
+          lazyLoad: 'nearby',
+          keyboard: true,
+        });
+        
+        //click events
+        var thumbnails = document.getElementsByClassName("thumbnail");
+        var current;
+  
+        for (var i = 0; i < thumbnails.length; i++) {
+          initThumbnail(thumbnails[i], i);
+        }
+  
+        function initThumbnail(thumbnail, index) {
+          thumbnail.addEventListener("click", function () {
+            splide.go(index);
+          });
+        }
+  
+        splide.on("mounted move", function () {
+          var thumbnail = thumbnails[splide.index];
+  
+          if (thumbnail) {
+            if (current) {
+              current.classList.remove("is-active");
+            }
+  
+            thumbnail.classList.add("is-active");
+            current = thumbnail;
+          }
+        });
+  
+        splide.mount();
+    </script>
+
+    </main>
+</body>
+
+
