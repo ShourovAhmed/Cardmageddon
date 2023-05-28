@@ -42,25 +42,27 @@ app.set("view engine", "ejs");
 
 app.use('*/public',express.static('public/'));
 
-//making funct to get image from certain id (from variation in db)
+app.use(express.json({limit: '1mb'}));
+app.use(express.urlencoded({extended: true}));
+
 
 
 
 let getCardFromApi= async (cardsid:string ) => {
 
-
+//gets card object from id to api call
     let id= cardsid;
     let response = await fetch(`https://api.scryfall.com/cards/${id}`); 
     let cardFromApi: string[]=[];
     cardFromApi = await response.json();
     
     
-    return cardFromApi;     //returns the img src needed.  
+    return cardFromApi;       
 }
 let makeCardListFromApi =async(cardsIds:string[]) => {
 
 
-    let ListCardReady: any[]=[];      //change anytype later 
+    let ListCardReady: any[]=[];       
     for(let i=0;i<cardsIds.length;i++){
 
         
@@ -69,7 +71,7 @@ let makeCardListFromApi =async(cardsIds:string[]) => {
         ListCardReady.push(cardObject);       
 
 
-    }
+    }//makes array of cards in deck
 
     //random ordering:
     let randomizedListCardReady = ListCardReady
@@ -83,7 +85,7 @@ let makeCardListFromApi =async(cardsIds:string[]) => {
 
 let makeIdList=(cards:CardS[],cardsIds:string[]) => {
 
-    
+    //get array only containing varIds// needed for api
 
     for(let i=0;i<cards.length;i++){
 
@@ -113,85 +115,28 @@ app.get('/drawtest',async(req,res)=>{
 try{
     await client.connect();
 
-    let deckCollection= client.db("userData").collection("decks");
+    const deckCollection= client.db("userData").collection("decks");
 
     
 
 
 
-    let decksDatabase= await deckCollection.find<Deck>({}).toArray();
+    const decksDatabase= await deckCollection.find<Deck>({}).toArray();
     
     let chosenDeck=decksDatabase[0];//later deckkeuze aanmaken
-    let cards:CardS[]= chosenDeck.cards!    //non-null assertion operator ? should work 
+    let cards:CardS[]= chosenDeck.cards!;    //non-null assertion operator ? should work 
     //console.log(cards);
 
     
     let cardsIds:string[]=[]; 
-    cardsIds=makeIdList(cards,cardsIds);    //this array only contains variableIds used for api//also allows deleting in later uses without touching original Database
+    cardsIds=makeIdList(cards,cardsIds);    //this array only contains variableIds used for api
 
 
-    // let cardImgs:string[]=[]; 
-    // cardImgs=await makeImgList(cardsIds,cardImgs); 
+    let ListCardReady=await makeCardListFromApi(cardsIds);
 
-    //console.log("All Ids deck 1:"+ cardsIds);
-    
-
-//////TESTING APICALL FULL OBJECT THING
-
-
-
-let ListCardReady=await makeCardListFromApi(cardsIds);
-
-
-
-
-//////END TESTING AREA API
-
-
-
-///----Notes for next:   We have Ids wich can be deleted from and we have api calll function, 
-//                        so now i combine in loop etc later add deck selector?
-    
-
-
-
-
-
-
-
-    // let id="5e2465d3-405d-487d-b6e9-d2ec8b920201";      //for early testing only
-
-    // let response = await fetch(`https://api.scryfall.com/cards/${id}`);  //finds card on Id  cant find on id from db but can find it if using variant id
-
-    // let card = await response.json();
-
-    // console.log(card.image_uris.normal);
-
-    //let cardImg= await getPic("5e2465d3-405d-487d-b6e9-d2ec8b920201");
-
-
-
-
-    //TESTING ARRAY THINGY IGNORE
-/*
-    let arr1: string[] = ["one", "two", "three"];
-    let arr2=arr1;
-    let index= arr2.indexOf("two");
-    if(index!=-1){
-        arr2.splice(index,1);
-    }
-
-    console.log(arr1);
-    console.log(arr2);
-
-    */
-    
-    
 
     res.render("drawtest",{
-        //decks: decks,
-        //cardImg,    //remove later
-        //cardImgs:cardImgs,
+        
         ListCardReady
     });
 
@@ -206,25 +151,28 @@ let ListCardReady=await makeCardListFromApi(cardsIds);
 
 });
 
-// app.post("/drawtest", async(req,res)=>{
+app.post("/drawtest", async(req,res)=>{
+    let otherpostoption:boolean =false;
+    if(otherpostoption){
+        console.log("not implemented yet")
+    }
+    else{//drawcardstuff->
+
+console.log("testtt")
+
+    }
 
 
-//     try{
+    res.render("drawtest",{
+        
+        
+    });
 
 
-
-
-      
-//     }catch(e){
-//       console.error(e);
-  
-//     }finally{
-      
-//     }
-  
     
     
-  
-//   });
+    
+    
+});
 
 app.listen(app.get("port"), ()=>console.log( `[server] http://localhost:` + app.get("port")));
