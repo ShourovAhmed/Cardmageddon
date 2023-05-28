@@ -67,6 +67,9 @@ for (let i = 0; i < openModalBtns.length; i++){
         else if (eventClasses.contains("deckNameM")){
             deckNameM.style.display = "flex";
         }
+        else if (eventClasses.contains("deckRemoveM")){
+            deckRemoveM.style.display = "flex";
+        }
         else{
             errorMess.textContent = "Fout opgetreden. Contacteer support als dit zich blijft voordoen. code: 3.404";
             errorM.style.display = "flex";

@@ -263,8 +263,15 @@ app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
 
 //update deck name
 app.post("/deck/:deckId", async(req,res)=>{
-    await db.collection("decks").updateOne({id: parseInt(req.params.deckId)},{$set:{name: req.body.deckName}});
-    res.redirect(`/deck/${req.params.deckId}`);
+    if(req.body.removeDeck){
+        await db.collection("decks").deleteOne({id: parseInt(req.params.deckId)});
+        res.redirect("/decks");
+    }
+    else{
+        await db.collection("decks").updateOne({id: parseInt(req.params.deckId)},{$set:{name: req.body.deckName}});
+        res.redirect(`/deck/${req.params.deckId}`);
+    }
+
 });
 // END DECK
 

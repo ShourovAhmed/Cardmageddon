@@ -31,6 +31,7 @@
             </section>
             <button class="header-btn showM deckNameM">Decknaam</button>
             <button class="header-btn showM deckImgM">Deckafbeelding</button>
+            <button class="header-btn showM deckRemoveM">Verwijderen</button>
         </section>
 
         <aside>
@@ -110,6 +111,12 @@
                 %>
                 <article class="card">
                 <img class="<%=stackHight%> showM cardM" id="<%=variation.id%>" src="https://cards.scryfall.io/normal/front/<%=variation.id.substring(0,1)%>/<%=variation.id.substring(1,2)%>/<%=variation.id%>.jpg" alt="">
+                <%if(card.isDblSided || card.isDblSided === false){
+                    if(card.isDblSided){%>
+                        <img class="<%=stackHight%> showM cardM" id="<%=variation.id%>" src="https://cards.scryfall.io/normal/back/<%=variation.id.substring(0,1)%>/<%=variation.id.substring(1,2)%>/<%=variation.id%>.jpg" alt="">
+                <%}}else{%>
+                    <p>flip card</p>
+                <%}%>
                 <section class="card-count">
                     <a <%=atMax%> href="<%=deck.id%>/<%=variation.id%>/1" class="count-up">+</a>
                     <p class="count-now"><%=variation.count%></p>
@@ -134,5 +141,7 @@
     <%-include("partials/modals/logout-modal")%>
     <%-include("partials/modals/deckImg-modal")%>
     <%-include("partials/modals/deckName-modal")%>
+    <%-include("partials/modals/deckRemove-modal")%>
+    
 </section>
 <%-include('partials/page-tail')%>
