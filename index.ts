@@ -7,6 +7,7 @@ import fetch from 'node-fetch';
 
 import { Card} from "./dbMode";
 import { log } from "console";
+import { TIMEOUT } from "dns";
 
 interface Deck{
     _id?: ObjectId,
@@ -102,77 +103,104 @@ let makeIdList=(cards:CardS[],cardsIds:string[]) => {
     //console.log(`copyArray: ${cardToIds}`);
     return cardsIds;
 
-
-
 }
+let LoadingDeck =async () => {//this was in GET
+    try{
+        
+        await client.connect();
+    
+        const deckCollection= client.db("userData").collection("decks");
+    
+        const decksDatabase= await deckCollection.find<Deck>({}).toArray();
+        
+        let chosenDeck=decksDatabase[0];//later deckkeuze aanmaken
+        let cards:CardS[]= chosenDeck.cards!;    //non-null assertion operator ? should work 
+        //console.log(cards);
+    
+        
+        let cardsIds:string[]=[]; 
+        cardsIds=makeIdList(cards,cardsIds);    //this array only contains variableIds used for api
+    
+    
+        let ListCardReady=await makeCardListFromApi(cardsIds);
+        console.log("deck loaded")
+        return ListCardReady;
+    
+    }catch(e){
+        console.error(e);
+    }finally{
+        client.close();
+        
+        
+    }
+    
+}
+let ListCardReadyPreload=  LoadingDeck();
 
 
+//setTimeout(() => console.log(ListCardReady), 15000);
+
+//NOTES
+//  Now cards will preload but will not reset drawn cards
+//  todo: remove boolclickthing or hide and remake Loadingdeckthing think drawn cards++ etc
+// try randomizer inside ejs maybe?
+// try not deleting maybe?
 
 
-
+let drawnCards:number=7;
 app.get('/drawtest',async(req,res)=>{
-
-try{
-    await client.connect();
-
-    const deckCollection= client.db("userData").collection("decks");
-
+    //let clickBool:boolean=false;
+    //let ListCardReady= await LoadingDeck();  //makes it run inside get
+    //console.log(ListCardReady);
+    let ListCardReady=await ListCardReadyPreload;
     
-
-
-
-    const decksDatabase= await deckCollection.find<Deck>({}).toArray();
-    
-    let chosenDeck=decksDatabase[0];//later deckkeuze aanmaken
-    let cards:CardS[]= chosenDeck.cards!;    //non-null assertion operator ? should work 
-    //console.log(cards);
-
-    
-    let cardsIds:string[]=[]; 
-    cardsIds=makeIdList(cards,cardsIds);    //this array only contains variableIds used for api
-
-
-    let ListCardReady=await makeCardListFromApi(cardsIds);
-
 
     res.render("drawtest",{
         
-        ListCardReady
+        ListCardReady,
+        drawnCards
+        //clickBool
     });
-
-}catch(e){
-    console.error(e);
-}finally{
-    client.close();
-}
-
     
     
+
+
 
 });
 
 app.post("/drawtest", async(req,res)=>{
-    let otherpostoption:boolean =false;
-    if(otherpostoption){
+    let otherPostOption:boolean =false;//added later
+    
+    // let ListCardReady:any[]=req.app.get("ListCardReady");
+    
+    //console.log(ListCardReady);
+   //get list from get request?
+    
+   
+
+    if(otherPostOption){
         console.log("not implemented yet")
     }
-    else{//drawcardstuff->
-
-console.log("testtt")
-
-    }
-
-
-    res.render("drawtest",{
+    else{
         
+        //drawcardstuff->
+        //let clickBool:boolean=true;
+        //console.log(clickBool);
+        drawnCards++;
+
+        let ListCardReady=await ListCardReadyPreload;
+
+
+        res.render("drawtest",{
+            ListCardReady,
+            drawnCards
+            //clickBool
+                
+        });}
+
+
         
-    });
 
-
-    
-    
-    
-    
 });
 
 app.listen(app.get("port"), ()=>console.log( `[server] http://localhost:` + app.get("port")));

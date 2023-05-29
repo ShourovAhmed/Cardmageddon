@@ -18,8 +18,8 @@
     </select>
   
     <br><br>
-    <form action="/drawtest">
-    <button id="drawButton" type="button">DRAW CARD</button>
+    <form action="/drawtest" method="post">
+    <button  id="drawButton" type="submit">DRAW CARD</button>
     </form>
   
 
@@ -48,18 +48,30 @@
 
 
   <article id="previewDraw">
+
+    
+
+
+
+    
+
+
+
+
+
     <%
 
-    for(let i =0;i<7; i++){  
+    for(let i =0;i<drawnCards; i++){  
 %>
 
     
     <ul>
-      <img src="<%=ListCardReady[0].image_uris.normal %>" id="drawPile" alt="">
+      <img src="<%=ListCardReady[i].image_uris.normal %>" id="drawPile" alt="">
      
 
-      <% ListCardReady.splice(0, 1);%> 
-      <%=ListCardReady.length;  %>
+      <%#ListCardReady.splice(0, 1);%> 
+      <%#ListCardReady.length;  %>
+      <%=i  %>
       
       
 
