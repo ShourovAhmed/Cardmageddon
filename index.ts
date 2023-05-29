@@ -155,9 +155,9 @@ let ListCardReadyPreload=  LoadingDeck();
 
 let drawnCards:number=7;//startcount cards shown
 app.get('/drawtest',async(req,res)=>{
-    //let clickBool:boolean=false;
+    
     //let ListCardReady= await LoadingDeck();  //makes it run inside get
-    //console.log(ListCardReady);
+    
     let ListCardReady=await ListCardReadyPreload;
     //randomOrder(ListCardReady!);
     
@@ -166,7 +166,7 @@ app.get('/drawtest',async(req,res)=>{
         
         ListCardReady,
         drawnCards
-        //clickBool
+        
     });
     
     
@@ -176,8 +176,8 @@ app.get('/drawtest',async(req,res)=>{
 });
 
 app.post("/drawtest", async(req,res)=>{
-    let otherPostOption:boolean =false;//added later
-    let NewHand:boolean =false;//added later
+    
+    
     let buttonType:string= req.body.buttonType;
     console.log(buttonType);
     
@@ -188,7 +188,7 @@ app.post("/drawtest", async(req,res)=>{
     
    
 
-    if(otherPostOption){
+    if(buttonType=='chance'){
         console.log("not implemented yet")
     }
     if(buttonType=='NewHand'){
@@ -211,8 +211,7 @@ app.post("/drawtest", async(req,res)=>{
     else{
         
         //drawcardstuff->
-        //let clickBool:boolean=true;
-        //console.log(clickBool);
+        
         drawnCards++;
 
         let ListCardReady=await ListCardReadyPreload;
@@ -221,7 +220,7 @@ app.post("/drawtest", async(req,res)=>{
         res.render("drawtest",{
             ListCardReady,
             drawnCards
-            //clickBool
+            
                 
         });}
 
