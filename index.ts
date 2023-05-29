@@ -47,7 +47,13 @@ app.use(express.json({limit: '1mb'}));
 app.use(express.urlencoded({extended: true}));
 
 
-
+let randomOrder=(cardsToRandomize:any[])=>{
+    cardsToRandomize
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
+    return cardsToRandomize;
+}
 
 let getCardFromApi= async (cardsid:string ) => {
 
@@ -147,12 +153,13 @@ let ListCardReadyPreload=  LoadingDeck();
 // try not deleting maybe?
 
 
-let drawnCards:number=7;
+let drawnCards:number=7;//startcount cards shown
 app.get('/drawtest',async(req,res)=>{
     //let clickBool:boolean=false;
     //let ListCardReady= await LoadingDeck();  //makes it run inside get
     //console.log(ListCardReady);
     let ListCardReady=await ListCardReadyPreload;
+    //randomOrder(ListCardReady!);
     
 
     res.render("drawtest",{
@@ -170,6 +177,9 @@ app.get('/drawtest',async(req,res)=>{
 
 app.post("/drawtest", async(req,res)=>{
     let otherPostOption:boolean =false;//added later
+    let NewHand:boolean =false;//added later
+    let buttonType:string= req.body.buttonType;
+    console.log(buttonType);
     
     // let ListCardReady:any[]=req.app.get("ListCardReady");
     
@@ -181,6 +191,23 @@ app.post("/drawtest", async(req,res)=>{
     if(otherPostOption){
         console.log("not implemented yet")
     }
+    if(buttonType=='NewHand'){
+
+        let ListCardReady=await ListCardReadyPreload;
+        drawnCards=7;
+        //ListCardReady=randomOrder(ListCardReady!);
+        
+    
+
+    res.render("drawtest",{
+        
+        ListCardReady,
+        drawnCards
+        
+    });
+
+    }
+
     else{
         
         //drawcardstuff->
