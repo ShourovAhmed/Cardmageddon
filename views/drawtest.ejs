@@ -19,18 +19,18 @@
 <article id="formDraw" action="">
   <form action="/drawtest" method="post">
     <label for="decks">Select deck</label>
-    <select>
+    <select >
       <option name="buttonType" type="submit" value="NewHand">Deck1</option>
       <option name="buttonType" type="submit" value="NewHand">Deck2</option>
-      <option name="buttonType" type="submit" value="NewHand">Deck3</option>
+      <option  name="buttonType" type="submit" value="NewHand">Deck3</option>
       
     </select>
-    <button  name="buttonType"  type="submit" value="changeDeck" style="font-size: 0.7rem; padding: 0.03rem;">&nbsp;select&nbsp;  </button>
+    <button id="btnDrawTest"  name="buttonType"  type="submit" value="changeDeck" style="font-size: 0.7rem; padding: 0.03rem;">&nbsp;Select&nbsp;  </button>
   </form>
   
     <br><br>
     <form action="/drawtest" method="post">
-    <button  name="buttonType" id="drawButton" type="submit" value="NewCard">DRAW CARD</button>
+    <button id="btnDrawTest"  name="buttonType" id="drawButton" type="submit" value="NewCard">Draw Card</button>
     </form>
   
 
@@ -39,7 +39,7 @@
     <img src="/public/assets/images/backside-card.png" id="drawPile" alt="">
     <br><br>
     <form action="/drawtest" method="post">
-    <button name="buttonType" type="submit" value="NewHand">
+    <button id="btnDrawTest" name="buttonType" type="submit" value="NewHand">
       New Hand</button>
     </form>
     

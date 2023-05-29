@@ -39,10 +39,21 @@ p{
     font-size: 1rem;
     
 }
-button {
+#btnDrawTest{
     padding: 0.3rem;
     margin-right: 2rem;
+    background: rgb(122, 55, 55);
+    border: none;
+    color: white;
+     border-radius: 5px;
+    cursor: pointer;
+    
+
 }
+
+#btnDrawTest:hover {
+    background-color: rgb(91, 32, 32);
+  }
 
 
 
