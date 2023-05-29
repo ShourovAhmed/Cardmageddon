@@ -159,7 +159,7 @@ app.get('/drawtest',async(req,res)=>{
     //let ListCardReady= await LoadingDeck();  //makes it run inside get
     
     let ListCardReady=await ListCardReadyPreload;
-    //randomOrder(ListCardReady!);
+    //ListCardReady= randomOrder(ListCardReady!);
     
 
     res.render("drawtest",{
@@ -180,6 +180,7 @@ app.post("/drawtest", async(req,res)=>{
     
     let buttonType:string= req.body.buttonType;
     console.log(buttonType);
+   
     
     // let ListCardReady:any[]=req.app.get("ListCardReady");
     
@@ -188,8 +189,8 @@ app.post("/drawtest", async(req,res)=>{
     
    
 
-    if(buttonType=='chance'){
-        console.log("not implemented yet")
+    if(buttonType=='changeDeck'){
+        res.send("not implemented yet")
     }
     if(buttonType=='NewHand'){
 
