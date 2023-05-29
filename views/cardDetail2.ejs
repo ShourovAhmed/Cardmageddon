@@ -19,7 +19,7 @@
         <table border="1" class="carddetailTable">
             <section>
                 <tr>
-                    <td rowspan="13">
+                    <td rowspan="23">
                         <div class="cardColumn">
                             <s id="s1"></s> 
                             <s id="s2"></s>
@@ -61,6 +61,7 @@
                 </tr>
             </section>
             <section>
+            <tr>
                 <td class="columnA">
                     <div class="columnA">
                         Card Name:
@@ -72,6 +73,7 @@
                     </div>
                 </td>
             </tr>
+            <% if(card.cmc != 0){ %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -95,6 +97,7 @@
                     </div>
                 </td>
             </tr>
+            <% } %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -107,6 +110,7 @@
                     </div>
                 </td>
             </tr>
+            <% if(card.colorId){ %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -122,6 +126,7 @@
                     </div>
                 </td>
             </tr>
+            <% } %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -134,6 +139,7 @@
                     </div>
                 </td>
             </tr>
+            <% if(card.text){ %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -155,6 +161,7 @@
                     </div>
                 </td>
             </tr>
+            <% } %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -195,6 +202,127 @@
                 </td>
             </tr>
             <% } %>
+
+            <% if(card2 != null){ %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Card Name:
+                        </div>
+                    </td>
+                    <td class="columnB c2">
+                        <div class="columnB">
+                            <%= card2.name %>
+                        </div>
+                    </td>
+                </tr>
+                <% if(card2.cmc != 0){ %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Mana Cost:
+                        </div>
+                    </td>
+                    <td class="columnB c2">
+                        <div class="columnB">
+                            <% for(let i=0; i<card2.manaCost.length; i++){
+                                const mana = ['W', 'U', 'B', 'R', 'G'];
+                                if (!mana.includes(card2.manaCost[i])){
+                            %>
+    
+                                    <%= card2.manaCost[i] %>
+                            <%
+                                }
+                                else{                   
+                            %>
+                                <img src="/assets/images/mana/<%= card2.manaCost[i]%>.png" alt="">
+                            <% }} %>
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+                <% if(card2.colorId){ %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Color Identity:
+                        </div>
+                    </td>
+                    <td class="columnB c2">
+                        <div class="columnB">
+                            <% for(let i=0; i<card2.colorId.length; i++){
+                            %>
+                            <img src="/assets/images/mana/<%= card2.colorId[i]%>.png">
+                            <% } %>
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Types:
+                        </div>
+                    </td>
+                    <td class="columnB c2">
+                        <div class="columnB">
+                            <%= card2.type %>
+                        </div>
+                    </td>
+                </tr>
+                <% if(card2.text){ %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Card Text:
+                        </div>
+                    </td>
+                    <td>
+                        <div class="columnB c2">
+                            <% for(let i=0; i<card.text.length; i++){
+                            %>
+                            <div class="cardtextbox">
+                                <%= card2.text[i]%>
+                            </div>
+                            <% if (i != card2.text.length - 1){ // geen break na laatste element
+                            %>
+                            <br>
+                            <% }} %>
+    
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+                <% if(card2.power && card2.toughness){ %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Power / Toughness:
+                        </div>
+                    </td>
+                    <td class="columnB c2">
+                        <div class="columnB">
+                            <%= card2.power %> / <%= card2.toughness %>
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+                <% if(card2.flavorText){ %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Flavor Text:
+                        </div>
+                    </td>
+                    <td class="columnB c2">
+                        <div class="columnB">
+                            <div class="flavortextbox"> <%= card2.flavorText %> </div>
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+            <% } %> 
+
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -206,6 +334,7 @@
                 </div>
                 </td>
             </tr>
+            <% if(card.artist){ %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -218,6 +347,7 @@
                     </div>
                 </td>
             </tr>
+            <% } %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -240,7 +370,7 @@
                     </div>
                 </td>
             </tr>        
-            </section>      
+            </section>
         </table>
     </main>
 </body>

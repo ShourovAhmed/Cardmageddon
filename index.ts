@@ -153,7 +153,6 @@ app.post("/home", async (req, res) => {
         }            
         
 
-
         else{
             return res.render("homepage", {error: "Your query didn’t match any cards"});
         }
@@ -207,6 +206,7 @@ app.get("/cardDetail/:id", async (req, res) => {
     }
 
     let card = {};
+    let card2 = null;
 
     // Normale kaart
     if(!pics[id].multipleCards && !pics[id].doubleSided){
@@ -230,6 +230,47 @@ app.get("/cardDetail/:id", async (req, res) => {
             legality: fullCard.legalities,
         }
     }
+
+    else if (pics[id].multipleCards && !pics[id].doubleSided){
+
+        let cardManaCost = splitMana(fullCard.card_faces[pics[id].cardFace].mana_cost);
+        let cardManaCost2 = splitMana(fullCard.card_faces[pics[id].cardFace+1].mana_cost);
+        let cardText: string[] = fullCard.card_faces[pics[id].cardFace].oracle_text.split("\n");
+        let cardText2: string[] = fullCard.card_faces[pics[id].cardFace+1].oracle_text.split("\n");
+
+        card = {
+            name: fullCard.card_faces[pics[id].cardFace].name,
+            manaCost: cardManaCost,
+            cmc: fullCard.cmc,
+            colorId: fullCard.color_identity,
+            type: fullCard.card_faces[pics[id].cardFace].type_line,
+            text: cardText,
+            rarity: cardRarity,
+            power: fullCard.card_faces[pics[id].cardFace].power,
+            toughness: fullCard.card_faces[pics[id].cardFace].toughness,
+            exp: fullCard.set_name,
+            flavorText: fullCard.card_faces[pics[id].cardFace].flavor_text,
+            artist: fullCard.artist,
+            legality: fullCard.legalities,
+        }
+
+        card2 = {
+            name: fullCard.card_faces[pics[id].cardFace+1].name,
+            manaCost: cardManaCost2,
+            cmc: fullCard.cmc,
+            colorId: fullCard.color_identity,
+            type: fullCard.card_faces[pics[id].cardFace+1].type_line,
+            text: cardText2,
+            rarity: cardRarity,
+            power: fullCard.card_faces[pics[id].cardFace+1].power,
+            toughness: fullCard.card_faces[pics[id].cardFace+1].toughness,
+            exp: fullCard.set_name,
+            flavorText: fullCard.card_faces[pics[id].cardFace+1].flavor_text,
+            artist: fullCard.artist,
+            legality: fullCard.legalities,
+        }
+
+    }
     else{
 
         let cardManaCost = splitMana(fullCard.card_faces[pics[id].cardFace].mana_cost);
@@ -250,9 +291,12 @@ app.get("/cardDetail/:id", async (req, res) => {
             artist: fullCard.artist,
             legality: fullCard.legalities,
         }
+
     }
 
-    res.render("cardDetail2", {card: card, localCard: pics[id]});
+    
+
+    res.render("cardDetail2", {card: card, card2: card2, localCard: pics[id]});
 
     
 });
