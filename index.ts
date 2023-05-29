@@ -216,7 +216,7 @@ app.get("/cardDetail/:id", async (req, res) => {
         legality: fullCard.legalities,
     }
 
-    res.render("cardDetail2", {card: card, localCard: pics[id]});
+    res.render("cardDetail", {card: card, localCard: pics[id]});
 
     
 });

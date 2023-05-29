@@ -5,15 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/css/style-cardDetail.css">
     <link rel="stylesheet" href="/css/style-universal.css">
     <link rel="stylesheet" href="/css/style-modal.css">
-    <link rel="stylesheet" href="/css/style-cardDetail.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.1/dist/css/themes/splide-skyblue.min.css">
-    <script>
-        type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.1/dist/js/splide.min.js"
-    </script>
-
     <title>Card Details</title>
 </head>
 
@@ -21,25 +17,42 @@
 
     <main>
         <table border="1" class="carddetailTable">
-            <section id="main-slider" class="splide">
+            <section>
                 <tr>
                     <td rowspan="13">
-                        <section>
-                            <div class="cardColumn" class="splide__track">
-                                <ul class="cardImage" class="splide__list">
-                                    <li class="card"> 
-                                        <img src="<%= localCard.img %>">
-                                    </li>
-                                    <li class="card">
-                                        <img src="<%= localCard.img %>">
-                                    </li>
-                                    <li class="card">
-                                        <img src="<%= localCard.img %>">
-                                    </li>
-                                    <li class="card">
-                                        <img src="<%= localCard.img %>">
-                                    </li>
-                                </ul>
+                                <div id="carouselFade" class="cardColumn" class="carousel slide carousel-fade" data-ride="carousel">
+                                    <!-- Slideshow -->
+                                    <div class="carousel-inner" class="cardImage" role="listbox">
+                                        <div class="item active" class="card">  
+                                            <div class="carousel-caption">
+                                                <h3>card 1</h3>
+                                                <img src="<%= localCard.img %>" alt="" />
+                                            </div>
+                                        </div>
+                                        <div class="item"> 
+                                            <div class="carousel-caption">
+                                              <h3>card 2</h3>
+                                                <img src="<%= localCard.img %>" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="item"> 
+                                            <div class="carousel-caption">
+                                              <h3>card 3</h3>
+                                                <img src="<%= localCard.img %>" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                            
+                                    <!-- Pijlen -->
+                                    <a class="left carousel-control" href="#carouselFade" role="button" data-slide="prev">
+                                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="right carousel-control" href="#carouselFade" role="button" data-slide="next">
+                                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div> 
                                 <form action="#">
                                     <label for="decks">Decks: </label>
                                     <select class="addDeckButton" name="decks" id="decks">
@@ -49,22 +62,9 @@
                                     </select>
                                     <button>Add</button>
                                 </form>
-                            </div>
-                        </section>
-                        <ul id="thumbnails" class="thumbnails">
-                            <li class="thumbnail">
-                                <img src="<%= localCard.img %>">
-                            </li>
-                            <li class="thumbnail">
-                                <img src="<%= localCard.img %>">
-                            </li>
-                            <li class="thumbnail">
-                                <img src="<%= localCard.img %>">
-                            </li>
-                            <li class="thumbnail">
-                                <img src="<%= localCard.img %>">
-                            </li>
-                        </ul>
+                                <script> src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"</script>
+                                <script> src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js" //niet echt nodig</script> 
+                                <script>$('#carouselFade').carousel();</script>
                     </td>
                 </tr>
             </section>
@@ -250,53 +250,6 @@
             </tr>        
             </section>      
         </table>
-        
-    <script>
-    var splide = new Splide("#main-slider", {
-          width: 650,
-          height: 900,
-          pagination: false,
-          cover: true,
-          //navigation options
-          drag: true,
-          dragMinThreshold: {
-            mouse: 0,
-            Touch: 10,
-          },
-          lazyLoad: 'nearby',
-          keyboard: true,
-        });
-        
-        //click events
-        var thumbnails = document.getElementsByClassName("thumbnail");
-        var current;
-  
-        for (var i = 0; i < thumbnails.length; i++) {
-          initThumbnail(thumbnails[i], i);
-        }
-  
-        function initThumbnail(thumbnail, index) {
-          thumbnail.addEventListener("click", function () {
-            splide.go(index);
-          });
-        }
-  
-        splide.on("mounted move", function () {
-          var thumbnail = thumbnails[splide.index];
-  
-          if (thumbnail) {
-            if (current) {
-              current.classList.remove("is-active");
-            }
-  
-            thumbnail.classList.add("is-active");
-            current = thumbnail;
-          }
-        });
-  
-        splide.mount();
-    </script>
-
     </main>
 </body>
 
