@@ -73,7 +73,7 @@ app.post("/home", async (req, res) => {
 
             for (let i = 0; i < total_cards; i++){
 
-                if(cards.data[i].layout == "art_series"){
+                if(cards.data[i].set_type == "memorabilia" || cards.data[i].set_type == "minigame"){
                     total_cards--;
                     continue;
                 }
