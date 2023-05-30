@@ -25,6 +25,7 @@ main{
     grid-area: main;
     display: grid;
     grid-template-areas: 'sub-header sub-header sub-header sub-header sub-header'
+                         'info       info       info       info       info'
                          'aside      view       view       view       view';
 }
 
@@ -104,6 +105,17 @@ select{
 }
 
 }
+/* INFO TEXT BOX */
+.infoAlert{
+    grid-area: info;
+    display: flex;
+    justify-content: center;
+    background-color: greenyellow;
+    padding: 0.3rem;
+}
+.infoAlert > p {
+    color: green;
+}
 
 /* DEMO CARDSTACK SHADOWS */
 .stack{
@@ -167,10 +179,7 @@ select{
     transform: scale(117%);
 
 }
-.deck-summary:hover, .deck-summary:hover > .deck-image-container{
 
-
-}
 .deck-summary {
 
     display: flex;
@@ -186,17 +195,14 @@ select{
 }
 .deck-image-container{
     position: relative;
+    display: flex;
     overflow: hidden;
     border: 0.12rem solid rgb(85, 15, 15);
     width: 15rem;
     height: 18rem;
-    border-radius: 1.2rem;    
-}
-.deck-image{
-    position: absolute;
-    left: -6.96rem;
-    top: -4.75rem;
-    
+    border-radius: 1.2rem;  
+    justify-content: center;
+    align-items: center;
 }
 
 .card{
@@ -221,8 +227,7 @@ select{
 }
 
 .deck-image{
-    width: 30rem;
-    border-radius: 0.6rem;
+    height: 101.1%;
 }
 
 

@@ -17,145 +17,61 @@
                       <option value="ass">Laag naar Hoog</option>
                     </select>
             </section>
+            <button class="header-btn showM newDeckM">+ Nieuw Deck</button>
         </section>
+        <%if(locals.info){%>
+        <section class="infoAlert"><p><%=info%></p></section>
+        <%}%>
         <section id="decks-view">
-            <a class="deck-summary" href="./deckDetail.html">
-                <h2>Deckname</h2>
+            <%for(let deck of decks){%>
+            <a class="deck-summary" href="/deck/<%=deck.id%>">
+                <h2><%=deck.name%></h2>
                 <ul>
-                    <li>Count: <span class="cardCount">0</span></li>
-                    <li>Avg Mana: <span class="avgMana">0</span></li>
+                    <%
+                    let coverImg = "/assets/images/default-deck-image.jpg";
+                    let totalManacost = 0;
+                    let manaCards = 0;
+                    let cardCount = 0;
+                    let mana = [0,0,0,0,0,0]; // W U B R G C
+                    if (deck.cards){
+                        for (let card of deck.cards){
+                            let manacost = card.manacost;
+                            for (let variation of card.variations){
+                                cardCount += variation.count;
+                                if (card.mana.includes("W")){mana[0]+=variation.count};
+                                if (card.mana.includes("U")){mana[1]+=variation.count};
+                                if (card.mana.includes("B")){mana[2]+=variation.count};
+                                if (card.mana.includes("R")){mana[3]+=variation.count};
+                                if (card.mana.includes("G")){mana[4]+=variation.count};
+                                if (card.mana.includes("C")){mana[5]+=variation.count};
+                                if(manacost > 0){
+                                    totalManacost += manacost*variation.count;
+                                    manaCards += variation.count;
+                                }
+                            }
+                        }
+                    }
+                    if(deck.coverCard != null){
+                        coverImg = `https://cards.scryfall.io/art_crop/front/${deck.coverCard.substring(0,1)}/${deck.coverCard.substring(1,2)}/${deck.coverCard}.jpg`
+                    }
+                    %>
+                    <li>Kaarten: <span class="cardCount"><%=cardCount%></span></li>
+                    <li>G.M.K.: <span class="avgMana"><%=Math.round(totalManacost/manaCards*100)/100%></span></li>
                 </ul>
                 <div class="deck-image-container">
-                    <img class="deck-image" src="/assets/images/placeholders/planeswalkers.jpg" alt="">
+                    <img class="deck-image" src="<%=coverImg%>" alt="" width="471">
                 </div>
                 <ul>
-                    <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
-                    <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">0</span></li>
-                    <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">0</span></li>
-                    <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
-                    <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
+                    <li><img src="/assets/images/mana/W.png" alt=""><span class="w-mana"><%=mana[0]%></span></li>
+                    <li><img src="/assets/images/mana/U.png" alt=""><span class="u-mana"><%=mana[1]%></span></li>
+                    <li><img src="/assets/images/mana/B.png" alt=""><span class="b-mana"><%=mana[2]%></span></li>
+                    <li><img src="/assets/images/mana/R.png" alt=""><span class="r-mana"><%=mana[3]%></span></li>
+                    <li><img src="/assets/images/mana/G.png" alt=""><span class="g-mana"><%=mana[4]%></span></li>
+                    <li><img src="/assets/images/mana/C.png" alt=""><span class="c-mana"><%=mana[5]%></span></li>
                 </ul>
             </a>
-            <a class="deck-summary" href="./deckDetail.html">
-                <h2>Deckname</h2>
-                <ul>
-                    <li>Count: <span class="cardCount">0</span></li>
-                    <li>Avg Mana: <span class="avgMana">0</span></li>
-                </ul>
-                <div class="deck-image-container">
-                    <img class="deck-image" src="./assets/images/placeholders/artifact.jpg" alt="">
-                </div>
-                <ul>
-                    <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
-                    <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">0</span></li>
-                    <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">0</span></li>
-                    <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
-                    <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
-                </ul>
-            </a>
-            <a class="deck-summary" href="./deckDetail.html">
-                <h2>Deckname</h2>
-                <ul>
-                    <li>Count: <span class="cardCount">0</span></li>
-                    <li>Avg Mana: <span class="avgMana">0</span></li>
-                </ul>
-                <div class="deck-image-container">
-                    <img class="deck-image" src="./assets/images/placeholders/card-types-mtg.jpg" alt="" width="471">
-                </div>
-                <ul>
-                    <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
-                    <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">0</span></li>
-                    <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">0</span></li>
-                    <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
-                    <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
-                </ul>
-            </a>
-            <a class="deck-summary" href="./deckDetail.html">
-                <h2>Deckname</h2>
-                <ul>
-                    <li>Count: <span class="cardCount">0</span></li>
-                    <li>Avg Mana: <span class="avgMana">0</span></li>
-                </ul>
-                <div class="deck-image-container">
-                    <img class="deck-image" src="./assets/images/placeholders/creature.png" alt="" width="471">
-                </div>
-                <ul>
-                    <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
-                    <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">0</span></li>
-                    <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">0</span></li>
-                    <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
-                    <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
-                </ul>
-            </a>
-            <a class="deck-summary" href="./deckDetail.html">
-                <h2>Deckname</h2>
-                <ul>
-                    <li>Count: <span class="cardCount">0</span></li>
-                    <li>Avg Mana: <span class="avgMana">0</span></li>
-                </ul>
-                <div class="deck-image-container">
-                    <img class="deck-image" src="./assets/images/placeholders/enchantment.png" alt="" width="471">
-                </div>
-                <ul>
-                    <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
-                    <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">0</span></li>
-                    <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">0</span></li>
-                    <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
-                    <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
-                </ul>
-            </a>
-            <a class="deck-summary" href="./deckDetail.html">
-                <h2>Deckname</h2>
-                <ul>
-                    <li>Count: <span class="cardCount">0</span></li>
-                    <li>Avg Mana: <span class="avgMana">0</span></li>
-                </ul>
-                <div class="deck-image-container">
-                    <img class="deck-image" src="./assets/images/placeholders/instant.jpg" alt="" width="471">
-                </div>
-                <ul>
-                    <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
-                    <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">0</span></li>
-                    <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">0</span></li>
-                    <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
-                    <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
-                </ul>
-            </a>
-            <a class="deck-summary" href="./deckDetail.html">
-                <h2>Deckname</h2>
-                <ul>
-                    <li>Count: <span class="cardCount">0</span></li>
-                    <li>Avg Mana: <span class="avgMana">0</span></li>
-                </ul>
-                <div class="deck-image-container">
-                    <img class="deck-image" src="./assets/images/placeholders/land - forest.jpg" alt="" width="471">
-                </div>
-                <ul>
-                    <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
-                    <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">0</span></li>
-                    <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">0</span></li>
-                    <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
-                    <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
-                </ul>
-            </a>
-            <a class="deck-summary" href="./deckDetail.html">
-                <h2>Deckname</h2>
-                <ul>
-                    <li>Count: <span class="cardCount">0</span></li>
-                    <li>Avg Mana: <span class="avgMana">0</span></li>
-                </ul>
-                <div class="deck-image-container">
-                    <img class="deck-image" src="./assets/images/placeholders/sorcery.jpg" alt="" width="471">
-                </div>
-                <ul>
-                    <li><img src="./assets/images/mana/W.png" alt=""><span class="w-mana">0</span></li>
-                    <li><img src="./assets/images/mana/U.png" alt=""><span class="u-mana">0</span></li>
-                    <li><img src="./assets/images/mana/B.png" alt=""><span class="b-mana">0</span></li>
-                    <li><img src="./assets/images/mana/R.png" alt=""><span class="r-mana">0</span></li>
-                    <li><img src="./assets/images/mana/G.png" alt=""><span class="g-mana">0</span></li>
-                </ul>
-            </a>
-            
+            <%}%>
+
         </section>
 
     </main>
@@ -176,5 +92,6 @@
         <%-include("partials/modals/card-modal")%>
         <%-include("partials/modals/error-modal")%>
         <%-include("partials/modals/logout-modal")%>
+        <%-include("partials/modals/newDeck-modal")%>
     </section>
     <%-include('partials/page-tail')%>
