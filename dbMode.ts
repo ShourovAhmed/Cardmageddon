@@ -30,9 +30,9 @@ interface User {
 const coreUsers : User[] = [
     {id: 0, firstName: "Admin", surname: "Admin"},
     {id: 1, firstName: "Bert", surname: "Pintjens", email: emailHash("bert.pintjens@hotmail.com")},
-    {id: 2, firstName: "Narayan", surname: "Ahmed"},
+    {id: 2, firstName: "Narayan", surname: "Vereecken"},
     {id: 3, firstName: "Sascha", surname: "Staelens"},
-    {id: 4, firstName: "Shourov", surname: "Vereecken"},
+    {id: 4, firstName: "Shourov", surname: "Ahmed"},
     {id: 5, firstName: "Jane", surname: "Doe", email: emailHash("jane.doe@lost.not")},
 
 ];

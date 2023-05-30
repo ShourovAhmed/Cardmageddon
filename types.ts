@@ -1,5 +1,10 @@
 import { ObjectId } from "mongodb";
 
+export interface Info {
+    succes: boolean,
+    message: string
+}
+
 export interface Variation{
     id:     string, // scryfall ID
     count:  number

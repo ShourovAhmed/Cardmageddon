@@ -19,8 +19,13 @@
             </section>
             <button class="header-btn showM newDeckM">+ Nieuw Deck</button>
         </section>
-        <%if(locals.info){%>
-        <section class="infoAlert"><p><%=info%></p></section>
+        <%if(locals.info){
+            let alert = "succes";
+            if(!info.succes){
+                alert = "fail";
+            }
+            %>
+        <section id="infoAlert" class="<%=alert%>Alert"><p><%=info.message%></p></section>
         <%}%>
         <section id="decks-view">
             <%for(let deck of decks){%>
@@ -28,7 +33,7 @@
                 <h2><%=deck.name%></h2>
                 <ul>
                     <%
-                    let coverImg = "/assets/images/default-deck-image.jpg";
+                    let coverImg = "/assets/images/default-deck-image.jpg"; 
                     let totalManacost = 0;
                     let manaCards = 0;
                     let cardCount = 0;

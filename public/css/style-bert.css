@@ -49,6 +49,27 @@ h2{
     z-index: 1;
 }
 
+/* INFO TEXT BOX */
+#infoAlert{
+    grid-area: info;
+    display: flex;
+    justify-content: center;
+    padding: 0.3rem;
+}
+.succesAlert{
+    background-color: greenyellow;
+}
+.succesAlert > p {
+    color: green;
+
+}
+.failAlert{
+    background-color: rgb(255, 127, 80);
+}
+.failAlert > p{
+    color: red;
+
+}
 
 
 aside{
@@ -105,17 +126,7 @@ select{
 }
 
 }
-/* INFO TEXT BOX */
-.infoAlert{
-    grid-area: info;
-    display: flex;
-    justify-content: center;
-    background-color: greenyellow;
-    padding: 0.3rem;
-}
-.infoAlert > p {
-    color: green;
-}
+
 
 /* DEMO CARDSTACK SHADOWS */
 .stack{

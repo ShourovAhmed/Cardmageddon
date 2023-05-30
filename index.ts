@@ -1,10 +1,10 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import {MongoClient} from 'mongodb';
-import {Deck} from "./types";
+import {Deck, Info} from "./types";
 import { render } from 'ejs';
 import { getFreeId, getDeckImages } from './functions';
-import { log } from 'console';
+import { error, log } from 'console';
 
 
 //EXPRESS
@@ -24,13 +24,17 @@ const client = new MongoClient(uri);
 export const db = client.db("userData");
 
 
+//APP CONSTS
+const MaxNonLandCardcount : number = 4;
+
+
 let pics = [{name: '', img: '', rarity: ''}];
 
 app.get("/", (req, res) =>{
     res.render("landingPage");
 })
 
-app.get("/home", (req, res) => {
+app.get("/home", (req, res) => { 
 
     // Paging
     const cardsPerPage = 10;
@@ -75,7 +79,7 @@ app.post("/home", async (req, res) => {
                 if(cards.data[i].card_faces){
                     for(let j = 0; j < cards.data[i].card_faces.length; j++){
                         if(cards.data[i].card_faces[j].image_uris){ // Sommige kaarten hebben enkel 1 image, in de main card object. sommige verschillende imgs in de card_faces objecten
-                            pics[i] = {
+                            pics[i] = { 
                                 name: cards.data[i].name,
                                 img: cards.data[i].card_faces[j].image_uris.normal,
                                 rarity: cards.data[i].rarity
@@ -147,6 +151,10 @@ app.get("/decks", async(req,res) =>{
 
 app.post("/decks", async (req,res) =>{
     let newDeckName : string = req.body.deckName;
+    let info : Info = {
+        succes: true,
+        message: ""
+    }
     let newDeck : Deck|any = {
         id: await getFreeId(),
         name: req.body.deckName,
@@ -155,13 +163,14 @@ app.post("/decks", async (req,res) =>{
     try{
         db.collection("decks").insertOne(newDeck);
         let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
-
-        res.render("decks", {title: "Decks", decks: decks, info: `Deck: "${newDeckName}" Toegevoegd`});
+        info.message = `Deck: "${newDeckName}" Toegevoegd`;
+        res.render("decks", {title: "Decks", decks: decks, info: info});
     }
     catch(e: any){
         let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
-
-        res.render("decks", {title: "Decks", decks: decks, info: `Toevoegen mislukt`});
+        info.succes = false;
+        info.message = `Toevoegen mislukt`;
+        res.render("decks", {title: "Decks", decks: decks, info: info});
     }
 });
 
@@ -227,7 +236,7 @@ app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
         if(getAllInfo){
             isLand = card.isLand;
             cardAmount = totalVariationCount;
-            if((!isLand && totalVariationCount >= 6 && amount === 1)){
+            if((!isLand && totalVariationCount >= MaxNonLandCardcount && amount === 1)){
                 res.redirect("/404");
                 return;
             }
@@ -281,13 +290,16 @@ app.post("/deck/:deckId", async(req,res)=>{
 let deckImages : string[] = [];
 let imageIndex : number = 0;
 app.get("/deckImage/:id", async(req,res) =>{
-    
+    let deckId : number = parseInt(req.params.id);
     let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
+    let info : Info = {
+        succes: false,
+        message: ""
+    }
 
     if (!deck){
-        console.log("fout"); 
-        console.log(`Ongeldig Deck ID: ${req.params.id}`);
-        res.redirect('/404');
+        info.message = `Kon deck met id ${deckId} niet vinden`
+        res.render(`/deck/${deckId}`, {info: info});
     }
     else if(!deck.cards){
         console.log("fout");
