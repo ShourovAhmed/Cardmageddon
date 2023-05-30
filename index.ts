@@ -1,9 +1,9 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import {MongoClient} from 'mongodb';
-import {Deck} from "./types";
+import {Deck, CardS} from "./types";
 import { render } from 'ejs';
-import { getFreeId } from './functions';
+import { cardToCardS, getCard, getFreeId } from './functions';
 import { log } from 'console';
 
 
@@ -231,16 +231,24 @@ app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
         }
         i++;
     }
-    if((cardIndex === -1 || variationIndex === -1) || (amount === -1 && cardCount <= 0) || (amount === 1 && cardCount >= 60)){
+    if((amount === -1 && cardCount <= 0) || (amount === 1 && cardCount >= 60)){
         res.redirect("/404");
         return;
     }
-    console.table(deck.cards[0].variations);
-    console.log(cardIndex);
-    console.log(variationIndex);
-    
-    
-    deck.cards[cardIndex].variations[variationIndex].count += amount;
+    if(cardIndex === -1){
+        let newCard : CardS = cardToCardS(await getCard(req.params.cardId));
+        console.table(newCard);
+        deck.cards.push(newCard);
+    }
+    else{
+        console.table(deck.cards[0].variations);
+        console.log(cardIndex);
+        console.log(variationIndex); 
+        
+        
+        deck.cards[cardIndex].variations[variationIndex].count += amount;
+    }
+
 
     await db.collection("decks").replaceOne({id: deckId}, deck);
 
