@@ -157,7 +157,7 @@ app.post("/decks", async (req,res) =>{
     }
     let newDeck : Deck|any = {
         id: await getFreeId(),
-        name: req.body.deckName,
+        name: req.body.deckName, 
         coverCard: null,
     }
     try{

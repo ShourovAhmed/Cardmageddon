@@ -118,10 +118,10 @@
                     <p>flip card</p>
                 <%}%>
                 <section class="card-count">
-                    <a <%=atMax%> href="<%=deck.id%>/<%=variation.id%>/1" class="count-up">+</a>
+                    <a <%=atMin%> href="<%=deck.id%>/<%=variation.id%>/-1#<%=variation.id%>" class="count-down">-</a>
+                    <a <%-trash%>hidden href="<%=deck.id%>/<%=variation.id%>/-1#<%=variation.id%>" class="count-down"><img src="/assets/images/bin.png" alt="" width="20px"></a>
                     <p class="count-now"><%=variation.count%></p>
-                    <a <%=atMin%> href="<%=deck.id%>/<%=variation.id%>/-1" class="count-down">-</a>
-                    <a <%-trash%>hidden href="<%=deck.id%>/<%=variation.id%>/-1" class="count-down"><img src="/assets/images/bin.png" alt="" width="20px"></a>
+                    <a <%=atMax%> href="<%=deck.id%>/<%=variation.id%>/1#<%=variation.id%>" class="count-up">+</a>
                 </section>
             </article>
 
