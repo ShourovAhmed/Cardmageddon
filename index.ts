@@ -166,6 +166,13 @@ app.post("/home", async (req, res) => {
 
 app.get("/cardDetail/:id", async (req, res) => {
 
+    let decksDb = await db.collection("decks").find<Deck>({}).toArray();
+
+    let decks = [];
+    for(let deck of decksDb){
+        decks.push(deck.name);
+    }
+
     let id: number = parseInt(req.params.id);
     if(pageNumber > 1){
         id += (pageNumber - 1) * 10;
@@ -296,7 +303,7 @@ app.get("/cardDetail/:id", async (req, res) => {
 
     
 
-    res.render("cardDetail2", {card: card, card2: card2, localCard: pics[id]});
+    res.render("cardDetail2", {card: card, card2: card2, localCard: pics[id], decks: decksDb});
 
     
 });

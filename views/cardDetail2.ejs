@@ -50,9 +50,9 @@
                             <form action="#">
                                 <label for="decks">Decks: </label>
                                 <select class="addDeckButton" name="decks" id="decks">
-                                    <option value="AwsomeDeck">AwsomeDeck</option>
-                                    <option value="MonoRedAgro">MonoRedAgro</option>
-                                    <option value="GreenStompy">GreenStompy</option>
+                                    <% for(let i = 0; i < decks.length; i++){ %>
+                                    <option value="<%= decks[i].name %>"><%= decks[i].name %></option>
+                                    <% } %>
                                 </select>
                                 <button>Add</button>
                             </form>
