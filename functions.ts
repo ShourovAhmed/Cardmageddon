@@ -26,7 +26,7 @@ export const getFreeId = async() => {
 
 //DB MODE FUNCTIONS
 
-const cardToCardS = (card : Card): CardS => {
+export const cardToCardS = (card : Card): CardS => {
 
     
     let isLand : boolean = false;
@@ -62,6 +62,9 @@ const cardToCardS = (card : Card): CardS => {
 
 export const getSet = (uri:string):Promise<Set> => {
     return fetch(uri).then((e) => e.json());
+};
+export const getCard = (cardId:string):Promise<Card> => {
+    return fetch(`https://api.scryfall.com/cards/${cardId}`).then((e) => e.json());
 };
 
 export const setToCardSs = (set : Set, baseCards? : CardS[]):CardS[] => {
