@@ -1,10 +1,10 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import {MongoClient} from 'mongodb';
-import {Deck, Info} from "./types";
+import {Deck, CardS, Info} from "./types";
 import { render } from 'ejs';
-import { getFreeId, getDeckImages } from './functions';
-import { error, log } from 'console';
+import { getFreeId, getCard, cardToCardS, getDeckImages } from './functions';
+import { log } from 'console';
 
 
 //EXPRESS
@@ -151,14 +151,11 @@ app.get("/decks", async(req,res) =>{
 
 app.post("/decks", async (req,res) =>{
     let newDeckName : string = req.body.deckName;
-    let info : Info = {
-        succes: true,
-        message: ""
-    }
-    let newDeck : Deck|any = {
+    let newDeck : Deck = {
         id: await getFreeId(),
         name: req.body.deckName, 
         coverCard: null,
+        cards: []
     }
     try{
         db.collection("decks").insertOne(newDeck);
@@ -193,6 +190,15 @@ app.get("/deck/:id", async(req,res) =>{
 
 //update cardCount
 app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
+    try{
+        getCard(req.params.cardId);
+
+
+    }
+    catch (info){
+        res.render("decks/1", {title: "Deck", info: info});
+    }
+
     //deck info
     let amount : number = parseInt(req.params.amount);
     let deckId : number = parseInt(req.params.deckId);
@@ -243,25 +249,22 @@ app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
         }
         i++;
     }
-    if((cardIndex === -1 || variationIndex === -1) || (amount === -1 && cardCount < 0) || (amount === 1 && cardCount >= 60)){
+    if((amount === -1 && cardCount <= 0) || (amount === 1 && cardCount >= 60)){
         res.redirect("/404");
         return;
     }
-    console.table(deck.cards[0].variations);
-    console.log(cardIndex);
-    console.log(variationIndex);
-
-    if(remove){
-        if(cardAmount === 0){
-            deck.cards.splice(cardIndex,1);
-        }
-        else{
-            deck.cards[cardIndex].variations.splice(variationIndex,1);
-        }
+    if(cardIndex === -1){
+        
     }
     else{
+        console.table(deck.cards[0].variations);
+        console.log(cardIndex);
+        console.log(variationIndex); 
+        
+        
         deck.cards[cardIndex].variations[variationIndex].count += amount;
     }
+
 
     await db.collection("decks").replaceOne({id: deckId}, deck);
 
