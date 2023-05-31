@@ -16,7 +16,7 @@ export interface Deck{
     _id?: ObjectId,
     id: number,
     name: string,
-    cards?: CardS[],
+    cards: CardS[],
     coverCard: string|null //cardId null refereert naar default img
 }
 export interface ImageUris {
@@ -88,4 +88,8 @@ export interface Set {
     total_cards: number;
     has_more:    boolean;
     data:        Card[];
+}
+export interface Info {
+    succes: boolean,
+    message: string
 }

@@ -1,4 +1,4 @@
-import { Deck, CardS, Set, Card, CardFace } from "./types";
+import { Deck, CardS, Set, Card, CardFace, Info } from "./types";
 import { db } from "./index";
 import { log } from "console";
 const CryptoJS = require('crypto-js');
@@ -23,6 +23,11 @@ export const getFreeId = async() => {
         i++;
     }
 }
+
+export const info = (succes : boolean, message: string):Info =>{
+    return {succes: succes, message: message};
+}
+
 
 //DB MODE FUNCTIONS
 
@@ -61,10 +66,22 @@ export const cardToCardS = (card : Card): CardS => {
 };
 
 export const getSet = (uri:string):Promise<Set> => {
-    return fetch(uri).then((e) => e.json());
+    try{
+        return fetch(uri).then((e) => e.json());
+    }
+    catch{
+        throw info(false, "set niet gevonden in skryfall");
+    }
+
 };
 export const getCard = (cardId:string):Promise<Card> => {
-    return fetch(`https://api.scryfall.com/cards/${cardId}`).then((e) => e.json());
+    try{
+        return fetch(`https://api.scryfall.com/cards/${cardId}`).then((e) => e.json());
+    }
+    catch{
+        throw info(false, "kaartId niet gevonden in skryfall");
+    }
+
 };
 
 export const setToCardSs = (set : Set, baseCards? : CardS[]):CardS[] => {
@@ -126,3 +143,8 @@ export const cardSsToDeck = (id : number, name : string, cards : CardS[], coverC
 
     return newDeck;
 }
+
+export const addNewVariation = (deck : Deck, cardIndex : number, variationId : string):Deck => {
+    deck.cards[cardIndex].variations.push({id: variationId, count: 1});
+    return deck;
+};

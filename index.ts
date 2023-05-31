@@ -1,7 +1,7 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import {MongoClient} from 'mongodb';
-import {Deck, CardS} from "./types";
+import {Deck, CardS, Info} from "./types";
 import { render } from 'ejs';
 import { cardToCardS, getCard, getFreeId } from './functions';
 import { log } from 'console';
@@ -147,10 +147,11 @@ app.get("/decks", async(req,res) =>{
 
 app.post("/decks", async (req,res) =>{
     let newDeckName : string = req.body.deckName;
-    let newDeck : Deck|any = {
+    let newDeck : Deck = {
         id: await getFreeId(),
         name: req.body.deckName,
         coverCard: null,
+        cards: []
     }
     try{
         db.collection("decks").insertOne(newDeck);
@@ -184,6 +185,15 @@ app.get("/deck/:id", async(req,res) =>{
 
 //update cardCount
 app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
+    try{
+        getCard(req.params.cardId);
+
+
+    }
+    catch (info){
+        res.render("decks/1", {title: "Deck", info: info});
+    }
+
     //deck info
     let amount : number = parseInt(req.params.amount);
     let deckId : number = parseInt(req.params.deckId);
@@ -236,9 +246,7 @@ app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
         return;
     }
     if(cardIndex === -1){
-        let newCard : CardS = cardToCardS(await getCard(req.params.cardId));
-        console.table(newCard);
-        deck.cards.push(newCard);
+        
     }
     else{
         console.table(deck.cards[0].variations);
