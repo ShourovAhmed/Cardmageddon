@@ -71,6 +71,10 @@ h2{
      -moz-transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg); 
+
+
+    
+
 }
 #previewDraw>li{
     -moz-transform: rotate(-180deg);
@@ -135,7 +139,6 @@ h2{
     flex-direction: column;
     
 }
-
 
 
 

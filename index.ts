@@ -114,6 +114,7 @@ let makeIdList=(cards:CardS[],cardsIds:string[]) => {
 }
 let LoadingDeck =async () => {//this was in GET
     try{
+        //let startTime = performance.now()
         
         await client.connect();
     
@@ -128,10 +129,16 @@ let LoadingDeck =async () => {//this was in GET
         
         let cardsIds:string[]=[]; 
         cardsIds=makeIdList(cards,cardsIds);    //this array only contains variableIds used for api
-    
-    
-        let ListCardReady=await makeCardListFromApi(cardsIds);
-        console.log("deck loaded")
+        
+        
+        let ListCardReady= makeCardListFromApi(cardsIds);//this caused long load
+        console.log('\x1b[36m%s\x1b[0m',"deck loaded");
+
+        //used to debug LoadTimes
+        // let endTime = performance.now()
+        // console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
+        
+        
         return ListCardReady;
     
     }catch(e){
@@ -143,17 +150,17 @@ let LoadingDeck =async () => {//this was in GET
     }
     
 }
+
+
+//debugging load time
+//let startTime = performance.now()
+    
+
 let ListCardReadyPreload=  LoadingDeck();
 
+//let endTime = performance.now()
 
-//setTimeout(() => console.log(ListCardReady), 15000);
-
-//NOTES
-//  Now cards will preload but will not reset drawn cards
-//  todo: remove boolclickthing or hide and remake Loadingdeckthing think drawn cards++ etc
-// try randomizer inside ejs maybe?
-// try not deleting maybe?
-
+// console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
 
 let drawnCards:number=7;//startcount cards shown
 let ListCardReady=ListCardReadyPreload;
