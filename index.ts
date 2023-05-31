@@ -31,6 +31,8 @@ interface Variation{
 
 const app = express();
 
+app.locals.data = {};
+
 const uri: string =
     "mongodb+srv://admin:admin@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority";
 
@@ -154,12 +156,36 @@ let ListCardReadyPreload=  LoadingDeck();
 
 
 let drawnCards:number=7;//startcount cards shown
+let ListCardReady=ListCardReadyPreload;
+app.locals.data =ListCardReady;//makes global varianle wich can be updated and accessed in all scopes//required for updating/randomizing from post scope -> get
+
 app.get('/drawtest',async(req,res)=>{
     
+    let ListCardReady=await ListCardReadyPreload;
+    ListCardReady=app.locals.data;
+    drawnCards=7;
     //let ListCardReady= await LoadingDeck();  //makes it run inside get
     
-    let ListCardReady=await ListCardReadyPreload;
-    //ListCardReady= randomOrder(ListCardReady!);
+    //let ListCardReady=await ListCardReadyPreload;
+    //ListCardReady= randomOrder(await ListCardReady!);
+    ListCardReady=await ListCardReadyPreload;
+    //let ListCardReady=randomOrder(await ListCardReadyPreload);
+    drawnCards=7;
+    
+    
+
+    
+
+
+    ListCardReady=ListCardReady!.map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+    //this reshuffles but doesnt update te get?
+
+    app.locals.data =ListCardReady;
+    
+    
+    
     
 
     res.render("drawtest",{
@@ -195,8 +221,25 @@ app.post("/drawtest", async(req,res)=>{
     if(buttonType=='NewHand'){
 
         let ListCardReady=await ListCardReadyPreload;
+        //let ListCardReady=randomOrder(await ListCardReadyPreload);
         drawnCards=7;
-        //ListCardReady=randomOrder(ListCardReady!);
+        
+        
+
+        
+
+
+        ListCardReady=ListCardReady!.map(value => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value);
+        //this reshuffles but doesnt update te get?
+
+        app.locals.data =ListCardReady;
+        
+        
+        
+        
+        
         
     
 
@@ -205,8 +248,8 @@ app.post("/drawtest", async(req,res)=>{
         ListCardReady,
         drawnCards
         
+        
     });
-
     }
 
     else{
@@ -216,7 +259,7 @@ app.post("/drawtest", async(req,res)=>{
         drawnCards++;
 
         let ListCardReady=await ListCardReadyPreload;
-
+        ListCardReady=app.locals.data;
 
         res.render("drawtest",{
             ListCardReady,

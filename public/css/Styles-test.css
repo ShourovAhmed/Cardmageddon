@@ -1,14 +1,13 @@
-header{
-    
-    grid-area: header;
-    padding: 0.9rem;
-    background-color: rgb(125, 49, 49);
+nav ul{
 
+     all: unset; /*this fixes nav only for drawpage */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
+    flex-wrap: wrap;
+   
+    list-style-type: none;
+    text-decoration: none;
 }
+
 
 .sub-header{
     padding: 0.6rem 1.5rem 0.6rem 1.5rem;
@@ -34,11 +33,6 @@ h2{
     font-size: 1.8rem;
    
 }
-
-p{
-    font-size: 1rem;
-    
-}
 #btnDrawTest{
     padding: 0.3rem;
     margin-right: 2rem;
@@ -48,14 +42,11 @@ p{
      border-radius: 5px;
     cursor: pointer;
     
-
 }
 
 #btnDrawTest:hover {
     background-color: rgb(91, 32, 32);
   }
-
-
 
 
 #drawPile{
@@ -89,11 +80,28 @@ p{
 }
 #formDraw{
 
-    margin-left: 20%;
+    margin-left: 15%;
     margin-right: auto;
     margin-top: 4rem;
     align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+
+   
 }
+#formDraw img {
+    display: block;
+    
+    margin-left: auto;
+    margin-right: auto;
+   
+    
+    
+}
+#formDraw>*:not(:first-child) button {
+    margin-left: 35%;
+} 
+
 
 
 #drawButton{
