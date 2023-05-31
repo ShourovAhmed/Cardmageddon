@@ -1,8 +1,12 @@
 import { ObjectId } from "mongodb";
 
-export interface Info {
-    succes: boolean,
-    message: string
+export class Info {
+    succes: boolean;
+    message: string;
+    constructor(succes: boolean, message: string){
+        this.succes = succes;
+        this.message = message;
+    }
 }
 
 export interface Variation{

@@ -3,35 +3,38 @@
 
 
     <main>
-
         <section class="sub-header">
-            <h1><%=deck.name%></h1>
+            <section class="sub-header-top">
+                <h1><%=deck.name%></h1>
 
-            <section class="ff">
-                <label for="cardCl">Select:</label>
-                <section class="" name="cardClass" id="cardClass" multiple size="1">
-                    <button value="all">All</button>
-                    <button value="lands">Lands</button>
-                    <button value="creatures">Creatures</button>
-                    <button value="artifacts">Artifacts</button>
-                    <button value="enchantments">Enchantments</button>
-                    <button value="planeswalkers">Planeswalkers</button>
-                    <button value="instants">Instants</button>
-                    <button value="sorceries">Sorceries</button>
+                <section class="ff">
+                    <label for="cardCl">Select:</label>
+                    <section class="" name="cardClass" id="cardClass" multiple size="1">
+                        <button value="all">All</button>
+                        <button value="lands">Lands</button>
+                        <button value="creatures">Creatures</button>
+                        <button value="artifacts">Artifacts</button>
+                        <button value="enchantments">Enchantments</button>
+                        <button value="planeswalkers">Planeswalkers</button>
+                        <button value="instants">Instants</button>
+                        <button value="sorceries">Sorceries</button>
+                    </section>
                 </section>
+    
+    
+                <section class="flex ff">
+                    <label for="viewChoise">Weergave:</label>
+                    <select name="viewChoise" id="viewChoise" select>
+                        <option value="list">Lijst</option>
+                        <option value="grid">Rooster</option>
+                    </select>
+                </section>
+                <button class="header-btn showM deckNameM">Decknaam</button>
+                <button class="header-btn showM deckImgM">Deckafbeelding</button>
+                <button class="header-btn showM deckRemoveM">Verwijderen</button>
+    
             </section>
-
-
-            <section class="flex ff">
-                <label for="viewChoise">Weergave:</label>
-                <select name="viewChoise" id="viewChoise" select>
-                    <option value="list">Lijst</option>
-                    <option value="grid">Rooster</option>
-                </select>
-            </section>
-            <button class="header-btn showM deckNameM">Decknaam</button>
-            <button class="header-btn showM deckImgM">Deckafbeelding</button>
-            <button class="header-btn showM deckRemoveM">Verwijderen</button>
+            <%-include("partials/info-bar")%>
         </section>
 
         <aside>
@@ -118,10 +121,10 @@
                     <p>flip card</p>
                 <%}%>
                 <section class="card-count">
-                    <a <%=atMin%> href="<%=deck.id%>/<%=variation.id%>/-1#<%=variation.id%>" class="count-down">-</a>
-                    <a <%-trash%>hidden href="<%=deck.id%>/<%=variation.id%>/-1#<%=variation.id%>" class="count-down"><img src="/assets/images/bin.png" alt="" width="20px"></a>
+                    <a <%=atMin%> href="/deck/<%=deck.id%>/<%=variation.id%>/-1" class="count-down">-</a>
+                    <a <%-trash%>hidden href="/deck/<%=deck.id%>/<%=variation.id%>/-1" class="count-down"><img src="/assets/images/bin.png" alt="" width="20px"></a>
                     <p class="count-now"><%=variation.count%></p>
-                    <a <%=atMax%> href="<%=deck.id%>/<%=variation.id%>/1#<%=variation.id%>" class="count-up">+</a>
+                    <a <%=atMax%> href="/deck/<%=deck.id%>/<%=variation.id%>/1" class="count-up">+</a>
                 </section>
             </article>
 

@@ -3,30 +3,25 @@
 
     <main>
         <section class="sub-header">
-            <h1>Decks</h1>
-            <section class="ff sortChoise">
-                <label for="sortBy">Sorteren Op:</label>
-                <select name="sortBy" id="sortBy" select>
-                    <option value="avgMana">Gemiddelde Mana</option>
-                    <option value="cardCount">Aantal Kaarten</option>
-                    <option value="deckName">Deck Naam</option>
-                  </select>
-                  <label for="sortOrder">Sorteren Van:</label>
-                  <select name="sortOrder" id="sortOrder" select>
-                      <option value="desc">Hoog naar Laag</option>
-                      <option value="ass">Laag naar Hoog</option>
-                    </select>
+            <section class="sub-header-top">
+                <h1>Decks</h1>
+                <section class="ff sortChoise">
+                    <label for="sortBy">Sorteren Op:</label>
+                    <select name="sortBy" id="sortBy" select>
+                        <option value="avgMana">Gemiddelde Mana</option>
+                        <option value="cardCount">Aantal Kaarten</option>
+                        <option value="deckName">Deck Naam</option>
+                      </select>
+                      <label for="sortOrder">Sorteren Van:</label>
+                      <select name="sortOrder" id="sortOrder" select>
+                          <option value="desc">Hoog naar Laag</option>
+                          <option value="ass">Laag naar Hoog</option>
+                        </select>
+                </section>
+                <button class="header-btn showM newDeckM">+ Nieuw Deck</button>
             </section>
-            <button class="header-btn showM newDeckM">+ Nieuw Deck</button>
+            <%-include("partials/info-bar")%>
         </section>
-        <%if(locals.info){
-            let alert = "succes";
-            if(!info.succes){
-                alert = "fail";
-            }
-            %>
-        <section id="infoAlert" class="<%=alert%>Alert"><p><%=info.message%></p></section>
-        <%}%>
         <section id="decks-view">
             <%for(let deck of decks){%>
             <a class="deck-summary" href="/deck/<%=deck.id%>">

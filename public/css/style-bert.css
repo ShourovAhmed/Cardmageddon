@@ -36,21 +36,24 @@ button {
 h2{
     color: var(--dark-colour);
 }   
-
 .sub-header{
+    grid-area: sub-header;
+    width: 100;
+    position: sticky;
+    z-index: 9000000;
+    top: 0;
+}
+.sub-header-top{
     padding: 0.6rem 1.5rem 0.6rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    grid-area: sub-header;
+
     background-color:var(--subHeader-colour);
-    position: sticky;
-    top: 0;
-    z-index: 1;
 }
 
 /* INFO TEXT BOX */
-#infoAlert{
+#info-bar{
     grid-area: info;
     display: flex;
     justify-content: center;
@@ -64,10 +67,10 @@ h2{
 
 }
 .failAlert{
-    background-color: rgb(255, 127, 80);
+    background-color: rgb(255, 171, 75);
 }
 .failAlert > p{
-    color: red;
+    color: rgb(197, 0, 0);
 
 }
 
@@ -81,7 +84,7 @@ aside{
 }
 aside > .deck-summary{
     position: sticky;
-    top: 4.5rem;
+    top: 6rem;
 }
 @media all and (width < 933px) {
     aside{

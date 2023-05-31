@@ -1,6 +1,6 @@
 import { MongoClient, ObjectId, Collection } from "mongodb";
 import { CardS, Variation, Deck, Card, Set, ImageUris } from "./types";
-import { fullHash, emailHash, getSet, setToCardSs, cardSsToDeck } from "./functions";
+import { fullHash, emailHash, getSet, setToCardSs, newDeck } from "./functions";
 const readLine = require('readline-sync');
 
 const uri: string =
@@ -99,8 +99,8 @@ const main = async() =>{
                     for(let testDeckAbreviation of testDeckAbreviations){
                         deckId++;
                         let currentDeck : Deck = 
-                            cardSsToDeck(deckId, `Test Deck ${deckId+1}`, await setToCardSs(
-                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviation}&unique=prints`)));
+                            await newDeck(`Test Deck ${deckId+1}`, await setToCardSs(
+                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviation}&unique=prints`)), deckId);
                         await db.collection('decks').updateOne({id: deckId}, {$set: currentDeck});
                         console.log(`Test Deck ${deckId+1} Reset To Standard`);
                     }
@@ -113,8 +113,8 @@ const main = async() =>{
                 try{
                     deckId = parseInt(readLine.question("Deck id van het te resetten deck?"));
                         let currentDeck : Deck = 
-                            cardSsToDeck(deckId, `Test Deck ${deckId+1}`, await setToCardSs(
-                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviations[deckId]}&unique=prints`)));
+                            await newDeck(`Test Deck ${deckId+1}`, await setToCardSs(
+                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviations[deckId]}&unique=prints`)), deckId);
                         await db.collection('decks').insertOne(currentDeck);
                         console.log(`Test Deck ${deckId+1} Reset To Standard`);
                     
