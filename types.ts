@@ -1,4 +1,19 @@
 import { ObjectId } from "mongodb";
+import { userInfo } from "os";
+
+export class Info {
+    succes: boolean;
+    message: string;
+    constructor(succes: boolean = false, message: string = "Er ging iets mis"){
+        this.succes = succes;
+        this.message = message;
+    }
+}
+export interface UserInfo {
+    userName: string,
+    id: number,
+    decks: number[]
+}
 
 export interface Variation{
     id:     string, // scryfall ID
@@ -14,9 +29,10 @@ export interface CardS {   // kleine samenvatting
 }
 export interface Deck{
     _id?: ObjectId,
+    ownerID: number
     id: number,
     name: string,
-    cards?: CardS[],
+    cards: CardS[],
     coverCard: string|null //cardId null refereert naar default img
 }
 export interface ImageUris {
@@ -88,4 +104,8 @@ export interface Set {
     total_cards: number;
     has_more:    boolean;
     data:        Card[];
+}
+export interface Info {
+    succes: boolean,
+    message: string
 }

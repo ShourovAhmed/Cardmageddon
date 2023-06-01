@@ -1,10 +1,12 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import {MongoClient} from 'mongodb';
-import {Deck, CardS} from "./types";
+import {Deck, CardS, Info, UserInfo} from "./types";
 import { render } from 'ejs';
-import { cardToCardS, getCard, getFreeId } from './functions';
+import { getFreeId, getCard, cardToCardS, getDeckImages, getDeck, addOrRemoveCard, deckAccess} from './functions';
+import { maxNonLandCardcount, maxTotalCardsInDeck } from './staticValues';
 import { log } from 'console';
+import { title } from 'process';
 
 
 //EXPRESS
@@ -27,12 +29,20 @@ let pics = [{name: '', img: '', rarity: '', id: '', multipleCards: false, double
 let pageNumber: number = 0;
 
 
+export let myDecks : number[];
+let pics = [{name: '', img: '', rarity: ''}];
+export let userInfo : UserInfo = {
+    userName: "",
+    id: 1,
+    decks: [],
+}
+
 
 app.get("/", (req, res) =>{
     res.render("landingPage");
 })
 
-app.get("/home", (req, res) => {
+app.get("/home", (req, res) => {  
 
     // Paging
     const cardsPerPage = 10;
@@ -315,152 +325,138 @@ app.get("/cardDetail/:id", async (req, res) => {
 
 app.get("/decks", async(req,res) =>{
     let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
+    
     res.render("decks", {title: "Decks", decks: decks});
 });
 
 app.post("/decks", async (req,res) =>{
     let newDeckName : string = req.body.deckName;
-    let newDeck : Deck|any = {
+
+    let newDeck : Deck = {
         id: await getFreeId(),
-        name: req.body.deckName,
+        name: req.body.deckName, 
         coverCard: null,
+        cards: [],
+        ownerID: userInfo.id
     }
     try{
         db.collection("decks").insertOne(newDeck);
         let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
-
-        res.render("decks", {title: "Decks", decks: decks, info: `Deck: "${newDeckName}" Toegevoegd`});
+        let info : Info = new Info(true, `Deck: "${newDeckName}" Toegevoegd`);
+        res.render("decks", {title: "Decks", decks: decks, info: info});
     }
     catch(e: any){
         let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
-
-        res.render("decks", {title: "Decks", decks: decks, info: `Toevoegen mislukt`});
+        let info : Info = new Info(false, `Toevoegen mislukt`)
+        res.render("decks", {title: "Decks", decks: decks, info: info});
     }
 });
+// DECKOPTIONS
+app.post("/deck", async (req,res) =>{
+let deckId : number = parseInt(req.body.deckId);
+if(deckId - parseFloat(req.body.deckId) != 0){
+    // res.render("decks", {title: "Decks", decks: await getDecks(), info: new Info(false, "Foutief Deck ID")});
+}
+let accessLvl : number = deckAccess(deckId)
+// REMOVE DECK
+
+// RENAME DECK
+
+// SET DECK IMAGE
+
+// DUPLICATE DECK
 
 
+});
+//update cardCount from deck
+app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
+
+    let amount : number = parseFloat(req.params.amount);
+    let deckId : number = parseInt(req.params.deckId);
+    let cardId : string = req.params.cardId;
+
+    try{
+        if(amount%1 != 0){
+            throw new Info(false, `Hoeveelheid is geen getal`);
+        }
+        if(deckId != parseFloat(req.params.deckId)){
+            throw new Info(false, "Foutief deck ID");
+        }
+        let info : Info = await addOrRemoveCard(deckId, cardId, amount);
+
+        res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: info})
+    }
+    catch (e){
+       res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: e}) 
+    }
+
+});
 
 // START DECK
-app.get("/deck/:id", async(req,res) =>{
-    
-    let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
-
-    if (!deck){
-        console.log("fout");
-        console.log(`Ongeldig Deck ID: ${req.params.id}`);
-        res.redirect('/404');
-    }
-    else{
-        res.render('deck', {title: "Deck", deck: deck});
-    }
-});
-
-//update cardCount
-app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
-    //deck info
-    let amount : number = parseInt(req.params.amount);
-    let deckId : number = parseInt(req.params.deckId);
-    let cardCount : number = 0;
-    // card info
-    let cardIndex : number = -1;
-    let variationIndex : number = -1;
-    let cardAmount : number = -1;
-    let isLand : boolean = false;
-    if(typeof (amount*deckId) != "number" || (amount != -1 && amount != 1)){
-        res.redirect("/404");
-    }
-    let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: deckId});
-    if(deck === null || !deck.cards){ // if deck or cards dont exist
-        res.redirect("/404");
-        return;
-    }
-    //count total cards and get info on card to add/remove
-    let i : number = 0;
-    for (let card of deck.cards){
-        let j : number = 0;
-        let totalVariationCount : number = 0;
-        let getAllInfo : boolean = false;
-        for (let variation of card.variations){
-            if(variation.id === req.params.cardId){
-                cardIndex = i;
-                variationIndex = j;
-                getAllInfo = true;
-                if(variation.count === 0 && amount === -1){
-                    res.redirect("/404");
-                    return;
-                }
-            };
-            totalVariationCount += variation.count;
-            cardCount += variation.count;
-            j++;
-        }
-        if(getAllInfo){
-            isLand = card.isLand;
-            cardAmount = totalVariationCount;
-            if((!isLand && totalVariationCount >= 6 && amount === 1)){
-                res.redirect("/404");
-                return;
-            }
-        }
-        i++;
-    }
-    if((amount === -1 && cardCount <= 0) || (amount === 1 && cardCount >= 60)){
-        res.redirect("/404");
-        return;
-    }
-    if(cardIndex === -1){
-        let newCard : CardS = cardToCardS(await getCard(req.params.cardId));
-        console.table(newCard);
-        deck.cards.push(newCard);
-    }
-    else{
-        console.table(deck.cards[0].variations);
-        console.log(cardIndex);
-        console.log(variationIndex); 
-        
-        
-        deck.cards[cardIndex].variations[variationIndex].count += amount;
-    }
-
-
-    await db.collection("decks").replaceOne({id: deckId}, deck);
-
-    res.redirect(`/deck/${req.params.deckId}`);
-
-});
-
-
 //update deck name
 app.post("/deck/:deckId", async(req,res)=>{
-    await db.collection("decks").updateOne({id: parseInt(req.params.deckId)},{$set:{name: req.body.deckName}});
-    res.redirect(`/deck/${req.params.deckId}`);
+    if(req.body.removeDeck){
+        await db.collection("decks").deleteOne({id: parseInt(req.params.deckId)});
+        res.redirect("/decks");
+    }
+    else{
+        await db.collection("decks").updateOne({id: parseInt(req.params.deckId)},{$set:{name: req.body.deckName}});
+        res.redirect(`/deck/${req.params.deckId}`);
+    }
+
 });
 // END DECK
 
 
 
 
-
+let deckImages : string[] = [];
+let imageIndex : number = 0;
 app.get("/deckImage/:id", async(req,res) =>{
-    
+    let deckId : number = parseInt(req.params.id);
     let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
+    let info : Info = {
+        succes: false,
+        message: ""
+    }
 
     if (!deck){
+        info.message = `Kon deck met id ${deckId} niet vinden`
+        res.render(`/deck/${deckId}`, {info: info});
+    }
+    else if(!deck.cards){
         console.log("fout");
-        console.log(`Ongeldig Deck ID: ${req.params.id}`);
+        console.log(`Geen kaarten in dit deck`);
         res.redirect('/404');
     }
     else{
-        res.render('deck-image', {title: "Deck", deck: deck});
+        deckImages = getDeckImages(deck);
     }
+    res.render('deck-image', {title: "Deck Image", image: deckImages[imageIndex]});
 });
-app.post("/deckImage/:deckId", async(req,res) =>{
-    if(req.body.next){
+app.post("/deckImage/:deckId/", async(req,res) =>{
 
+    if(req.body.pickImage){
+        console.log(deckImages[imageIndex]);
+        await db.collection("decks").updateOne({id: parseInt(req.params.deckId)}, {$set: {coverCard: deckImages[imageIndex]}});
+        res.redirect(`/deck/${req.params.deckId}`);
     }
-    else if(req.body.previous){
-        res.render("")
+    else{
+        if(req.body.next){
+            imageIndex++;
+            if(imageIndex >= deckImages.length){ 
+                imageIndex = 0;
+            }
+        }
+        else if(req.body.previous){
+            imageIndex--;
+            if(imageIndex < 0){
+                imageIndex = deckImages.length-1;
+            }
+        }
+        res.render("deck-image", {title: "Deck Image", image: deckImages[imageIndex]});
     }
+ 
 });
 
 
@@ -475,6 +471,25 @@ app.get("/drawtest/:deckId", async(req,res) => {
     res.redirect("/404");
 });
 
+app.get("/deck/:id", async(req,res) =>{
+    let info : Info = new Info(false, "Er ging iets mis");
+    
+    let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
+    if (!deck){
+        console.log(`Ongeldig Deck ID: ${req.params.id}`);
+        res.render('decks', {title: "Decks", info: new Info(false, "Ongeldig Deck ID")});
+    }
+    else{
+        res.render('deck', {title: "Deck", deck: deck});
+    }
+});
+
+
+
+
+
+// -------------- //
+// 404
 app.use((req, res) => {
     res.status(404);
     res.render("bad-request", {title: "404"});

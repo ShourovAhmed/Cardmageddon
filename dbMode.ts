@@ -1,6 +1,6 @@
 import { MongoClient, ObjectId, Collection } from "mongodb";
 import { CardS, Variation, Deck, Card, Set, ImageUris } from "./types";
-import { fullHash, emailHash, getSet, setToCardSs, cardSsToDeck } from "./functions";
+import { fullHash, emailHash, getSet, setToCardSs, newDeck } from "./functions";
 const readLine = require('readline-sync');
 
 const uri: string =
@@ -30,9 +30,9 @@ interface User {
 const coreUsers : User[] = [
     {id: 0, firstName: "Admin", surname: "Admin"},
     {id: 1, firstName: "Bert", surname: "Pintjens", email: emailHash("bert.pintjens@hotmail.com")},
-    {id: 2, firstName: "Narayan", surname: "Ahmed"},
+    {id: 2, firstName: "Narayan", surname: "Vereecken"},
     {id: 3, firstName: "Sascha", surname: "Staelens"},
-    {id: 4, firstName: "Shourov", surname: "Vereecken"},
+    {id: 4, firstName: "Shourov", surname: "Ahmed"},
     {id: 5, firstName: "Jane", surname: "Doe", email: emailHash("jane.doe@lost.not")},
 
 ];
@@ -73,7 +73,7 @@ const collectionChoise = ():string => {
     }
 }
 
-const main = async() =>{
+const main = async() =>{ 
 
     try{
         //Conect do DB
@@ -98,10 +98,12 @@ const main = async() =>{
                 try{
                     for(let testDeckAbreviation of testDeckAbreviations){
                         deckId++;
+                        await db.collection("decks").deleteMany({id: deckId});
                         let currentDeck : Deck = 
-                            cardSsToDeck(deckId, `Test Deck ${deckId+1}`, await setToCardSs(
+                            await newDeck(`Test Deck ${deckId+1}`, await setToCardSs(
                                     await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviation}&unique=prints`)));
-                        await db.collection('decks').updateOne({id: deckId}, {$set: currentDeck});
+                                    currentDeck.id = deckId;
+                        await db.collection('decks').insertOne(currentDeck);
                         console.log(`Test Deck ${deckId+1} Reset To Standard`);
                     }
                 }
@@ -109,12 +111,12 @@ const main = async() =>{
                     console.log("failed to reset deck");
                 }
             }
-            else{
+            else{ 
                 try{
                     deckId = parseInt(readLine.question("Deck id van het te resetten deck?"));
                         let currentDeck : Deck = 
-                            cardSsToDeck(deckId, `Test Deck ${deckId+1}`, await setToCardSs(
-                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviations[deckId]}&unique=prints`)));
+                            await newDeck(`Test Deck ${deckId+1}`, await setToCardSs(
+                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviations[deckId]}&unique=prints`)), deckId);
                         await db.collection('decks').insertOne(currentDeck);
                         console.log(`Test Deck ${deckId+1} Reset To Standard`);
                     
