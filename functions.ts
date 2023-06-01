@@ -1,9 +1,10 @@
-import { Deck, CardS, Set, Card, CardFace, Info } from "./types";
-import { db } from "./index";
+import { Deck, CardS, Set, Card, CardFace, Info, CookieInfo, User } from "./types";
+import { db, cookieInfo} from "./index";
 import { error, log } from "console";
 import { promises } from "dns";
-import { maxNonLandCardcount, maxTotalCardsInDeck } from "./staticValues";
+import { maxNonLandCardcount, maxTotalCardsInDeck, testDeckIds } from "./staticValues";
 const CryptoJS = require('crypto-js');
+
 export const fullHash = (text: string):string => {
     let hashed = CryptoJS.PBKDF2(text, "9", {
         iterations: 1
@@ -95,11 +96,14 @@ export const setToCardSs = (set : Set, baseCards? : CardS[]):CardS[] => {
 
 //Returns a new deck given a name,
 //option to directly add cards as cardSArr or deckId as a number
-export const newDeck = async (name : string, cards? : CardS[], deckId? : number): Promise<Deck> => {
-    if(!deckId){
+export const makeNewDeck = async (name : string, userId : number, cards? : CardS[], deckId? : number): Promise<Deck> => {
+
+    if(!deckId && deckId != 0){
         deckId = await getFreeId();
     }
-    let newDeck : Deck = {id: deckId, name: name, coverCard: null, cards: [], ownerID: 0};
+
+    let newDeck : Deck = {id: deckId, name: name, coverCard: null, cards: []};
+    await db.collection("users").updateOne({id: userId},{$push: {decks: newDeck.id}});
 
     if(!cards){
         return newDeck;
@@ -130,6 +134,7 @@ export const newDeck = async (name : string, cards? : CardS[], deckId? : number)
             oracleIds.push(card.id);
         }
     }
+
     return newDeck;
 }
 
@@ -143,11 +148,19 @@ export const getDeck =  async(deckId: number):Promise<Deck> => {
     }
     return deck;
 }
-// export const getDecks = async():Promise<Deck[]> => {
+export const getOwnDeckIds = async(userId : number):Promise<number[]> => {
+    let user : User|null = await db.collection("users").findOne<User>({id: cookieInfo.id});
+    if(user != null){
+        return user.decks
+    }
+    return [];
+}
+export const getDecks = async(userId : number):Promise<Deck[]> => {
 
-//     return await db.collection('decks').find<Deck>({id: }).toArray();
+    let availableDecks : number[] = [...testDeckIds, ...await getOwnDeckIds(userId)];
+    return await db.collection('decks').find<Deck>({id: { $in: availableDecks}}).toArray();
 
-// };
+};
 
 //returns the cardVarIds out of a given deck
 export const getDeckImages = (deck : Deck):string[] =>{

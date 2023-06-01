@@ -1,16 +1,21 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import {MongoClient} from 'mongodb';
-import {Deck, CardS, Info, UserInfo} from "./types";
+import {Deck, CardS, Info, CookieInfo, User, LoginData} from "./types";
 import { render } from 'ejs';
-import { getFreeId, getCard, cardToCardS, getDeckImages, getDeck, addOrRemoveCard, deckAccess} from './functions';
-import { maxNonLandCardcount, maxTotalCardsInDeck } from './staticValues';
-import { log } from 'console';
+import { getFreeId, getCard, cardToCardS, getDeckImages, getDeck, addOrRemoveCard, deckAccess, getDecks, emailHash, makeNewDeck, fullHash} from './functions';
+import { maxNonLandCardcount, maxTotalCardsInDeck, mssg } from './staticValues';
+import { log, table } from 'console';
 import { title } from 'process';
 
 
+
+
 //EXPRESS
+const session = require('express-session')
 const app = express();
+
+
 app.set("port", 3000);
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -26,18 +31,61 @@ const client = new MongoClient(uri);
 export const db = client.db("userData");
 
 
-
-export let myDecks : number[];
 let pics = [{name: '', img: '', rarity: ''}];
-export let userInfo : UserInfo = {
-    userName: "",
-    id: 1,
-    decks: [],
-}
+export let cookieInfo : CookieInfo = new CookieInfo;
+
+app.get("//:id", async(req, res) =>{
+    let loginData : LoginData|null = await db.collection("loginData").findOne<LoginData>({user_id: parseInt(req.params.id)});
+    cookieInfo = new CookieInfo(loginData?.username, loginData?.user_id, true);
+    res.render("landingPage", {title: "Landingpage", info: new Info(true, mssg+cookieInfo.username)});
+})
 
 app.get("/", (req, res) =>{
     res.render("landingPage");
 })
+
+app.post("/", async(req, res) =>{
+    let info : Info = new Info();
+    if(req.body.cookie != "on"){
+        info.message = "You realy need to except out evil cookie."; 
+    }
+    else{
+        let username = req.body.username;
+        let password = fullHash(req.body.password);
+    
+        let loginData : LoginData|null = await db.collection("loginData").findOne<LoginData>({username: username});
+        if(loginData === null || loginData.password != password){
+            info.message = "Autentificatie mislukt.";
+        }
+        else{
+            cookieInfo.id = loginData.user_id;
+            cookieInfo.username = loginData.username;
+            cookieInfo.verified = true;
+            info.succes = true;
+            info.message = `Welkom ${cookieInfo.username}`;
+        }
+    }
+    log("login");
+    console.table(cookieInfo);
+    res.render("landingPage", {title: "Landingpage", info: info});
+})
+
+app.get("/logout", (req, res) =>{
+    cookieInfo = new CookieInfo;
+    log("logout");
+    table(cookieInfo);
+    res.redirect("/");
+})
+
+app.use((req, res, next) => {
+    if(cookieInfo.verified){
+        next();
+    }
+    else{
+        res.render("landingPage", {titel: "Landingpage", info: new Info(false, "Toegang geweigerd")}); 
+    }
+    
+});
 
 app.get("/home", (req, res) => {  
 
@@ -63,7 +111,6 @@ app.get("/home", (req, res) => {
 app.post("/home", async (req, res) => {
 
     try{
-
         // API Request
         let text = req.body.search;
         if(text != '')
@@ -148,23 +195,17 @@ app.post("/home", async (req, res) => {
 });
 
 
-
 app.get("/decks", async(req,res) =>{
-    let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
-    
-    res.render("decks", {title: "Decks", decks: decks});
+
+    res.render("decks", {title: "Decks", decks: await getDecks(cookieInfo.id)});
+
 });
 
 app.post("/decks", async (req,res) =>{
     let newDeckName : string = req.body.deckName;
 
-    let newDeck : Deck = {
-        id: await getFreeId(),
-        name: req.body.deckName, 
-        coverCard: null,
-        cards: [],
-        ownerID: userInfo.id
-    }
+    let newDeck : Deck = await makeNewDeck(req.body.deckName, cookieInfo.id);
+
     try{
         db.collection("decks").insertOne(newDeck);
         let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
@@ -177,6 +218,22 @@ app.post("/decks", async (req,res) =>{
         res.render("decks", {title: "Decks", decks: decks, info: info});
     }
 });
+
+
+
+app.get("/deck/:id", async(req,res) =>{
+    let info : Info = new Info(false, "Er ging iets mis");
+    
+    let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
+    if (!deck){
+        console.log(`Ongeldig Deck ID: ${req.params.id}`);
+        res.render('decks', {title: "Decks", decks: await getDecks(cookieInfo.id), info: new Info(false, "Ongeldig Deck ID")});
+    }
+    else{
+        res.render('deck', {title: "Deck", deck: deck});
+    }
+});
+
 // DECKOPTIONS
 app.post("/deck", async (req,res) =>{
 let deckId : number = parseInt(req.body.deckId);
@@ -297,18 +354,6 @@ app.get("/drawtest/:deckId", async(req,res) => {
     res.redirect("/404");
 });
 
-app.get("/deck/:id", async(req,res) =>{
-    let info : Info = new Info(false, "Er ging iets mis");
-    
-    let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
-    if (!deck){
-        console.log(`Ongeldig Deck ID: ${req.params.id}`);
-        res.render('decks', {title: "Decks", info: new Info(false, "Ongeldig Deck ID")});
-    }
-    else{
-        res.render('deck', {title: "Deck", deck: deck});
-    }
-});
 
 
 

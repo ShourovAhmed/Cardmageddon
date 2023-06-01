@@ -9,12 +9,31 @@ export class Info {
         this.message = message;
     }
 }
-export interface UserInfo {
-    userName: string,
-    id: number,
-    decks: number[]
+export class CookieInfo {
+    username: string;
+    id: number;
+    verified: boolean;
+    constructor(username: string = "Visitor", id: number = -1, verified: boolean = false){
+        this.username = username;
+        this.id = id;
+        this.verified = verified;
+    }
 }
-
+export interface LoginData{
+    _id?: ObjectId,
+    id: number,
+    user_id: number,
+    username: string,
+    password: string  // hashed
+}
+export interface User {
+    _id?: ObjectId,
+    id: number,
+    firstName: string,
+    surname: string,
+    email?: string, //semi hashed
+    decks: number[] //deck_id array
+}
 export interface Variation{
     id:     string, // scryfall ID
     count:  number
@@ -29,7 +48,6 @@ export interface CardS {   // kleine samenvatting
 }
 export interface Deck{
     _id?: ObjectId,
-    ownerID: number
     id: number,
     name: string,
     cards: CardS[],

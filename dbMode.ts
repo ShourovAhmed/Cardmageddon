@@ -1,6 +1,6 @@
 import { MongoClient, ObjectId, Collection } from "mongodb";
-import { CardS, Variation, Deck, Card, Set, ImageUris } from "./types";
-import { fullHash, emailHash, getSet, setToCardSs, newDeck } from "./functions";
+import { CardS, Variation, Deck, Card, Set, ImageUris, User, LoginData } from "./types";
+import { fullHash, emailHash, getSet, setToCardSs, makeNewDeck } from "./functions";
 const readLine = require('readline-sync');
 
 const uri: string =
@@ -10,30 +10,17 @@ const client = new MongoClient(uri);
 
 const db = client.db("userData");
 
-interface LoginData{
-    _id?: ObjectId,
-    id: number,
-    user_id: number,
-    username: string, // hashed?
-    password: string  // hashed
-}
-interface User {
-    _id?: ObjectId,
-    id: number,
-    firstName: string,
-    surname: string,
-    email?: string, //semi hashed
-    decks?: number[] //deck_id array
-}
+
+
 
 
 const coreUsers : User[] = [
-    {id: 0, firstName: "Admin", surname: "Admin"},
-    {id: 1, firstName: "Bert", surname: "Pintjens", email: emailHash("bert.pintjens@hotmail.com")},
-    {id: 2, firstName: "Narayan", surname: "Vereecken"},
-    {id: 3, firstName: "Sascha", surname: "Staelens"},
-    {id: 4, firstName: "Shourov", surname: "Ahmed"},
-    {id: 5, firstName: "Jane", surname: "Doe", email: emailHash("jane.doe@lost.not")},
+    {id: 0, firstName: "Admin", surname: "Admin", decks: []},
+    {id: 1, firstName: "Bert", surname: "Pintjens", email: emailHash("bert.pintjens@hotmail.com"), decks: []},
+    {id: 2, firstName: "Narayan", surname: "Vereecken", decks: []},
+    {id: 3, firstName: "Sascha", surname: "Staelens", decks: []},
+    {id: 4, firstName: "Shourov", surname: "Ahmed", decks: []},
+    {id: 5, firstName: "Jane", surname: "Doe", email: emailHash("jane.doe@lost.not"), decks: []},
 
 ];
 const coreLoginData : LoginData[] = [
@@ -98,11 +85,10 @@ const main = async() =>{
                 try{
                     for(let testDeckAbreviation of testDeckAbreviations){
                         deckId++;
-                        await db.collection("decks").deleteMany({id: deckId});
+                        await db.collection("decks").deleteOne({id: deckId});
                         let currentDeck : Deck = 
-                            await newDeck(`Test Deck ${deckId+1}`, await setToCardSs(
-                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviation}&unique=prints`)));
-                                    currentDeck.id = deckId;
+                            await makeNewDeck(`Test Deck ${deckId+1}`, 0, await setToCardSs(
+                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviation}&unique=prints`)), deckId);
                         await db.collection('decks').insertOne(currentDeck);
                         console.log(`Test Deck ${deckId+1} Reset To Standard`);
                     }
@@ -114,8 +100,9 @@ const main = async() =>{
             else{ 
                 try{
                     deckId = parseInt(readLine.question("Deck id van het te resetten deck?"));
+                    await db.collection("decks").deleteOne({id: deckId});
                         let currentDeck : Deck = 
-                            await newDeck(`Test Deck ${deckId+1}`, await setToCardSs(
+                            await makeNewDeck(`Test Deck ${deckId+1}`, 0, await setToCardSs(
                                     await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviations[deckId]}&unique=prints`)), deckId);
                         await db.collection('decks').insertOne(currentDeck);
                         console.log(`Test Deck ${deckId+1} Reset To Standard`);

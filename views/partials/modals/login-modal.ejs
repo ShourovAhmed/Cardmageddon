@@ -1,15 +1,17 @@
     <modal id="loginM">
     
         <button class="hideM">X</button>
-        <form action="#" onsubmit="setLoginStatus()" class="modal-form">
+        <form action="/" method="post" onsubmit="setLoginStatus()" class="modal-form">
             <label for="username">Gebruikersnaam</label>
             <br>
-            <input type="text" id="username" required>
+            <input type="text" id="username" name="username" required>
             <br>
             <label for="password">Paswoord</label>
             <br>
-            <input type="text" id="password" required>
+            <input type="password" id="password" name="password" required>
             <br>
+            <label for="cookie">Accept Our Evil Cookie<br>Or be forever confined to this landigpage</label>
+            <input type="checkbox" name="cookie" id="cookie" required>
             <button id="request-login-btn" type="submit">Aanmelden</button>
         </form>
     </modal>
