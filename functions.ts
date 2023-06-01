@@ -194,9 +194,60 @@ export const removeCard = async(cardId : string, varId : string, deck : Deck, am
     return new Info(false, `Kaart met ID: ${varId}\nNiet gevonden in deck met ID: ${deck.id}}`);
 };
 
-export const addCard = async(card : CardS, deck : Deck, amount : number):Promise<Info> => {
+export const addCard = async(theCard : CardS, deck : Deck, amount : number):Promise<Info> => {
+    let cardInDeck : number = 0;
+    let cardVarionsTotal : number;
+    let getAllInfo : boolean;
+    let cardIndex : number = -1;
+    let variationIndex : number = -1;
+    let i : number = 0;
+    let j : number = 0;
+    for(let card of deck.cards){
+        getAllInfo = false;
+        cardVarionsTotal = 0;
+        j = 0;
+        if(card.id === theCard.id){
+            cardIndex = i;
+            getAllInfo = true;
+        }
+        for(let variation of card.variations){
+            
+            cardVarionsTotal += variation.count;
+            if(variation.id === theCard.variations[0].id){
+                variationIndex = j;
+            }
+            j++;
+        }
+        cardInDeck += cardVarionsTotal;
+        // NIET MEER DAN 60 KAARTEN PER DECK
+        if(cardInDeck+amount > maxTotalCardsInDeck){
+            return new Info(false, `Je kan niet meer dan ${maxTotalCardsInDeck} kaarten in een deck hebben.`)
+        }
+        // NIET MEER DAN 4 VAN EEN NIET LAND KAART
+        if(getAllInfo && !card.isLand && cardVarionsTotal+amount > maxNonLandCardcount){
+            return new Info(false, `Je kan enkel van land kaarten meer dan ${maxNonLandCardcount} in een deck hebben.`);
+        }
 
-    return {succes: true, message: "Some info"};
+        i++;
+    }
+    //NIEUWE KAART
+    if(cardIndex === -1){
+        theCard.variations[0].count = amount;
+        deck.cards.push(theCard);
+        await db.collection("decks").replaceOne({id: deck.id}, deck);
+        return new Info(true, "Kaart toegevoegd");
+    }
+    // NIEUWE VARIATIE
+    if(variationIndex === -1){
+        deck.cards[cardIndex].variations.push({id: theCard.variations[0].id, count: amount});
+        await db.collection("decks").replaceOne({id: deck.id}, deck);
+        return new Info(true, "Variatie toegevoegd");
+    }
+    //AANTAL VAN VARIATIE VERHOGEN
+    let newCount : number = deck.cards[cardIndex].variations[variationIndex].count + amount
+    deck.cards[cardIndex].variations[variationIndex].count = newCount;
+    await db.collection("decks").replaceOne({id: deck.id}, deck);
+    return new Info(true, `Aantal verhoogd naar ${newCount}`);
 };
 
 export const addOrRemoveCard = async(deckId : number, cardId : string, amount : number):Promise<Info> => {
@@ -207,63 +258,12 @@ export const addOrRemoveCard = async(deckId : number, cardId : string, amount : 
             return new Info(false, "De gegeven hoeveelheid kan niet nul zijn");
         }
 
-            let deck : Deck = await getDeck(deckId);
-            let theCard : CardS = await getCard(cardId);
-            if(amount < 0){
-                return await removeCard(theCard.id, theCard.variations[0].id, deck, amount);
-            }
-            else{
-                return await addCard(theCard, deck, amount);
-            }
-
-        // //initialyse variables
-        // let deckCardCount : number = 0;
-        // let cardIndex : number = -1;
-        // let variationIndex : number = -1;
-        // let updateCardTotalVariationCount = 0;
-        // let startVariationCount : boolean;
-
-        // for(let i : number = 0; i < deck.cards.length; i++){ 
-        //     startVariationCount = false;
-        //     if(deck.cards[i].id === theCard.id){
-        //         cardIndex = i; //record place to possibly put the card
-        //         if(!deck.cards[i].isLand){
-        //             startVariationCount = true;
-        //         }
-        //     }
-        //     for(let j : number = 0; j < deck.cards[i].variations.length; j++){
-        //         if(startVariationCount){
-        //             updateCardTotalVariationCount += deck.cards[i].variations[j].count;
-        //         }
-        //         if(deck.cards[i].variations[j].id === theCard.variations[0].id){
-        //             variationIndex = j; //record place to possibly put the variation
-        //         }
-        //         deckCardCount += deck.cards[i].variations[j].count;
-        //         if(deckCardCount > maxTotalCardsInDeck + amount){ 
-        //              new Info(false, "Je kan niet meer dan 60 kaarten in een deck hebben");
-        //         }
-        //     }
-        //     if(amount < 0 && variationIndex != -1){
-        //         let newCount : number = deck.cards[cardIndex].variations[variationIndex].count + amount; 
-        //         console.log(newCount);
-                 
-        //         if(newCount < 0){
-        //             deck.cards[cardIndex].variations.splice(variationIndex,1);
-        //             if(deck.cards[cardIndex].variations.length === 0){
-        //                 deck.cards.splice(cardIndex,1);
-        //             }
-        //         }
-        //         deck.cards[cardIndex].variations[variationIndex].count = newCount;
-        //         await db.collection("decks").replaceOne({id: deckId}, deck);
-
-
-        //     }
-        //     if(!deck.cards[i].isLand && (updateCardTotalVariationCount + amount) > maxNonLandCardcount){
-        //         throw new Info(false, "Je kan niet meer dan 4 van deze kaart in een deck hebben");
-        //     }
-        // }
-
-
-
-
+        let deck : Deck = await getDeck(deckId);
+        let theCard : CardS = await getCard(cardId);
+        if(amount < 0){
+            return await removeCard(theCard.id, theCard.variations[0].id, deck, amount);
+        }
+        else{
+            return await addCard(theCard, deck, amount);
+        }
 }

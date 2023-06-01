@@ -29,104 +29,7 @@ export const db = client.db("userData");
 
 let pics = [{name: '', img: '', rarity: ''}];
 
-//update cardCount
-app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
-    let amount : number = parseFloat(req.params.amount);
-    let deckId : number = parseInt(req.params.deckId);
-    let cardId : string = req.params.cardId;
-    try{
-        if(amount%1 != 0){
-            throw new Info(false, `Hoeveelheid is geen getal`);
-        }
-        if(deckId != parseFloat(req.params.deckId)){
-            throw new Info(false, "Foutief deck ID");
-        }
-        let info : Info = await addOrRemoveCard(deckId, cardId, amount);
 
-        res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: info})
-        
-    }
-    catch (e){
-       res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: e})
-    }
-
-
-
-
-
-
-    //deck info
-
-    // let deckId : number = parseInt(req.params.deckId); 
-    // let cardCount : number = 0;
-    // // card info
-    // let cardIndex : number = -1;
-    // let variationIndex : number = -1; 
-    // let cardAmount : number = -1;
-    // let isLand : boolean = false;
-    // if(typeof (amount*deckId) != "number" || (amount != -1 && amount != 1)){
-    //     res.redirect("/404");
-    // }
-    // let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: deckId});
-    // if(deck === null || !deck.cards){ // if deck or cards dont exist
-    //     res.redirect("/404");
-    //     return;
-    // }
-    //count total cards and get info on card to add/remove
-    // let i : number = 0;
-    // let remove : boolean = false;
-    // for (let card of deck.cards){
-    //     let j : number = 0;
-    //     let totalVariationCount : number = 0;
-    //     let getAllInfo : boolean = false;
-    //     for (let variation of card.variations){
-    //         if(variation.id === req.params.cardId){
-    //             cardIndex = i;
-    //             variationIndex = j;
-    //             getAllInfo = true;
-    //             if(variation.count === 0 && amount === -1){
-    //                 remove = true;
-    //                 if(deck.coverCard === variation.id){  
-    //                     deck.coverCard = null;
-    //                 }
-    //             }
-    //         };
-    //         totalVariationCount += variation.count;
-    //         cardCount += variation.count;
-    //         j++;
-    //     }
-    //     if(getAllInfo){
-    //         isLand = card.isLand;
-    //         cardAmount = totalVariationCount;
-    //         if((!isLand && totalVariationCount >= MaxNonLandCardcount && amount === 1)){
-    //             res.redirect("/404");
-    //             return;
-    //         }
-    //     }
-    //     i++;
-    // }
-    // if((amount === -1 && cardCount <= 0) || (amount === 1 && cardCount >= 60)){
-    //     res.redirect("/404");
-    //     return;
-    // }
-    // if(cardIndex === -1){
-        
-    // }
-    // else{
-    //     console.table(deck.cards[0].variations);
-    //     console.log(cardIndex);
-    //     console.log(variationIndex); 
-        
-        
-    //     deck.cards[cardIndex].variations[variationIndex].count += amount;
-    // }
-
-
-    // await db.collection("decks").replaceOne({id: deckId}, deck);
-
-
-
-});
 app.get("/", (req, res) =>{
     res.render("landingPage");
 })
@@ -268,7 +171,32 @@ app.post("/decks", async (req,res) =>{
     }
 });
 
+//update cardCount from deck
+app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
 
+    console.log(req.path);
+    
+
+    let amount : number = parseFloat(req.params.amount);
+    let deckId : number = parseInt(req.params.deckId);
+    let cardId : string = req.params.cardId;
+    try{
+        if(amount%1 != 0){
+            throw new Info(false, `Hoeveelheid is geen getal`);
+        }
+        if(deckId != parseFloat(req.params.deckId)){
+            throw new Info(false, "Foutief deck ID");
+        }
+        let info : Info = await addOrRemoveCard(deckId, cardId, amount);
+
+        res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: info})
+        
+    }
+    catch (e){
+       res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: e})
+    }
+
+});
 
 // START DECK
 //update deck name
