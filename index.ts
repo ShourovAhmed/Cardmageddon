@@ -30,7 +30,7 @@ let pageNumber: number = 0;
 
 
 export let myDecks : number[];
-let pics = [{name: '', img: '', rarity: ''}];
+pics = [];
 export let userInfo : UserInfo = {
     userName: "",
     id: 1,
