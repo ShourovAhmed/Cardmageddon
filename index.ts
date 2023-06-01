@@ -1,11 +1,12 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import {MongoClient} from 'mongodb';
-import {Deck, CardS, Info} from "./types";
+import {Deck, CardS, Info, UserInfo} from "./types";
 import { render } from 'ejs';
-import { getFreeId, getCard, cardToCardS, getDeckImages, getDeck, addOrRemoveCard} from './functions';
+import { getFreeId, getCard, cardToCardS, getDeckImages, getDeck, addOrRemoveCard, deckAccess} from './functions';
 import { maxNonLandCardcount, maxTotalCardsInDeck } from './staticValues';
 import { log } from 'console';
+import { title } from 'process';
 
 
 //EXPRESS
@@ -26,15 +27,19 @@ export const db = client.db("userData");
 
 
 
-
+export let myDecks : number[];
 let pics = [{name: '', img: '', rarity: ''}];
-
+export let userInfo : UserInfo = {
+    userName: "",
+    id: 1,
+    decks: [],
+}
 
 app.get("/", (req, res) =>{
     res.render("landingPage");
 })
 
-app.get("/home", (req, res) => { 
+app.get("/home", (req, res) => {  
 
     // Paging
     const cardsPerPage = 10;
@@ -146,6 +151,7 @@ app.post("/home", async (req, res) => {
 
 app.get("/decks", async(req,res) =>{
     let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
+    
     res.render("decks", {title: "Decks", decks: decks});
 });
 
@@ -156,7 +162,8 @@ app.post("/decks", async (req,res) =>{
         id: await getFreeId(),
         name: req.body.deckName, 
         coverCard: null,
-        cards: []
+        cards: [],
+        ownerID: userInfo.id
     }
     try{
         db.collection("decks").insertOne(newDeck);
@@ -170,16 +177,30 @@ app.post("/decks", async (req,res) =>{
         res.render("decks", {title: "Decks", decks: decks, info: info});
     }
 });
+// DECKOPTIONS
+app.post("/deck", async (req,res) =>{
+let deckId : number = parseInt(req.body.deckId);
+if(deckId - parseFloat(req.body.deckId) != 0){
+    // res.render("decks", {title: "Decks", decks: await getDecks(), info: new Info(false, "Foutief Deck ID")});
+}
+let accessLvl : number = deckAccess(deckId)
+// REMOVE DECK
 
+// RENAME DECK
+
+// SET DECK IMAGE
+
+// DUPLICATE DECK
+
+
+});
 //update cardCount from deck
 app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
-
-    console.log(req.path);
-    
 
     let amount : number = parseFloat(req.params.amount);
     let deckId : number = parseInt(req.params.deckId);
     let cardId : string = req.params.cardId;
+
     try{
         if(amount%1 != 0){
             throw new Info(false, `Hoeveelheid is geen getal`);
@@ -190,10 +211,9 @@ app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
         let info : Info = await addOrRemoveCard(deckId, cardId, amount);
 
         res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: info})
-        
     }
     catch (e){
-       res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: e})
+       res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: e}) 
     }
 
 });
@@ -278,13 +298,12 @@ app.get("/drawtest/:deckId", async(req,res) => {
 });
 
 app.get("/deck/:id", async(req,res) =>{
+    let info : Info = new Info(false, "Er ging iets mis");
     
     let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
-
     if (!deck){
-        console.log("fout");
         console.log(`Ongeldig Deck ID: ${req.params.id}`);
-        res.redirect('/404');
+        res.render('decks', {title: "Decks", info: new Info(false, "Ongeldig Deck ID")});
     }
     else{
         res.render('deck', {title: "Deck", deck: deck});

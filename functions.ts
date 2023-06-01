@@ -16,7 +16,8 @@ export const emailHash = (email: string):string => {
 }
 
 export const getFreeId = async() => {
-    let i : number = 0;
+    // IDs 0 to 9 are reserved! 
+    let i : number = 10;
     while (true){
         let test : Deck|null = await db.collection("decks").findOne<Deck>({id: i});
         if(test === null){
@@ -94,11 +95,11 @@ export const setToCardSs = (set : Set, baseCards? : CardS[]):CardS[] => {
 
 //Returns a new deck given a name,
 //option to directly add cards as cardSArr or deckId as a number
-export const newDeck = async (name : string, cards? : CardS[], deckId? : number, ): Promise<Deck> => {
+export const newDeck = async (name : string, cards? : CardS[], deckId? : number): Promise<Deck> => {
     if(!deckId){
         deckId = await getFreeId();
     }
-    let newDeck : Deck = {id: deckId, name: name, coverCard: null, cards: []};
+    let newDeck : Deck = {id: deckId, name: name, coverCard: null, cards: [], ownerID: 0};
 
     if(!cards){
         return newDeck;
@@ -135,13 +136,18 @@ export const newDeck = async (name : string, cards? : CardS[], deckId? : number,
 // MONGO CALLS
 
 // returns a deck from Mongo when given a correct deck ID 
-export const getDeck =  async(deckId: number) => {
+export const getDeck =  async(deckId: number):Promise<Deck> => {
     let deck : Deck|null = await db.collection("decks").findOne<Deck>({id: deckId});
     if(deck === null){
         throw new Info(false, `Deck met ID ${deckId} niet gevonden in je DB`);
     }
     return deck;
 }
+// export const getDecks = async():Promise<Deck[]> => {
+
+//     return await db.collection('decks').find<Deck>({id: }).toArray();
+
+// };
 
 //returns the cardVarIds out of a given deck
 export const getDeckImages = (deck : Deck):string[] =>{
@@ -164,11 +170,10 @@ export const removeCard = async(cardId : string, varId : string, deck : Deck, am
             let j : number = 0;
             for(let variation of card.variations){
                 if(variation.id === varId){
+
                     deck.cards[i].variations[j].count = deck.cards[i].variations[j].count + amount;
-                    console.log(deck.cards[i].variations[j].count)
+
                     if(deck.cards[i].variations[j].count < 0){
-                        console.log(deck.cards[i].variations.length);
-                        
                         if(deck.cards[i].variations.length === 1){
                             deck.cards.splice(i,1);
                             await db.collection("decks").replaceOne({id: deck.id}, deck);
@@ -251,7 +256,6 @@ export const addCard = async(theCard : CardS, deck : Deck, amount : number):Prom
 export const addOrRemoveCard = async(deckId : number, cardId : string, amount : number):Promise<Info> => {
 
         //check the input
-        console.log(amount);
         if(amount === 0){            
             return new Info(false, "De gegeven hoeveelheid kan niet nul zijn");
         }
@@ -264,4 +268,28 @@ export const addOrRemoveCard = async(deckId : number, cardId : string, amount : 
         else{
             return await addCard(theCard, deck, amount);
         }
+}
+
+export const getMyDecks = () => { 
+    
+}
+
+// Gives back access level of a given deck by deck ID
+export const deckAccess = (deckId : number):number => {
+// 0 = no access
+// 1 = view only
+// 2 = full access
+    if(deckId >= 0 && deckId < 10){
+        return 1;
+    }
+    // if(myDecks().includes(deckId)){
+    //     return 2;
+    // }
+
+    return 0;
+
+
+
+
+
 }

@@ -2,7 +2,7 @@
     
         <button class="hideM">X</button>
         <form method="post" class="modal-form"
-        <%if(deck.cards){%>
+        <%if(deck.cards.length != 0){%>
             action="/deckImage/<%=deck.id%>">
             <iframe src="/deckImage/<%=deck.id%>" frameborder="0"></iframe>
             

@@ -40,7 +40,7 @@ h2{
     grid-area: sub-header;
     width: 100;
     position: sticky;
-    z-index: 9000000;
+    z-index: 90;
     top: 0;
 }
 .sub-header-top{
@@ -55,10 +55,26 @@ h2{
 /* INFO TEXT BOX */
 #info-bar{
     grid-area: info;
+    z-index: -1;
     display: flex;
     justify-content: center;
     padding: 0.3rem;
+    position: relative;
+    /* W3 scools from here
+    https://www.w3schools.com/css/tryit.asp?filename=trycss3_animation_fill-mode3*/
+    animation-name: infoHide;
+    animation-duration: 4.5s;  
+    animation-fill-mode: both;
 }
+  
+  @keyframes infoHide {
+    0% {top: -3rem;}
+    6% {top: 0;}
+    78% {top: 0;}
+    100% {top: -3rem;}
+  }
+    /*tot hier*/
+
 .succesAlert{
     background-color: greenyellow;
 }

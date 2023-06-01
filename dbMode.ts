@@ -73,7 +73,7 @@ const collectionChoise = ():string => {
     }
 }
 
-const main = async() =>{
+const main = async() =>{ 
 
     try{
         //Conect do DB
@@ -98,10 +98,12 @@ const main = async() =>{
                 try{
                     for(let testDeckAbreviation of testDeckAbreviations){
                         deckId++;
+                        await db.collection("decks").deleteMany({id: deckId});
                         let currentDeck : Deck = 
                             await newDeck(`Test Deck ${deckId+1}`, await setToCardSs(
-                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviation}&unique=prints`)), deckId);
-                        await db.collection('decks').updateOne({id: deckId}, {$set: currentDeck});
+                                    await getSet(`https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3A${testDeckAbreviation}&unique=prints`)));
+                                    currentDeck.id = deckId;
+                        await db.collection('decks').insertOne(currentDeck);
                         console.log(`Test Deck ${deckId+1} Reset To Standard`);
                     }
                 }
@@ -109,7 +111,7 @@ const main = async() =>{
                     console.log("failed to reset deck");
                 }
             }
-            else{
+            else{ 
                 try{
                     deckId = parseInt(readLine.question("Deck id van het te resetten deck?"));
                         let currentDeck : Deck = 

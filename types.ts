@@ -1,12 +1,18 @@
 import { ObjectId } from "mongodb";
+import { userInfo } from "os";
 
 export class Info {
     succes: boolean;
     message: string;
-    constructor(succes: boolean, message: string){
+    constructor(succes: boolean = false, message: string = "Er ging iets mis"){
         this.succes = succes;
         this.message = message;
     }
+}
+export interface UserInfo {
+    userName: string,
+    id: number,
+    decks: number[]
 }
 
 export interface Variation{
@@ -23,6 +29,7 @@ export interface CardS {   // kleine samenvatting
 }
 export interface Deck{
     _id?: ObjectId,
+    ownerID: number
     id: number,
     name: string,
     cards: CardS[],
