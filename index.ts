@@ -28,13 +28,18 @@ interface Variation{
     id:     string, // scryfall ID
     count:  number
 }
+interface simpleCardObject{
+    name: string,
+    img: string,
+    rarity: string//might add something later
+}
 
 const app = express();
 
 app.locals.data = {};
-
+//"mongodb+srv://admin:admin@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority"
 const uri: string =
-    "mongodb+srv://admin:admin@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority";
+    "mongodb+srv://Sascha:mongo123@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority";
 
 const client = new MongoClient(uri);
 
@@ -62,13 +67,14 @@ let getCardFromApi= async (cardsid:string ) => {
 //gets card object from id to api call
     let id= cardsid;
     let response = await fetch(`https://api.scryfall.com/cards/${id}`); 
-    let cardFromApi: string[]=[];
+    //let cardFromApi: string[]=[];//old
+    let cardFromApi=[];
     cardFromApi = await response.json();
     
     
     return cardFromApi;       
 }
-let makeCardListFromApi =async(cardsIds:string[]) => {
+let makeCardListFromApi =async(cardsIds:string[],simpleCard:simpleCardObject[]) => {
 
 
     let ListCardReady: any[]=[];       
@@ -77,18 +83,24 @@ let makeCardListFromApi =async(cardsIds:string[]) => {
         
         let cardObject=await getCardFromApi(cardsIds[i]);
 
-        ListCardReady.push(cardObject);       
+        //ListCardReady.push(cardObject);   oldway
+        
+            simpleCard[i] = {
+            name: cardObject.name,
+            img: cardObject.image_uris.normal,
+            rarity: cardObject.rarity
+        };    
 
 
     }//makes array of cards in deck
 
     //random ordering:
-    let randomizedListCardReady = ListCardReady
+    let randomizedListCardReady = simpleCard
     .map(value => ({ value, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value)
    
-    return randomizedListCardReady;
+    return simpleCard;
 }
 
 
@@ -115,7 +127,7 @@ let makeIdList=(cards:CardS[],cardsIds:string[]) => {
 let LoadingDeck =async () => {//this was in GET
     try{
         //let startTime = performance.now()
-        
+
         await client.connect();
     
         const deckCollection= client.db("userData").collection("decks");
@@ -130,8 +142,9 @@ let LoadingDeck =async () => {//this was in GET
         let cardsIds:string[]=[]; 
         cardsIds=makeIdList(cards,cardsIds);    //this array only contains variableIds used for api
         
+        let simpleCard:simpleCardObject[]=[];
         
-        let ListCardReady= makeCardListFromApi(cardsIds);//this caused long load
+        let ListCardReady= makeCardListFromApi(cardsIds,simpleCard);//this caused long load
         console.log('\x1b[36m%s\x1b[0m',"deck loaded");
 
         //used to debug LoadTimes
@@ -150,13 +163,50 @@ let LoadingDeck =async () => {//this was in GET
     }
     
 }
+// let LoadingAllDecks =async () => {//will do as before but load all decks so cards wil be one space deeper inside the array
 
+// await client.connect();
+// try{
+//         const deckCollection= client.db("userData").collection("decks");
+    
+//         const decksDatabase= await deckCollection.find<Deck>({}).toArray();
+
+//         let ListReadyDecks:any[]=[];
+//         for(let i:number=0;i<decksDatabase.length;i++){
+            
+//             let cards:CardS[]= decksDatabase[i].cards!; 
+
+//             let cardsIds:string[]=[]; 
+//             cardsIds=makeIdList(cards,cardsIds);//list of ids neeeded for apicall later
+
+//             let ListCardReady= makeCardListFromApi(cardsIds);
+            
+//             ListReadyDecks.push(await ListCardReady);
+//             console.log('\x1b[36m%s\x1b[0m',"deck "+i+" loaded");
+            
+
+//         }
+//         console.log(ListReadyDecks);
+//         return ListReadyDecks;
+
+
+//     }catch(e){
+//         console.error(e);
+//     }finally{
+//         client.close();
+        
+        
+//     }
+// }
 
 //debugging load time
 //let startTime = performance.now()
     
 
-let ListCardReadyPreload=  LoadingDeck();
+let ListCardReadyPreload=  LoadingDeck();//OLD LOADS 1ST DECK ONLY
+
+//let ListCardReadyPreload=LoadingAllDecks();//new one
+
 
 //let endTime = performance.now()
 
