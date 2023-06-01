@@ -157,11 +157,6 @@ export const getDeckImages = (deck : Deck):string[] =>{
     return deckImages;
 }
 
-export const addNewVariation = (deck : Deck, cardIndex : number, variationId : string):Deck => {
-    deck.cards[cardIndex].variations.push({id: variationId, count: 1});
-    return deck;
-};
-
 export const removeCard = async(cardId : string, varId : string, deck : Deck, amount : number):Promise<Info> => {
     let i : number = 0;
     for(let card of deck.cards){
@@ -195,6 +190,9 @@ export const removeCard = async(cardId : string, varId : string, deck : Deck, am
 };
 
 export const addCard = async(theCard : CardS, deck : Deck, amount : number):Promise<Info> => {
+    if(theCard.isLand != true && amount > maxNonLandCardcount){
+        return new Info(false, `Je kan enkel van land kaarten meer dan ${maxNonLandCardcount} in een deck hebben.`);
+    }
     let cardInDeck : number = 0;
     let cardVarionsTotal : number;
     let getAllInfo : boolean;
