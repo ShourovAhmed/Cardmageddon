@@ -66,7 +66,7 @@ app.post("/", async(req, res) =>{
             cookieInfo.username = loginData.username;
             cookieInfo.verified = true;
             info.succes = true;
-            info.message = `Welkom ${cookieInfo.username}`;
+            info.message = `Welkom ${cookieInfo.username}`; 
         }
     }
     log("login");

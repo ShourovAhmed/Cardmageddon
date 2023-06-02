@@ -2,10 +2,7 @@
     padding: 0;
     margin: 0;
 }
-/*SPECIALS*/
-.ff{
-    display: none !important;
-}
+
 .flex{
     display: flex;
     justify-content: center;
