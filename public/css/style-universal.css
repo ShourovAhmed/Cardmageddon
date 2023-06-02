@@ -51,6 +51,10 @@
     --mythic-rare-colour: rgba(205, 134, 26, 0.947);
     
 }
+/*SPECIALS*/
+.ff{ /* Future Feature*/
+    display: none !important;
+}
 
 *{
     font-family: 'Open Sans', sans-serif;
