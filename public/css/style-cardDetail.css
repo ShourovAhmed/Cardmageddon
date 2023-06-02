@@ -1,0 +1,118 @@
+.carddetailTable {
+    border-collapse: collapse;
+    border-radius: 5px;
+    border-color: chocolate;
+    margin-top: 20px;
+}
+.carddetailTable tr td div{
+    font-size: 16px;
+    padding: 1px;
+}
+.columnA{
+    vertical-align: text-top;
+    font-weight: 600;
+}
+.columnB{
+    column-width: auto;
+    font-weight: bold;
+}
+
+.c2{
+    background-color: burlywood;
+}
+
+.flavortextbox {
+    font-style: italic;
+}
+.cardColumn {
+    position: relative;
+    height: 100%;
+    max-width: auto;
+    overflow: hidden;
+    display: inline-block;
+}
+.cardColumn{
+    color: #fff;  
+    text-align: center;
+}
+form {
+    text-align: center;
+}
+/*Slideshow*/
+  .carousel-fade .carousel-inner .item {
+    opacity: 0;
+    transition-property: opacity;
+  }
+  
+  .carousel-fade .carousel-inner .active {
+    opacity: 1;
+  }
+  
+  .carousel-fade .carousel-inner .active.left,
+  .carousel-fade .carousel-inner .active.right {
+    left: 0;
+    opacity: 0;
+    z-index: 1;
+  }
+  
+  .carousel-fade .carousel-inner .next.left,
+  .carousel-fade .carousel-inner .prev.right {
+    opacity: 1;
+  }
+  
+  .carousel-fade .carousel-control {
+    z-index: 2;
+  } 
+  @media all and (transform-3d), (-webkit-transform-3d) {
+      .carousel-fade .carousel-inner > .item.next,
+      .carousel-fade .carousel-inner > .item.active.right {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+      }
+      .carousel-fade .carousel-inner > .item.prev,
+      .carousel-fade .carousel-inner > .item.active.left {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+      }
+      .carousel-fade .carousel-inner > .item.next.left,
+      .carousel-fade .carousel-inner > .item.prev.right,
+      .carousel-fade .carousel-inner > .item.active {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+      }
+  } 
+  .carousel-caption {
+    text-shadow: 0 1px 4px rgba(0,0,0,.9);
+    font-size:17px;
+  }
+  .carousel-caption {
+    position: relative;
+    display: contents;
+  }
+  .carousel-caption h3 {
+    font-size: 30px;
+    font-family: 'Lato', sans-serif;
+  }
+/* @media(max-width: 650px){
+    .table {
+        display: none;
+    }
+    tr{
+        display: grid;
+        width: 100%;
+    }
+    .table td{
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+    .table td::before{
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 15px;
+    }
+} */

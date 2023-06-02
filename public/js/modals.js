@@ -50,8 +50,8 @@ for (let i = 0; i < openModalBtns.length; i++){
         } 
 
         else if (eventClasses.contains("cardM")){
-            document.getElementById("cardMIframe").src = `/cardDetails/${openModalBtns[i].id}`;
-            cardM.style.display = "flex";
+            document.getElementById("cardDetailFrame").src = `/cardDetail/${openModalBtns[i].id}`;
+            cardM.style.display = "flex";   
         }
 
         else if (eventClasses.contains("errorM")){
@@ -88,4 +88,4 @@ for (let i = 0; i < closeModalBtns.length; i++){
         event.target.parentElement.style.display = "none";
         modalBack.style.display = "none";
         })
-    };
+};
