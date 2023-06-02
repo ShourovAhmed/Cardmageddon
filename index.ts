@@ -69,6 +69,15 @@ let randomOrder=(cardsToRandomize:any[])=>{
     .map(({ value }) => value)
     return cardsToRandomize;
 }
+const shuffleArray = (array:any) => {
+    // create a copy of the array so that the original array is not mutated
+    
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
 let getCardFromApi= async (cardsid:string ) => {
 
@@ -276,7 +285,7 @@ app.get('/drawtest',async(req,res)=>{
     selectedDeck=0;
     //ListCardReady=Decks[selectedDeck];
     
-    ListCardReady=await app.locals.data;
+    let ListCardReady=await app.locals.data;
     console.log(ListCardReady);
     drawnCards=7;
     //let ListCardReady= await LoadingDeck();  //makes it run inside get
@@ -295,12 +304,17 @@ app.get('/drawtest',async(req,res)=>{
     // ListCardReady=ListCardReady!.map(value => ({ value, sort: Math.random() }))
     // .sort((a, b) => a.sort - b.sort)
     // .map(({ value }) => value);
-    //reshuffles en updates to lacals
+    // reshuffles en updates to lacals
+
+   
+    
 
     //app.locals.data =ListCardReady;
+    shuffleArray(ListCardReady[0].simpleCard);
+    app.locals.data =ListCardReady;
     
     
-    
+   
     
 
     res.render("drawtest",{
@@ -336,8 +350,9 @@ app.post("/drawtest", async(req,res)=>{
     }
     if(buttonType=='NewHand'){
 
-        let ListCardReady=await ListCardReadyPreload;
-        //let ListCardReady=randomOrder(await ListCardReadyPreload);
+        //let ListCardReady=await ListCardReadyPreload;//was enabled
+        let ListCardReady=await app.locals.data;
+        
         drawnCards=7;
         
         
@@ -348,6 +363,17 @@ app.post("/drawtest", async(req,res)=>{
         // ListCardReady=ListCardReady!.map(value => ({ value, sort: Math.random() }))
         // .sort((a, b) => a.sort - b.sort)
         // .map(({ value }) => value);
+
+
+         //newer vers
+        //  ListCardReady[0].simpleCard!.map((value: any) => ({ value, sort: Math.random() })).sort((a: { sort: number; }, b: { sort: number; }) => a.sort - b.sort).map(({ value }) => value);
+
+        
+        
+        shuffleArray(ListCardReady[0].simpleCard);
+        //ListCardReady[0].simpleCard
+
+    //reshuffles en updates to lacals
         
         app.locals.data =ListCardReady;
         
@@ -373,7 +399,7 @@ app.post("/drawtest", async(req,res)=>{
         
         drawnCards++;
 
-        let ListCardReady=await ListCardReadyPreload;
+        //let ListCardReady=await ListCardReadyPreload; //was enabled
         ListCardReady=app.locals.data;
 
         res.render("drawtest",{
