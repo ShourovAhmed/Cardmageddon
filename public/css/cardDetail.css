@@ -14,11 +14,18 @@ body { margin: 0; font: 16px/1.3 sans-serif; }
 }
 .columnA{
     vertical-align: text-top;
-    font-weight: 600;
+    font-weight: bold;
 }
 .columnB{
     column-width: auto;
+    font-weight: bold;
+
 }
+
+.c2{
+    background-color: burlywood;
+}
+
 .flavortextbox {
     font-style: italic;
 }
@@ -54,47 +61,6 @@ body { margin: 0; font: 16px/1.3 sans-serif; }
     background: none 50% no-repeat;
     background-size: cover;
 }
-.cardColumn .prevNext {
-    position: absolute;
-    z-index: 1;
-    top: 50%;
-    width: 100%;
-    height: 0;
-}
-.cardColumn .prevNext > div+div {
-    visibility: hidden; /* Hide all but first container */
-}
-.cardColumn .prevNext a {
-    background: #fff;
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    opacity: 0.7;
-    -webkit-transition: 0.3s;
-            transition: 0.3s;
-    -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
-    left: 0;
-}
-.cardColumn .prevNext a:hover {
-  opacity: 1;
-}
-.cardColumn .prevNext a+a {
-  left: auto;
-  right: 0;
-}
-
-/*Add line for each slide*/
-
-#s1:target ~ .prevNext >*:nth-child(1) {visibility: visible;}
-#s2:target ~ .prevNext >*:nth-child(2) {visibility: visible;}
-#s3:target ~ .prevNext >*:nth-child(3) {visibility: visible;}
-#s4:target ~ .prevNext >*:nth-child(4) {visibility: visible;}
-
-#s1:target ~ .cardImage {transform: translateX(   0%); -webkit-transform: translateX(   0%);}
-#s2:target ~ .cardImage {transform: translateX(-100%); -webkit-transform: translateX(-100%);}
-#s3:target ~ .cardImage {transform: translateX(-200%); -webkit-transform: translateX(-200%);}
-#s4:target ~ .cardImage {transform: translateX(-300%); -webkit-transform: translateX(-300%);}
 
 .cardColumn{
     color: #fff;  

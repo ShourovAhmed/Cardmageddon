@@ -25,6 +25,7 @@ main{
     grid-area: main;
     display: grid;
     grid-template-areas: 'sub-header sub-header sub-header sub-header sub-header'
+                         'info       info       info       info       info'
                          'aside      view       view       view       view';
 }
 
@@ -35,19 +36,59 @@ button {
 h2{
     color: var(--dark-colour);
 }   
-
 .sub-header{
+    grid-area: sub-header;
+    width: 100;
+    position: sticky;
+    z-index: 90;
+    top: 0;
+}
+.sub-header-top{
     padding: 0.6rem 1.5rem 0.6rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    grid-area: sub-header;
+
     background-color:var(--subHeader-colour);
-    position: sticky;
-    top: 0;
-    z-index: 1;
 }
 
+/* INFO TEXT BOX */
+#info-bar{
+    grid-area: info;
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    padding: 0.3rem;
+    position: relative;
+    /* W3 scools from here
+    https://www.w3schools.com/css/tryit.asp?filename=trycss3_animation_fill-mode3*/
+    animation-name: infoHide;
+    animation-duration: 4.5s;  
+    animation-fill-mode: both;
+}
+  
+  @keyframes infoHide {
+    0% {top: -3rem;}
+    6% {top: 0;}
+    78% {top: 0;}
+    100% {top: -3rem;}
+  }
+    /*tot hier*/
+
+.succesAlert{
+    background-color: greenyellow;
+}
+.succesAlert > p {
+    color: green;
+
+}
+.failAlert{
+    background-color: rgb(255, 171, 75);
+}
+.failAlert > p{
+    color: rgb(197, 0, 0);
+
+}
 
 
 aside{
@@ -59,7 +100,7 @@ aside{
 }
 aside > .deck-summary{
     position: sticky;
-    top: 4.5rem;
+    top: 6rem;
 }
 @media all and (width < 933px) {
     aside{
@@ -105,6 +146,7 @@ select{
 
 }
 
+
 /* DEMO CARDSTACK SHADOWS */
 .stack{
     box-shadow: 0.3rem -0.3rem 0 rgba(55, 55, 55, 0.86);
@@ -134,12 +176,14 @@ select{
 .card-count > p{
     color: var(--header-colour);
 }
+.card-count > a{
+    transition: ease-in 0.3s;
+}
+.card-count > a:hover{
+    transform: scale(1.26);
+}
 .count-up{
     font-size: 2.1rem;
-}
-.count-up:hover{
-    transform: scale(1.26);
-    transition: ease-in 0.3s;
 }
 .count-now{
     font-size: 2.1rem;
@@ -148,11 +192,7 @@ select{
     font-size: 2.1rem;
     margin-bottom: 0.3rem;
 }
-.count-down:hover{
-    transform: scale(1.26);
-    transition: ease-in 0.3s;
 
-}
 .deck-image-container, .deck-summary{
     transition: ease-in-out 0.6s;
 }
@@ -167,10 +207,7 @@ select{
     transform: scale(117%);
 
 }
-.deck-summary:hover, .deck-summary:hover > .deck-image-container{
 
-
-}
 .deck-summary {
 
     display: flex;
@@ -186,17 +223,14 @@ select{
 }
 .deck-image-container{
     position: relative;
+    display: flex;
     overflow: hidden;
     border: 0.12rem solid rgb(85, 15, 15);
     width: 15rem;
     height: 18rem;
-    border-radius: 1.2rem;    
-}
-.deck-image{
-    position: absolute;
-    left: -6.96rem;
-    top: -4.75rem;
-    
+    border-radius: 1.2rem;  
+    justify-content: center;
+    align-items: center;
 }
 
 .card{
@@ -221,8 +255,7 @@ select{
 }
 
 .deck-image{
-    width: 30rem;
-    border-radius: 0.6rem;
+    height: 101.1%;
 }
 
 
@@ -267,8 +300,31 @@ footer{
     margin-right:0.3rem;
 }
 
-modalId{
-    width: 50rem;
-    height: 50rem;
-    background-color: aqua;
+body:has(.image-chooser){
+    background-color: var(--active-colour);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.image-chooser{
+    height: 96vh;
+    width: 96vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.image-chooser *{
+    margin: 0;
+    padding: 0;
+}
+.image-chooser > img{
+ padding: 1.5rem;
+ border-radius: 3rem;
+ width: 54%;
+}
+#deckImgM iframe{
+min-height: 30vh;
+}
+.image-chooser input{
+    display: none;
 }

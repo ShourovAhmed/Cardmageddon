@@ -67,7 +67,7 @@ modal{
     outline: var(--header-colour) 0.12rem solid;
 }
 
-#request-login-btn{
+form > button{
     margin-left: 3rem;
     border-radius: 0.3rem;
     background-color: var(--primary-colour);

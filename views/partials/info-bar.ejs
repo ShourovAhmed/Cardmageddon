@@ -1,0 +1,8 @@
+<%if(locals.info){
+    let alert = "succes";
+    if(!info.succes){
+        alert = "fail";
+    }
+    %>
+<section id="info-bar" class="<%=alert%>Alert"><p><%=info.message%></p></section>
+<%}%>

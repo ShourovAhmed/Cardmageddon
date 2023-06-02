@@ -19,40 +19,20 @@
         <table border="1" class="carddetailTable">
             <section>
                 <tr>
-                    <td rowspan="13">
+                    <td rowspan="23">
                         <div class="cardColumn">
-                            <s id="s1"></s> 
-                            <s id="s2"></s>
-                            <s id="s3"></s>
-                            <s id="s4"></s>
                             <div class="cardImage">
                                 <div class="card">
-                                    
                                     <img src="<%= localCard.img %>">
                                 </div>
-                                <div class="card">
-                                    <img src="./assets/images/placeholders/planeswalkers.jpg" alt="planeswalkers">
-                                </div>
-                                <div class="card">
-                                    <img src="./assets/images/placeholders/artifact.jpg" alt="planeswalkers">
-                                </div>
-                                <div class="card">
-                                    <img src="./assets/images/placeholders/sorcery.jpg" alt="planeswalkers">
-                                </div>
-                                
                             </div>
-                            <div class="prevNext">
-                                <div><a href="#s4"></a><a href="#s2"></a></div>
-                                <div><a href="#s1"></a><a href="#s3"></a></div>
-                                <div><a href="#s2"></a><a href="#s4"></a></div>
-                                <div><a href="#s3"></a><a href="#s1"></a></div>
-                              </div>
+                                
                             <form action="#">
                                 <label for="decks">Decks: </label>
                                 <select class="addDeckButton" name="decks" id="decks">
-                                    <option value="AwsomeDeck">AwsomeDeck</option>
-                                    <option value="MonoRedAgro">MonoRedAgro</option>
-                                    <option value="GreenStompy">GreenStompy</option>
+                                    <% for(let i = 0; i < decks.length; i++){ %>
+                                    <option value="<%= decks[i].name %>"><%= decks[i].name %></option>
+                                    <% } %>
                                 </select>
                                 <button>Add</button>
                             </form>
@@ -61,6 +41,7 @@
                 </tr>
             </section>
             <section>
+            <tr>
                 <td class="columnA">
                     <div class="columnA">
                         Card Name:
@@ -72,6 +53,7 @@
                     </div>
                 </td>
             </tr>
+            <% if(card.cmc != 0){ %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -95,6 +77,7 @@
                     </div>
                 </td>
             </tr>
+            <% } %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -107,6 +90,7 @@
                     </div>
                 </td>
             </tr>
+            <% if(card.colorId.length >= 1){ %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -122,6 +106,7 @@
                     </div>
                 </td>
             </tr>
+            <% } %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -134,6 +119,7 @@
                     </div>
                 </td>
             </tr>
+            <% if(card.text){ %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -155,6 +141,7 @@
                     </div>
                 </td>
             </tr>
+            <% } %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -195,6 +182,127 @@
                 </td>
             </tr>
             <% } %>
+
+            <% if(card2 != null){ %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Card Name:
+                        </div>
+                    </td>
+                    <td class="columnB c2">
+                        <div class="columnB">
+                            <%= card2.name %>
+                        </div>
+                    </td>
+                </tr>
+                <% if(card2.manaCost.length >= 1){ %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Mana Cost:
+                        </div>
+                    </td>
+                    <td class="columnB c2">
+                        <div class="columnB">
+                            <% for(let i=0; i<card2.manaCost.length; i++){
+                                const mana = ['W', 'U', 'B', 'R', 'G'];
+                                if (!mana.includes(card2.manaCost[i])){
+                            %>
+    
+                                    <%= card2.manaCost[i] %>
+                            <%
+                                }
+                                else{                   
+                            %>
+                                <img src="/assets/images/mana/<%= card2.manaCost[i]%>.png" alt="">
+                            <% }} %>
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+                <% if(card2.colorId){ %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Color Identity:
+                        </div>
+                    </td>
+                    <td class="columnB c2">
+                        <div class="columnB">
+                            <% for(let i=0; i<card2.colorId.length; i++){
+                            %>
+                            <img src="/assets/images/mana/<%= card2.colorId[i]%>.png">
+                            <% } %>
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Types:
+                        </div>
+                    </td>
+                    <td class="columnB c2">
+                        <div class="columnB">
+                            <%= card2.type %>
+                        </div>
+                    </td>
+                </tr>
+                <% if(card2.text){ %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Card Text:
+                        </div>
+                    </td>
+                    <td>
+                        <div class="columnB c2">
+                            <% for(let i=0; i<card.text.length; i++){
+                            %>
+                            <div class="cardtextbox">
+                                <%= card2.text[i]%>
+                            </div>
+                            <% if (i != card2.text.length - 1){ // geen break na laatste element
+                            %>
+                            <br>
+                            <% }} %>
+    
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+                <% if(card2.power && card2.toughness){ %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Power / Toughness:
+                        </div>
+                    </td>
+                    <td class="columnB c2">
+                        <div class="columnB">
+                            <%= card2.power %> / <%= card2.toughness %>
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+                <% if(card2.flavorText){ %>
+                <tr>
+                    <td class="columnA c2">
+                        <div class="columnA">
+                            Flavor Text:
+                        </div>
+                    </td>
+                    <td class="columnB c2">
+                        <div class="columnB">
+                            <div class="flavortextbox"> <%= card2.flavorText %> </div>
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+            <% } %> 
+
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -202,10 +310,13 @@
                     </div>
                 </td>
                 <td class="columnB">
+                    <div class="columnB">
                     <%= card.exp %>
+                </div>
                 </div>
                 </td>
             </tr>
+            <% if(card.artist){ %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -218,6 +329,7 @@
                     </div>
                 </td>
             </tr>
+            <% } %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -226,21 +338,21 @@
                 </td>
                 <td class="columnB">
                     <div class="columnB">
-                        <div>Standard: <%= card.legality.standard %></div>
-                        <div>Alchemy: <%= card.legality.alchemy %></div>
-                        <div>Pioneer: <%= card.legality.pioneer %></div>
-                        <div>Explorer: <%= card.legality.explorer %></div>
-                        <div>Modern: <%= card.legality.modern %></div>
-                        <div>Brawl: <%= card.legality.brawl %></div>
-                        <div>Legacy: <%= card.legality.legacy %></div>
-                        <div>Historic: <%= card.legality.historic %></div>
-                        <div>Vintage: <%= card.legality.vintage %></div>
-                        <div>Pauper: <%= card.legality.pauper %></div>
-                        <div>Commander: <%= card.legality.commander %></div>
+                        <div class="columnB">Standard: <%= card.legality.standard %></div>
+                        <div class="columnB">Alchemy: <%= card.legality.alchemy %></div>
+                        <div class="columnB">Pioneer: <%= card.legality.pioneer %></div>
+                        <div class="columnB">Explorer: <%= card.legality.explorer %></div>
+                        <div class="columnB">Modern: <%= card.legality.modern %></div>
+                        <div class="columnB">Brawl: <%= card.legality.brawl %></div>
+                        <div class="columnB">Legacy: <%= card.legality.legacy %></div>
+                        <div class="columnB">Historic: <%= card.legality.historic %></div>
+                        <div class="columnB">Vintage: <%= card.legality.vintage %></div>
+                        <div class="columnB">Pauper: <%= card.legality.pauper %></div>
+                        <div class="columnB">Commander: <%= card.legality.commander %></div>
                     </div>
                 </td>
             </tr>        
-            </section>      
+            </section>
         </table>
     </main>
 </body>
