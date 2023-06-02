@@ -33,7 +33,7 @@ export const db = client.db("userData");
 let pics = [{name: '', img: '', rarity: '', id: '', multipleCards: false, doubleSided: false, cardFace: 0 }];
 let pageNumber: number = 0;
 
-let pics = [{name: '', img: '', rarity: ''}];
+//let pics = [{name: '', img: '', rarity: ''}];
 export let cookieInfo : CookieInfo = new CookieInfo;
 
 app.get("//:id", async(req, res) =>{
