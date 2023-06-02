@@ -90,7 +90,7 @@
                     </div>
                 </td>
             </tr>
-            <% if(card.colorId){ %>
+            <% if(card.colorId.length >= 1){ %>
             <tr>
                 <td class="columnA">
                     <div class="columnA">
@@ -196,7 +196,7 @@
                         </div>
                     </td>
                 </tr>
-                <% if(card2.cmc != 0){ %>
+                <% if(card2.manaCost.length >= 1){ %>
                 <tr>
                     <td class="columnA c2">
                         <div class="columnA">
