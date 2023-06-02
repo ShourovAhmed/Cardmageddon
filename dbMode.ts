@@ -27,7 +27,7 @@ const coreLoginData : LoginData[] = [
     {id: 0, user_id: 0, username: "Admin", password: fullHash("Admin123")},
     {id: 1, user_id: 1, username: "Bert", password: fullHash("Bert123")},
     {id: 2, user_id: 2, username: "Narayan", password: fullHash("Narayan123")},
-    {id: 3, user_id: 3, username: "Sascha", password: fullHash("Sasha123")},
+    {id: 3, user_id: 3, username: "Sascha", password: fullHash("Sascha123")},
     {id: 4, user_id: 4, username: "Shourov", password: fullHash("Shourov123")},
     {id: 5, user_id: 5, username: "User1", password: fullHash("User1123")},
 ];
