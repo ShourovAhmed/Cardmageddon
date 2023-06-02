@@ -266,7 +266,7 @@ let ListCardReadyPreload:any=iHatePromises(); //to fix promiseissues?
 // console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
 //let decksSelected:ListReadyDecksInterface=ListCardReadyPreload[0];
 let drawnCards:number=7;//startcount cards shown
-let selectedDeck:number=2;//default is first deck
+let selectedDeck:number=0;//default is first deck
 
 
 
@@ -296,8 +296,9 @@ app.get('/drawtest',async(req,res)=>{
     //ListCardReady=Decks[selectedDeck];
     
     let ListCardReady=await app.locals.data;
-    console.log(ListCardReady);
+    //console.log(ListCardReady);
     drawnCards=7;
+    selectedDeck=0;
     //let ListCardReady= await LoadingDeck();  //makes it run inside get
     
     //let ListCardReady=await ListCardReadyPreload;
@@ -345,7 +346,7 @@ app.post("/drawtest", async(req,res)=>{
     
     
     let buttonType:string= req.body.buttonType;
-    console.log(buttonType);
+    //console.log(buttonType);
    
     
     // let ListCardReady:any[]=req.app.get("ListCardReady");
@@ -356,45 +357,40 @@ app.post("/drawtest", async(req,res)=>{
    
 
     if(buttonType=='changeDeck'){
-        res.send("not implemented yet")
+        //res.send("not implemented yet")
+        //let selectMenuThing=req.body;
+        let selectMenuThing= req.body;//find value
+        var selectedValue = selectMenuThing[Object.keys(selectMenuThing)[0]];//this gives selected value
+        //console.log(selectMenuThing);
+        //console.log(value);//this gives 
+        //console.log(selectMenuThing.prefix);
+        selectedDeck=selectedValue;
 
+        let ListCardReady=await app.locals.data;
         
+        drawnCards=7;
+        shuffleArray(ListCardReady[selectedDeck].simpleCard);
+        app.locals.data =ListCardReady;
+
+        res.render("drawtest",{
+        
+            ListCardReady,
+            drawnCards,
+            selectedDeck
+            
+            
+        });
     }
     if(buttonType=='NewHand'){
 
         //let ListCardReady=await ListCardReadyPreload;//was enabled
         let ListCardReady=await app.locals.data;
         
-        drawnCards=7;
-        
-        
-
-        
-
-
-        // ListCardReady=ListCardReady!.map(value => ({ value, sort: Math.random() }))
-        // .sort((a, b) => a.sort - b.sort)
-        // .map(({ value }) => value);
-
-
-         //newer vers
-        //  ListCardReady[0].simpleCard!.map((value: any) => ({ value, sort: Math.random() })).sort((a: { sort: number; }, b: { sort: number; }) => a.sort - b.sort).map(({ value }) => value);
-
-        
-        
+        drawnCards=7;          
         shuffleArray(ListCardReady[selectedDeck].simpleCard);
-        //ListCardReady[0].simpleCard
-
-    //reshuffles en updates to lacals
+        //reshuffles en updates to lacals
+         app.locals.data =ListCardReady;
         
-        app.locals.data =ListCardReady;
-        
-        
-        
-        
-        
-        
-    
 
     res.render("drawtest",{
         

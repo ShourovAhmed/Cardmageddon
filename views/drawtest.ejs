@@ -19,11 +19,17 @@
 <article id="formDraw" action="">
   <form action="/drawtest" method="post">
     <label for="decks">Select deck</label>
-    <select >
-      <option name="buttonType" type="submit" value="NewHand">Deck1</option>
-      <option name="buttonType" type="submit" value="NewHand">Deck2</option>
-      <option  name="buttonType" type="submit" value="NewHand">Deck3</option>
+    <select name="Selection">
+<%
+                
+      for(let i =0;i<ListCardReady.length; i++){  
+%>
       
+  <option name="blabla" type="submit"  value="<%=i%>"><%=ListCardReady[i].deckName%></option>
+      
+      <% 
+    }
+      %>   
     </select>
     <button id="btnDrawTest"  name="buttonType"  type="submit" value="changeDeck" style="font-size: 0.7rem; padding: 0.03rem;">&nbsp;Select&nbsp;  </button>
   </form>
