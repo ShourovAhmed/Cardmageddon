@@ -8,6 +8,7 @@ import fetch from 'node-fetch';
 import { Card} from "./dbMode";
 import { log } from "console";
 import { TIMEOUT } from "dns";
+import { listenerCount } from "process";
 
 interface Deck{
     _id?: ObjectId,
@@ -34,10 +35,17 @@ interface simpleCardObject{
     rarity: string//might add something later
 }
 
+interface ListReadyDecksInterface{
+   
+    deckName:string,
+    simpleCard:simpleCardObject[]
+
+}
+
 const app = express();
 
 app.locals.data = {};
-//"mongodb+srv://admin:admin@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority"
+
 const uri: string =
     "mongodb+srv://Sascha:mongo123@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority";
 
@@ -124,7 +132,7 @@ let makeIdList=(cards:CardS[],cardsIds:string[]) => {
     return cardsIds;
 
 }
-let LoadingDeck =async () => {//this was in GET
+let LoadingDeck =async () => {
     try{
         //let startTime = performance.now()
 
@@ -163,83 +171,133 @@ let LoadingDeck =async () => {//this was in GET
     }
     
 }
-// let LoadingAllDecks =async () => {//will do as before but load all decks so cards wil be one space deeper inside the array
+let LoadingAllDecks =async () => {//will do as before but load all decks so cards wil be one space deeper inside the array
 
-// await client.connect();
-// try{
-//         const deckCollection= client.db("userData").collection("decks");
+
+try{
+        await client.connect();
+
+        const deckCollection= client.db("userData").collection("decks");
     
-//         const decksDatabase= await deckCollection.find<Deck>({}).toArray();
+        const decksDatabase= await deckCollection.find<Deck>({}).toArray();
 
-//         let ListReadyDecks:any[]=[];
-//         for(let i:number=0;i<decksDatabase.length;i++){
+        let ListReadyDecks:ListReadyDecksInterface[]=[];
+        for(let i:number=0;i<decksDatabase.length;i++){
             
-//             let cards:CardS[]= decksDatabase[i].cards!; 
+            let cards:CardS[]= decksDatabase[i].cards!; 
+            let deckname:string=decksDatabase[i].name;
+            console.log(deckname)
+            //might need to add deck id here later+interface
 
-//             let cardsIds:string[]=[]; 
-//             cardsIds=makeIdList(cards,cardsIds);//list of ids neeeded for apicall later
+            let cardsIds:string[]=[]; 
+            cardsIds=makeIdList(cards,cardsIds);//list of ids neeeded for apicall later
 
-//             let ListCardReady= makeCardListFromApi(cardsIds);
+            let simpleCard:simpleCardObject[]=[];
+            let ListCardReady= await makeCardListFromApi(cardsIds,simpleCard);
+            //simpleCard=ListCardReady!;
             
-//             ListReadyDecks.push(await ListCardReady);
-//             console.log('\x1b[36m%s\x1b[0m',"deck "+i+" loaded");
+            ListReadyDecks[i]={
+                deckName:deckname,
+                simpleCard:[]
+            }
+
+
+
+            
+            
+            for(let j=0;j<ListCardReady.length;j++){
+                ListReadyDecks[i].simpleCard.push(ListCardReady[j]);
+            }
+            
+            //ListReadyDecks.push(await ListCardReady);
+            console.log('\x1b[36m%s\x1b[0m',"deck "+i+" loaded");
             
 
-//         }
-//         console.log(ListReadyDecks);
-//         return ListReadyDecks;
+        }
+        //console.log(ListReadyDecks);
+        return ListReadyDecks;
 
 
-//     }catch(e){
-//         console.error(e);
-//     }finally{
-//         client.close();
+    }catch(e){
+        console.error(e);
+    }finally{
+        client.close();
         
         
-//     }
-// }
+    }
+}
 
 //debugging load time
 //let startTime = performance.now()
     
 
-let ListCardReadyPreload=  LoadingDeck();//OLD LOADS 1ST DECK ONLY
+//let ListCardReadyPreload=  LoadingDeck();//OLD LOADS 1ST DECK ONLY
 
-//let ListCardReadyPreload=LoadingAllDecks();//new one
+//let ListCardReadyPreload=await LoadingAllDecks();//loads alldecks
+let iHatePromises =async () => {
+    let ListCardReadyPreload=await LoadingAllDecks();
+    return ListCardReadyPreload;
+
+}
+let ListCardReadyPreload:any=iHatePromises(); //to fix promiseissues?
 
 
 //let endTime = performance.now()
 
 // console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
-
+//let decksSelected:ListReadyDecksInterface=ListCardReadyPreload[0];
 let drawnCards:number=7;//startcount cards shown
-let ListCardReady=ListCardReadyPreload;
+let selectedDeck:number=0;//default is first deck
+
+
+
+// let deckSelecting =async (ListCardReadyPreload:ListReadyDecksInterface,deckChoice:number) => {
+    
+//     let allDecks:ListReadyDecksInterface=  ListCardReadyPreload;
+//     console.log("readypreload:"+ListCardReadyPreload);
+//     console.log("alldecks:"+allDecks);
+//     //selectedDeck=allDecks[deckChoice];
+//     // return selectedDeck;
+
+
+
+// }
+// let selectedDeck:ListReadyDecksInterface[]= 
+//deckSelecting(ListCardReadyPreload,0);
+let ListCardReady:ListReadyDecksInterface=ListCardReadyPreload
 app.locals.data =ListCardReady;//makes global varianle wich can be updated and accessed in all scopes//required for updating/randomizing from post scope -> get
+//console.log(app.locals.data);
 
 app.get('/drawtest',async(req,res)=>{
+    //console.log(app.locals.data);
+    //let ListCardReady=await ListCardReadyPreload;//was enabled
+    //console.log(ListCardReady);
+    //let Decks=await app.locals.data;
+    selectedDeck=0;
+    //ListCardReady=Decks[selectedDeck];
     
-    let ListCardReady=await ListCardReadyPreload;
-    ListCardReady=app.locals.data;
+    ListCardReady=await app.locals.data;
+    console.log(ListCardReady);
     drawnCards=7;
     //let ListCardReady= await LoadingDeck();  //makes it run inside get
     
     //let ListCardReady=await ListCardReadyPreload;
     //ListCardReady= randomOrder(await ListCardReady!);
-    ListCardReady=await ListCardReadyPreload;
+    //ListCardReady=await ListCardReadyPreload;//wasenabled
     //let ListCardReady=randomOrder(await ListCardReadyPreload);
-    drawnCards=7;
+    //drawnCards=7;
     
     
 
     
 
 
-    ListCardReady=ListCardReady!.map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
-    //this reshuffles but doesnt update te get?
+    // ListCardReady=ListCardReady!.map(value => ({ value, sort: Math.random() }))
+    // .sort((a, b) => a.sort - b.sort)
+    // .map(({ value }) => value);
+    //reshuffles en updates to lacals
 
-    app.locals.data =ListCardReady;
+    //app.locals.data =ListCardReady;
     
     
     
@@ -248,7 +306,8 @@ app.get('/drawtest',async(req,res)=>{
     res.render("drawtest",{
         
         ListCardReady,
-        drawnCards
+        drawnCards,
+        selectedDeck
         
     });
     
@@ -286,11 +345,10 @@ app.post("/drawtest", async(req,res)=>{
         
 
 
-        ListCardReady=ListCardReady!.map(value => ({ value, sort: Math.random() }))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({ value }) => value);
-        //this reshuffles but doesnt update te get?
-
+        // ListCardReady=ListCardReady!.map(value => ({ value, sort: Math.random() }))
+        // .sort((a, b) => a.sort - b.sort)
+        // .map(({ value }) => value);
+        
         app.locals.data =ListCardReady;
         
         
