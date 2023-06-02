@@ -316,7 +316,7 @@ app.get("/cardDetail/:id", async (req, res) => {
 
     
 
-    res.render("cardDetail2", {card: card, card2: card2, localCard: pics[id], decks: decksDb});
+    res.render("cardDetail", {card: card, card2: card2, localCard: pics[id], decks: decksDb});
 
     
 });

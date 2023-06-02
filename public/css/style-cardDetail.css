@@ -14,7 +14,13 @@
 }
 .columnB{
     column-width: auto;
+    font-weight: bold;
 }
+
+.c2{
+    background-color: burlywood;
+}
+
 .flavortextbox {
     font-style: italic;
 }

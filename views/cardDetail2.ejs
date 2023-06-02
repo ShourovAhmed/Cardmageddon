@@ -22,20 +22,21 @@
                     <td rowspan="23">
                         <div class="cardColumn">
                             <div class="cardImage">
-                                <div class="card">
+                                <div class="card">     
                                     <img src="<%= localCard.img %>">
-                                </div>
+                                </div>    
                             </div>
-                                
-                            <form action="#">
+
+                            <form action="#" name="deckSelector">
                                 <label for="decks">Decks: </label>
                                 <select class="addDeckButton" name="decks" id="decks">
                                     <% for(let i = 0; i < decks.length; i++){ %>
                                     <option value="<%= decks[i].name %>"><%= decks[i].name %></option>
                                     <% } %>
                                 </select>
-                                <button>Add</button>
+                                <a href="/deck/<%= decks[1].id %>/<%= localCard.id %>/1">Add</a>
                             </form>
+                            <p> regh</p>
                         </div>
                     </td>
                 </tr>
@@ -311,8 +312,8 @@
                 </td>
                 <td class="columnB">
                     <div class="columnB">
-                    <%= card.exp %>
-                </div>
+                        <%= card.exp %>
+                    </div>
                 </div>
                 </td>
             </tr>
