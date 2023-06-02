@@ -266,7 +266,7 @@ let ListCardReadyPreload:any=iHatePromises(); //to fix promiseissues?
 // console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
 //let decksSelected:ListReadyDecksInterface=ListCardReadyPreload[0];
 let drawnCards:number=7;//startcount cards shown
-let selectedDeck:number=0;//default is first deck
+let selectedDeck:number=2;//default is first deck
 
 
 
@@ -292,7 +292,7 @@ app.get('/drawtest',async(req,res)=>{
     //let ListCardReady=await ListCardReadyPreload;//was enabled
     //console.log(ListCardReady);
     //let Decks=await app.locals.data;
-    selectedDeck=0;
+    
     //ListCardReady=Decks[selectedDeck];
     
     let ListCardReady=await app.locals.data;
@@ -320,7 +320,7 @@ app.get('/drawtest',async(req,res)=>{
     
 
     //app.locals.data =ListCardReady;
-    shuffleArray(ListCardReady[0].simpleCard);
+    shuffleArray(ListCardReady[selectedDeck].simpleCard);
     app.locals.data =ListCardReady;
     
     
@@ -357,6 +357,8 @@ app.post("/drawtest", async(req,res)=>{
 
     if(buttonType=='changeDeck'){
         res.send("not implemented yet")
+
+        
     }
     if(buttonType=='NewHand'){
 
@@ -380,7 +382,7 @@ app.post("/drawtest", async(req,res)=>{
 
         
         
-        shuffleArray(ListCardReady[0].simpleCard);
+        shuffleArray(ListCardReady[selectedDeck].simpleCard);
         //ListCardReady[0].simpleCard
 
     //reshuffles en updates to lacals
@@ -397,7 +399,8 @@ app.post("/drawtest", async(req,res)=>{
     res.render("drawtest",{
         
         ListCardReady,
-        drawnCards
+        drawnCards,
+        selectedDeck
         
         
     });
@@ -414,7 +417,8 @@ app.post("/drawtest", async(req,res)=>{
 
         res.render("drawtest",{
             ListCardReady,
-            drawnCards
+            drawnCards,
+            selectedDeck
             
                 
         });}

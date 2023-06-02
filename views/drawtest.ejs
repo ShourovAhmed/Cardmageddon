@@ -85,7 +85,7 @@
 
     <%
                 
-    for(let i =0;i<drawnCards&&i<ListCardReady[0].simpleCard.length; i++){  
+    for(let i =0;i<drawnCards&&i<ListCardReady[selectedDeck].simpleCard.length; i++){  
 %>
 
     
@@ -93,7 +93,7 @@
       
      
       
-      <img src="<%=ListCardReady[0].simpleCard[i].img%>" id="drawPile" alt=""> 
+      <img src="<%=ListCardReady[selectedDeck].simpleCard[i].img%>" id="drawPile" alt=""> 
 
 
 
