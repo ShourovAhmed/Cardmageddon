@@ -99,6 +99,7 @@ let makeCardListFromApi =async(cardsIds:string[],simpleCard:simpleCardObject[]) 
 
         
         let cardObject=await getCardFromApi(cardsIds[i]);
+        if(cardObject.image_uris){
 
         //ListCardReady.push(cardObject);   oldway
         
@@ -107,7 +108,16 @@ let makeCardListFromApi =async(cardsIds:string[],simpleCard:simpleCardObject[]) 
             img: cardObject.image_uris.normal,
             rarity: cardObject.rarity
         };    
+    }  
+    else{
+        simpleCard[i] = {
+            name: cardObject.name,
+            //img: "https://cards.scryfall.io/normal/front/0/d/0d3c0c43-2d6d-49b8-a112-07611a23ae69.jpg",
+            img:cardObject.card_faces[0].image_uris,
+            rarity: cardObject.rarity
+        }; 
 
+    } 
 
     }//makes array of cards in deck
 
