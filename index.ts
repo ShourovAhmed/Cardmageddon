@@ -46,7 +46,11 @@ app.get("/", (req, res) =>{
 
 app.post("/", async(req, res) =>{
     let info : Info = new Info();
-    if(req.body.cookie != "on"){
+    if(cookieInfo.verified){
+        info.succes = true;
+        info.message = "Je login was nog actief";
+    }
+    else if(req.body.cookie != "on"){
         info.message = "You realy need to except out evil cookie."; 
     }
     else{
