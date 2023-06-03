@@ -386,12 +386,12 @@ app.post("/decks", async (req,res) =>{
         db.collection("decks").insertOne(newDeck);
         let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
         let info : Info = new Info(true, `Deck: "${newDeckName}" Toegevoegd`);
-        res.render("decks", {title: "Decks", decks: decks, info: info});
+        res.render("decks", {title: "Decks", decks: await getDecks(cookieInfo.id), info: info});
     }
     catch(e: any){
         let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
         let info : Info = new Info(false, `Toevoegen mislukt`)
-        res.render("decks", {title: "Decks", decks: decks, info: info});
+        res.render("decks", {title: "Decks", decks: await getDecks(cookieInfo.id), info: info});
     }
 });
 
