@@ -4,7 +4,7 @@ import { MongoClient } from "mongodb";
 export const CryptoJS = require('crypto-js');
 //MONGO
 export const uri : string =
-    "mongodb+srv://Pintjens:Dobby963@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority";
+    "mongodb+srv://admin:admin@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority";
 export const client = new MongoClient(uri);
 export const db = client.db("userData");
 
