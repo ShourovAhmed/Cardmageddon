@@ -414,8 +414,9 @@ app.get("/deck/:id", async(req,res) =>{
 app.post("/deck", async (req,res) =>{
 let deckId : number = parseInt(req.body.deckId);
 if(deckId - parseFloat(req.body.deckId) != 0){
-    // res.render("decks", {title: "Decks", decks: await getDecks(), info: new Info(false, "Foutief Deck ID")});
+    res.render("decks", {title: "Decks", decks: await getDecks(cookieInfo.id), info: new Info(false, "Foutief Deck ID")});
 }
+
 let accessLvl : number = deckAccess(deckId)
 // REMOVE DECK
 
@@ -452,18 +453,26 @@ app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
 });
 
 // START DECK
-//update deck name
+
 app.post("/deck/:deckId", async(req,res)=>{
-    if(req.body.removeDeck){
+
+    let deckId : number = parseInt(req.params.deckId);
+    log(deckId);
+    if(deckId - parseFloat(req.params.deckId) != 0){
+        res.render("decks", {title: "Decks", decks: await getDecks(cookieInfo.id), info: new Info(false, "Foutief Deck ID")});
+    }
+    else if(req.body.removeDeck){ //Delete Deck
+        await db.collection("users").updateOne({id: cookieInfo.id}, {$pullAll: {decks: [deckId]}});
         await db.collection("decks").deleteOne({id: parseInt(req.params.deckId)});
+
         res.redirect("/decks");
     }
-    else{
+    else{ // Update deck name
         await db.collection("decks").updateOne({id: parseInt(req.params.deckId)},{$set:{name: req.body.deckName}});
         res.redirect(`/deck/${req.params.deckId}`);
     }
-
-});
+ 
+}); 
 // END DECK
 
 
