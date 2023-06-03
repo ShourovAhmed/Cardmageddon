@@ -1,6 +1,10 @@
 import { MongoClient, ObjectId, Collection } from "mongodb";
 import { CardS, Variation, Deck, Card, Set, ImageUris, User, LoginData } from "./types";
-import { fullHash, emailHash, getSet, setToCardSs, makeNewDeck } from "./functions";
+import { fullHash, emailHash } from "./functions/coreFunctions";
+import { getSet } from "./functions/scryfallFunctions";
+import { setToCardSs } from "./functions/conversionFunctions";
+import { makeNewDeck } from "./functions/deckFunctions";
+
 const readLine = require('readline-sync');
 
 const uri: string =

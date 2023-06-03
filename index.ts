@@ -3,8 +3,15 @@ import fetch from 'node-fetch';
 import {MongoClient} from 'mongodb';
 import {Deck, CardS, Info, CookieInfo, User, LoginData, simpleCardObject, ListReadyDecksInterface} from "./types";
 import { render } from 'ejs';
-import { getFreeId, getCard, cardToCardS, getDeckImages, getDeck, addOrRemoveCard, deckAccess, getDecks, emailHash, makeNewDeck, fullHash} from './functions';
-import { maxNonLandCardcount, maxTotalCardsInDeck, mssg } from './staticValues';
+
+import { fullHash, emailHash, deckAccess, capitalizeFirstLetter } from './functions/coreFunctions';
+import { splitMana } from './functions/conversionFunctions';
+import { iHatePromises, shuffleArray } from './functions/drawFunctions';
+import { getCard } from './functions/scryfallFunctions';
+import { addOrRemoveCard, makeNewDeck, getDeckImages } from './functions/deckFunctions';
+import { getDeck, getDecks } from './functions/mongoFunctions';
+
+import { db, client, maxNonLandCardcount, maxTotalCardsInDeck, mssg } from './staticValues';
 import { log, table } from 'console';
 import { title } from 'process';
 
@@ -12,7 +19,6 @@ import { title } from 'process';
 
 
 //EXPRESS
-const session = require('express-session')
 const app = express();
 
 
@@ -24,11 +30,7 @@ app.use(express.json({limit: '1mb'}));
 app.use(express.urlencoded({extended: true}));
 
 
-//MONGO
-const uri : string =
-    "mongodb+srv://admin:admin@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(uri);
-export const db = client.db("userData");
+
 
 let pics = [{name: '', img: '', rarity: '', id: '', multipleCards: false, doubleSided: false, cardFace: 0 }];
 let pageNumber: number = 0;
@@ -528,193 +530,18 @@ app.post("/deckImage/:deckId/", async(req,res) =>{
 });
 
 
-
-app.get("/cardDetails/:id", async(req,res) =>{
-    //to test links
-    console.log(req.params.id);
-    res.redirect("/404");
-});
-app.get("/drawtest/:deckId", async(req,res) => {
-    //to test links
-    res.redirect("/404");
-});
-
 //Drawtest
 
-const shuffleArray = (array:any) => {
-    // create a copy of the array so that the original array is not mutated
-    
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
 
-let getCardFromApi= async (cardsid:string ) => {
-
-//gets card object from id to api call
-    let id= cardsid;
-    let response = await fetch(`https://api.scryfall.com/cards/${id}`); 
-    //let cardFromApi: string[]=[];//old
-    let cardFromApi=[];
-    cardFromApi = await response.json();
-    
-    
-    return cardFromApi;       
-}
-let makeCardListFromApi =async(cardsIds:string[],simpleCard:simpleCardObject[]) => {
-
-
-    let ListCardReady: any[]=[];       
-    for(let i=0;i<cardsIds.length;i++){
-
-        
-        let cardObject=await getCardFromApi(cardsIds[i]);
-        if(cardObject.image_uris){
-
-        //ListCardReady.push(cardObject);   oldway
-        
-            simpleCard[i] = {
-            name: cardObject.name,
-            img: cardObject.image_uris.normal,
-            rarity: cardObject.rarity
-        };    
-    }  
-    else{
-        simpleCard[i] = {
-            name: cardObject.name,
-            //img: "https://cards.scryfall.io/normal/front/0/d/0d3c0c43-2d6d-49b8-a112-07611a23ae69.jpg",
-            img:cardObject.card_faces[0].image_uris,
-            rarity: cardObject.rarity
-        }; 
-
-    } 
-
-    }//makes array of cards in deck
-
-    //random ordering:
-    let randomizedListCardReady = simpleCard
-    .map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value)
-   
-    return simpleCard;
-}
-
-
-let makeIdList=(cards:CardS[],cardsIds:string[]) => {
-
-    //get array only containing varIds// needed for api
-
-    for(let i=0;i<cards.length;i++){
-
-        let card=cards[i].variations[0];
-        
-        
-        
-
-        cardsIds.push(card.id);
+// // !!!!!!!!!!!!! ///
+//let ListCardReadyPreload:any= [];
+// // !!!!!!!!!!!!! ///
 
 
 
-    }
-    //console.log(`copyArray: ${cardToIds}`);
-    return cardsIds;
-
-}
-let LoadingDeck =async () => {
-    try{
-        //let startTime = performance.now()
-
-        await client.connect();
-    
-        const deckCollection= client.db("userData").collection("decks");
-    
-        const decksDatabase= await deckCollection.find<Deck>({}).toArray();
-        
-        let chosenDeck=decksDatabase[0];//later deckkeuze aanmaken
-        let cards:CardS[]= chosenDeck.cards!;    //non-null assertion operator ? should work 
-        //console.log(cards);
-    
-        
-        let cardsIds:string[]=[]; 
-        cardsIds=makeIdList(cards,cardsIds);    //this array only contains variableIds used for api
-        
-        let simpleCard:simpleCardObject[]=[];
-        
-        let ListCardReady= makeCardListFromApi(cardsIds,simpleCard);//this caused long load
-        console.log('\x1b[36m%s\x1b[0m',"deck loaded");
-
-        //used to debug LoadTimes
-        // let endTime = performance.now()
-        // console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
-        
-        
-        return ListCardReady;
-    
-    }catch(e){
-        console.error(e);
-    }
-    
-}
-let LoadingAllDecks =async () => {//will do as before but load all decks so cards wil be one space deeper inside the array
+let ListCardReadyPreload:any= iHatePromises(); //to fix promiseissues?
 
 
-try{
-        await client.connect();
-
-        const deckCollection= client.db("userData").collection("decks");
-    
-        const decksDatabase= await deckCollection.find<Deck>({}).toArray();
-
-        let ListReadyDecks:ListReadyDecksInterface[]=[];
-        for(let i:number=0;i<decksDatabase.length;i++){
-            
-            let cards:CardS[]= decksDatabase[i].cards!; 
-            let deckname:string=decksDatabase[i].name;
-            console.log(deckname)
-            //might need to add deck id here later+interface
-
-            let cardsIds:string[]=[]; 
-            cardsIds=makeIdList(cards,cardsIds);//list of ids neeeded for apicall later
-
-            let simpleCard:simpleCardObject[]=[];
-            let ListCardReady= await makeCardListFromApi(cardsIds,simpleCard);
-            //simpleCard=ListCardReady!;
-            
-            ListReadyDecks[i]={
-                deckName:deckname,
-                simpleCard:[]
-            }
-
-
-
-            
-            
-            for(let j=0;j<ListCardReady.length;j++){
-                ListReadyDecks[i].simpleCard.push(ListCardReady[j]);
-            }
-            
-            //ListReadyDecks.push(await ListCardReady);
-            console.log('\x1b[36m%s\x1b[0m',"deck "+i+" loaded");
-            
-
-        }
-        //console.log(ListReadyDecks);
-        return ListReadyDecks;
-
-
-    }catch(e){
-        console.error(e);
-    }
-}
-let iHatePromises =async () => {
-    let ListCardReadyPreload=await LoadingAllDecks();
-    return ListCardReadyPreload;
-
-}
-let ListCardReadyPreload:any=iHatePromises(); //to fix promiseissues?
 
 let drawnCards:number=7;//startcount cards shown
 let selectedDeck:number=0;//default is first deck
@@ -816,13 +643,5 @@ app.listen(app.get("port"), () =>
   console.log("[server] http://localhost:" + app.get("port"))
 );
 
-const splitMana = (mana: string) => {
-    let splitted = mana.split(/[{}]/g).filter(item => item !== ''); // doet de '{' en '}' symbolen weg en filtert dan ook de lege plekken uit de array
-    //TODO ook de half mana symbolen toevoegen bv B/R
-    
-    return splitted;
-}
 
-const capitalizeFirstLetter = (text: string) => {
-    return text.charAt(0).toUpperCase() + text.slice(1);
-}
+
