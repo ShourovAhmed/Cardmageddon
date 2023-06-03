@@ -273,3 +273,13 @@ min-height: 30vh;
 .image-chooser input{
     display: none;
 }
+.flipIcon{
+    opacity: 60%;
+    position: absolute;
+    display: none;
+    height: 18%;
+    transition: ease-in-out 0.6s;
+}
+.card:hover > .flipIcon{
+    display: block;
+}

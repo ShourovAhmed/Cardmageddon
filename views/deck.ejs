@@ -112,13 +112,14 @@
                         stackHight = "stack-multi";
                     }
                 %>
-                <article class="card">
-                <img class="<%=stackHight%> showM cardM" id="<%=variation.id%>" src="https://cards.scryfall.io/normal/front/<%=variation.id.substring(0,1)%>/<%=variation.id.substring(1,2)%>/<%=variation.id%>.jpg" alt="">
+            <article class="card">
+                <img class="<%=stackHight%>  cardM" id="<%=variation.id%>" src="https://cards.scryfall.io/normal/front/<%=variation.id.substring(0,1)%>/<%=variation.id.substring(1,2)%>/<%=variation.id%>.jpg" alt="">
                 <%if(card.isDblSided || card.isDblSided === false){
                     if(card.isDblSided){%>
-                        <img class="<%=stackHight%> showM cardM" id="<%=variation.id%>" src="https://cards.scryfall.io/normal/back/<%=variation.id.substring(0,1)%>/<%=variation.id.substring(1,2)%>/<%=variation.id%>.jpg" alt="">
+                        <img class="<%=stackHight%>  cardM backside" id="<%=variation.id%>" src="https://cards.scryfall.io/normal/back/<%=variation.id.substring(0,1)%>/<%=variation.id.substring(1,2)%>/<%=variation.id%>.jpg" alt="" style="display: none;">
+                        <img class="frontBack flipIcon" src="/assets/images/flip.png" alt="">
                 <%}}else{%>
-                    <p>flip card</p>
+                    <img class="upDown flipIcon" src="/assets/images/flip.png" alt="">
                 <%}%>
                 <section class="card-count">
                     <a <%=atMin%> href="/deck/<%=deck.id%>/<%=variation.id%>/-1" class="count-down">-</a>
@@ -148,3 +149,4 @@
     
 </section>
 <%-include('partials/page-tail')%>
+<script src="/js/flip.js"></script>

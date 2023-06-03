@@ -85,6 +85,13 @@ app.get("/logout", (req, res) =>{
     res.redirect("/");
 })
 
+app.get("/account/new", (req, res) =>{
+    log("logout");
+    table(cookieInfo);
+    res.redirect("/");
+})
+
+
 app.use((req, res, next) => {
     if(cookieInfo.verified){
         next();
@@ -534,12 +541,12 @@ app.post("/deckImage/:deckId/", async(req,res) =>{
 
 
 // // !!!!!!!!!!!!! ///
-//let ListCardReadyPreload:any= [];
+let ListCardReadyPreload:any= [];
 // // !!!!!!!!!!!!! ///
 
 
 
-let ListCardReadyPreload:any= iHatePromises(); //to fix promiseissues?
+//let ListCardReadyPreload:any= iHatePromises(); //to fix promiseissues?
 
 
 
@@ -553,7 +560,7 @@ app.locals.data =ListCardReady;//makes global varianle wich can be updated and a
 app.get('/drawtest',async(req,res)=>{
     
     let ListCardReady=await app.locals.data;
-    
+     
     drawnCards=7;
     selectedDeck=0;
     //app.locals.data =ListCardReady;
