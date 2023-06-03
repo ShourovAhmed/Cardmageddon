@@ -1,14 +1,13 @@
-header{
-    
-    grid-area: header;
-    padding: 0.9rem;
-    background-color: rgb(125, 49, 49);
+nav ul{
 
+     all: unset; /*this fixes nav only for drawpage */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
+    flex-wrap: wrap;
+   
+    list-style-type: none;
+    text-decoration: none;
 }
+
 
 .sub-header{
     padding: 0.6rem 1.5rem 0.6rem 1.5rem;
@@ -34,17 +33,20 @@ h2{
     font-size: 1.8rem;
    
 }
-
-p{
-    font-size: 1rem;
-    
-}
-button {
+#btnDrawTest{
     padding: 0.3rem;
     margin-right: 2rem;
+    background: rgb(122, 55, 55);
+    border: none;
+    color: white;
+     border-radius: 5px;
+    cursor: pointer;
+    
 }
 
-
+#btnDrawTest:hover {
+    background-color: rgb(91, 32, 32);
+  }
 
 
 #drawPile{
@@ -52,24 +54,58 @@ button {
     width: 8rem;
     height: auto;
 }
+#layout{
+    display: flex;
+    flex-direction: row;
+}
 
 #previewDraw{
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;    /*make reverse for ordering*/
     flex-wrap: wrap;
     gap: 1.5rem;
+    
 
     margin-top: 5rem;
     
+     -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg); 
 
+
+    
+
+}
+#previewDraw>li{
+    -moz-transform: rotate(-180deg);
+    -webkit-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+    display:inline-block;
 }
 #formDraw{
 
-    margin-left: 20%;
+    margin-left: 15%;
     margin-right: auto;
     margin-top: 4rem;
     align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+
+   
 }
+#formDraw img {
+    display: block;
+    
+    margin-left: auto;
+    margin-right: auto;
+   
+    
+    
+}
+#formDraw>*:not(:first-child) button {
+    margin-left: 35%;
+} 
+
 
 
 #drawButton{
@@ -82,6 +118,10 @@ button {
 
     display: flex;
     flex-direction: row;
+    margin: 2rem;
+    
+    min-width: 30%;
+
 }
 
 #draw-chance{
@@ -99,7 +139,6 @@ button {
     flex-direction: column;
     
 }
-
 
 
 
