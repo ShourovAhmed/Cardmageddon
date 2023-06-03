@@ -354,7 +354,22 @@ app.post("/drawtest", async(req,res)=>{
     //console.log(ListCardReady);
    //get list from get request?
     
-   
+   if(buttonType=='NewCard'){
+        
+    //drawcardstuff->
+    
+    drawnCards++;
+
+    //let ListCardReady=await ListCardReadyPreload; //was enabled
+    ListCardReady=app.locals.data;
+
+    res.render("drawtest",{
+        ListCardReady,
+        drawnCards,
+        selectedDeck
+        
+            
+    });}
 
     if(buttonType=='changeDeck'){
         //res.send("not implemented yet")
@@ -402,22 +417,7 @@ app.post("/drawtest", async(req,res)=>{
     });
     }
 
-    else{
-        
-        //drawcardstuff->
-        
-        drawnCards++;
-
-        //let ListCardReady=await ListCardReadyPreload; //was enabled
-        ListCardReady=app.locals.data;
-
-        res.render("drawtest",{
-            ListCardReady,
-            drawnCards,
-            selectedDeck
-            
-                
-        });}
+    
 
 
         
