@@ -1,96 +1,135 @@
+<!DOCTYPE html>
+<html lang="BE-nl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawtest</title>
+    
+    
+    <link rel="stylesheet" href="/css/style-universal.css">
+    <link rel="stylesheet" href="/css/style-modal.css">
+    <link rel="stylesheet" href="/css/style-header.css">
+    <link rel="stylesheet" href="/css/Styles-test.css">
+
+   
+    <link rel="icon" type="image/png" href="/public/assets/images/general/siteIcon.png">
+    
+</head>
+
 <%- include("partials/header") -%>
+
+
+
+
 <main>
 
 
   <section class="sub-header">
     <h1>Drawtest</h1>
     
-</section>
+  </section>
+
+
+  <section id="layout">
 
 <section id="forms-draw">
 
-<form id="formDraw" action="">
+<article id="formDraw" action="">
+  <form action="/drawtest" method="post">
     <label for="decks">Select deck</label>
-    <select name="decks" id="decks">
-      <option value="">Deck1</option>
-      <option value="">Deck2</option>
-      <option value="">Deck3</option>
+    <select name="Selection">
+<%
+                
+      for(let i =0;i<ListCardReady.length; i++){  
+%>
+      
+  <option name="blabla" type="submit"  value="<%=i%>"><%=ListCardReady[i].deckName%></option>
+      
+      <% 
+    }
+      %>   
     </select>
+    <button id="btnDrawTest"  name="buttonType"  type="submit" value="changeDeck" style="font-size: 0.7rem; padding: 0.03rem;">&nbsp;Select&nbsp;  </button>
+  </form>
+  
     <br><br>
-    <input type="submit" id="drawButton" value="DRAW CARD">
-    <input type="submit" id="drawButton" value="DISCARD">
-    <BR></BR>
+    <form action="/drawtest" method="post">
+    <button id="btnDrawTest"  name="buttonType" id="drawButton" type="submit" value="NewCard">Draw Card</button>
+    </form>
+  
+
+    
+    <br>
     <img src="/public/assets/images/backside-card.png" id="drawPile" alt="">
-    <input type="submit" value="RESET">
+    <br>
+    <form action="/drawtest" method="post">
+    <button id="btnDrawTest" name="buttonType" type="submit" value="NewHand" >
+      New Hand</button>
+    </form>
     
-    <img src="/public/assets/images/backside-card.png" style="opacity: 60%;" id="drawPile" alt="">
-
-    
+    <form id="draw-chance"  action="">
+      <label for="drawchance">Calculate chance to draw card</label> <br>
+      <input type="text" placeholder="Select card">
+      <p>Chance to draw: <a href=""></a>5%</p>
+      <img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt="">
   </form>
 
-  <form id="draw-chance"  action="">
-    <label for="drawchance">Calculate chance to draw card</label> <br>
-    <input type="text" placeholder="Select card">
-    <p>Chance to draw: <a href=""></a>5%</p>
-    <img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt="">
+</article>
 
-
-  </form>
+</form>
 </section>
 
 
-
-
   <article id="previewDraw">
-
-
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    <ul><img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" alt=""></ul>
-    
-  </article>
-
-
-  <article id="previewDraw">
-
+    <li>
+      <!-- these are invisible to fix misaligned stuff -->
+      <img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" style="visibility: hidden;" alt="">
+      </li>
+      <li>
+      
+        <img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" style="visibility: hidden;" alt="">
+        </li>
+        <li>
+      
+          <img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" style="visibility: hidden;" alt="">
+          </li>
+          <li>
+      
+            <img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" style="visibility: hidden;" alt="">
+            </li>
+            <li>
+      
+              <img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" style="visibility: hidden;" alt="">
+              </li>
+              <li>
+      
+                <img src="/public/assets/images/placeholders/planeswalkers.jpg" id="drawPile" style="visibility: hidden;" alt="">
+                </li>
     
 
     <%
+                
+    for(let i =0;i<drawnCards&&i<ListCardReady[selectedDeck].simpleCard.length; i++){  
+%>
+
     
-    for(card of decks[0].cards){  %>
+    <li>
       
-        
-
-    <ul>
-
+     
       
-      <%= card.id %>
+      <img src="<%=ListCardReady[selectedDeck].simpleCard[i].img%>" id="drawPile" alt=""> 
+
+
+
+    </li>
     
-      <br>
-      <br>
-      <%= card.variations[0].id %>
-      <br>
-      <br>
-      <br>
-
-       
-
-    </ul>
-
     <% 
   }
-    %>
-
-    
-    
+    %>   
   </article>
+</section>
 
-
-  
 
 
 </main>
@@ -148,7 +187,7 @@
   </modal>
 
 </section>
-</body>
 
 <script src="/public/js/modals.js"></script>
+ 
 </html>

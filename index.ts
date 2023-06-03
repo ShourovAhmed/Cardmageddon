@@ -1,7 +1,7 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import {MongoClient} from 'mongodb';
-import {Deck, CardS, Info, CookieInfo, User, LoginData} from "./types";
+import {Deck, CardS, Info, CookieInfo, User, LoginData, simpleCardObject, ListReadyDecksInterface} from "./types";
 import { render } from 'ejs';
 import { getFreeId, getCard, cardToCardS, getDeckImages, getDeck, addOrRemoveCard, deckAccess, getDecks, emailHash, makeNewDeck, fullHash} from './functions';
 import { maxNonLandCardcount, maxTotalCardsInDeck, mssg } from './staticValues';
@@ -386,12 +386,12 @@ app.post("/decks", async (req,res) =>{
         db.collection("decks").insertOne(newDeck);
         let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
         let info : Info = new Info(true, `Deck: "${newDeckName}" Toegevoegd`);
-        res.render("decks", {title: "Decks", decks: decks, info: info});
+        res.render("decks", {title: "Decks", decks: await getDecks(cookieInfo.id), info: info});
     }
     catch(e: any){
         let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
         let info : Info = new Info(false, `Toevoegen mislukt`)
-        res.render("decks", {title: "Decks", decks: decks, info: info});
+        res.render("decks", {title: "Decks", decks: await getDecks(cookieInfo.id), info: info});
     }
 });
 
@@ -539,9 +539,269 @@ app.get("/drawtest/:deckId", async(req,res) => {
     res.redirect("/404");
 });
 
+//Drawtest
+
+const shuffleArray = (array:any) => {
+    // create a copy of the array so that the original array is not mutated
+    
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+let getCardFromApi= async (cardsid:string ) => {
+
+//gets card object from id to api call
+    let id= cardsid;
+    let response = await fetch(`https://api.scryfall.com/cards/${id}`); 
+    //let cardFromApi: string[]=[];//old
+    let cardFromApi=[];
+    cardFromApi = await response.json();
+    
+    
+    return cardFromApi;       
+}
+let makeCardListFromApi =async(cardsIds:string[],simpleCard:simpleCardObject[]) => {
+
+
+    let ListCardReady: any[]=[];       
+    for(let i=0;i<cardsIds.length;i++){
+
+        
+        let cardObject=await getCardFromApi(cardsIds[i]);
+        if(cardObject.image_uris){
+
+        //ListCardReady.push(cardObject);   oldway
+        
+            simpleCard[i] = {
+            name: cardObject.name,
+            img: cardObject.image_uris.normal,
+            rarity: cardObject.rarity
+        };    
+    }  
+    else{
+        simpleCard[i] = {
+            name: cardObject.name,
+            //img: "https://cards.scryfall.io/normal/front/0/d/0d3c0c43-2d6d-49b8-a112-07611a23ae69.jpg",
+            img:cardObject.card_faces[0].image_uris,
+            rarity: cardObject.rarity
+        }; 
+
+    } 
+
+    }//makes array of cards in deck
+
+    //random ordering:
+    let randomizedListCardReady = simpleCard
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
+   
+    return simpleCard;
+}
+
+
+let makeIdList=(cards:CardS[],cardsIds:string[]) => {
+
+    //get array only containing varIds// needed for api
+
+    for(let i=0;i<cards.length;i++){
+
+        let card=cards[i].variations[0];
+        
+        
+        
+
+        cardsIds.push(card.id);
 
 
 
+    }
+    //console.log(`copyArray: ${cardToIds}`);
+    return cardsIds;
+
+}
+let LoadingDeck =async () => {
+    try{
+        //let startTime = performance.now()
+
+        await client.connect();
+    
+        const deckCollection= client.db("userData").collection("decks");
+    
+        const decksDatabase= await deckCollection.find<Deck>({}).toArray();
+        
+        let chosenDeck=decksDatabase[0];//later deckkeuze aanmaken
+        let cards:CardS[]= chosenDeck.cards!;    //non-null assertion operator ? should work 
+        //console.log(cards);
+    
+        
+        let cardsIds:string[]=[]; 
+        cardsIds=makeIdList(cards,cardsIds);    //this array only contains variableIds used for api
+        
+        let simpleCard:simpleCardObject[]=[];
+        
+        let ListCardReady= makeCardListFromApi(cardsIds,simpleCard);//this caused long load
+        console.log('\x1b[36m%s\x1b[0m',"deck loaded");
+
+        //used to debug LoadTimes
+        // let endTime = performance.now()
+        // console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
+        
+        
+        return ListCardReady;
+    
+    }catch(e){
+        console.error(e);
+    }
+    
+}
+let LoadingAllDecks =async () => {//will do as before but load all decks so cards wil be one space deeper inside the array
+
+
+try{
+        await client.connect();
+
+        const deckCollection= client.db("userData").collection("decks");
+    
+        const decksDatabase= await deckCollection.find<Deck>({}).toArray();
+
+        let ListReadyDecks:ListReadyDecksInterface[]=[];
+        for(let i:number=0;i<decksDatabase.length;i++){
+            
+            let cards:CardS[]= decksDatabase[i].cards!; 
+            let deckname:string=decksDatabase[i].name;
+            console.log(deckname)
+            //might need to add deck id here later+interface
+
+            let cardsIds:string[]=[]; 
+            cardsIds=makeIdList(cards,cardsIds);//list of ids neeeded for apicall later
+
+            let simpleCard:simpleCardObject[]=[];
+            let ListCardReady= await makeCardListFromApi(cardsIds,simpleCard);
+            //simpleCard=ListCardReady!;
+            
+            ListReadyDecks[i]={
+                deckName:deckname,
+                simpleCard:[]
+            }
+
+
+
+            
+            
+            for(let j=0;j<ListCardReady.length;j++){
+                ListReadyDecks[i].simpleCard.push(ListCardReady[j]);
+            }
+            
+            //ListReadyDecks.push(await ListCardReady);
+            console.log('\x1b[36m%s\x1b[0m',"deck "+i+" loaded");
+            
+
+        }
+        //console.log(ListReadyDecks);
+        return ListReadyDecks;
+
+
+    }catch(e){
+        console.error(e);
+    }
+}
+let iHatePromises =async () => {
+    let ListCardReadyPreload=await LoadingAllDecks();
+    return ListCardReadyPreload;
+
+}
+let ListCardReadyPreload:any=iHatePromises(); //to fix promiseissues?
+
+let drawnCards:number=7;//startcount cards shown
+let selectedDeck:number=0;//default is first deck
+
+let ListCardReady:ListReadyDecksInterface=ListCardReadyPreload
+app.locals.data =ListCardReady;//makes global varianle wich can be updated and accessed in all scopes//required for updating/randomizing from post scope -> get
+
+
+app.get('/drawtest',async(req,res)=>{
+    
+    let ListCardReady=await app.locals.data;
+    
+    drawnCards=7;
+    selectedDeck=0;
+    //app.locals.data =ListCardReady;
+    shuffleArray(ListCardReady[selectedDeck].simpleCard);
+    app.locals.data =ListCardReady;
+    
+    res.render("drawtest",{
+
+        title: "Drawtest",
+        ListCardReady,
+        drawnCards,
+        selectedDeck
+        
+    });
+    
+});
+
+app.post("/drawtest", async(req,res)=>{
+    
+    
+    let buttonType:string= req.body.buttonType;
+    //console.log(buttonType);
+    
+   if(buttonType=='NewCard'){
+        
+    //drawcardstuff->
+    
+    drawnCards++;
+    ListCardReady=app.locals.data;
+
+    res.render("drawtest",{
+
+        title: "Drawtest",
+        ListCardReady,
+        drawnCards,
+        selectedDeck       
+    });}
+
+    if(buttonType=='changeDeck'){
+
+        let selectMenuThing= req.body;//find value
+        var selectedValue = selectMenuThing[Object.keys(selectMenuThing)[0]];//this gives selected value
+
+        selectedDeck=selectedValue;
+
+        let ListCardReady=await app.locals.data;
+        
+        drawnCards=7;
+        shuffleArray(ListCardReady[selectedDeck].simpleCard);
+        app.locals.data =ListCardReady;
+
+        res.render("drawtest",{
+        
+            title: "Drawtest",
+            ListCardReady,
+            drawnCards,
+            selectedDeck  
+        });
+    }
+    if(buttonType=='NewHand'){
+        let ListCardReady=await app.locals.data;
+        
+        drawnCards=7;          
+        shuffleArray(ListCardReady[selectedDeck].simpleCard);
+        //reshuffles en updates to lacals
+         app.locals.data =ListCardReady;
+    res.render("drawtest",{
+
+        title: "Drawtest",
+        ListCardReady,
+        drawnCards,
+        selectedDeck 
+    });
+    }
+});
 
 
 // -------------- //

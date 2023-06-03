@@ -127,3 +127,19 @@ export interface Info {
     succes: boolean,
     message: string
 }
+
+
+// Drawtest
+
+export interface simpleCardObject{
+    name: string,
+    img: string,
+    rarity: string//might add something later
+}
+
+export interface ListReadyDecksInterface{
+   
+    deckName:string,
+    simpleCard:simpleCardObject[]
+
+}
