@@ -655,10 +655,6 @@ let LoadingDeck =async () => {
     
     }catch(e){
         console.error(e);
-    }finally{
-        client.close();
-        
-        
     }
     
 }
@@ -711,10 +707,6 @@ try{
 
     }catch(e){
         console.error(e);
-    }finally{
-        client.close();
-        
-        
     }
 }
 let iHatePromises =async () => {
