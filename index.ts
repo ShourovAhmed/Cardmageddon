@@ -734,7 +734,8 @@ app.get('/drawtest',async(req,res)=>{
     app.locals.data =ListCardReady;
     
     res.render("drawtest",{
-        
+
+        title: "Drawtest",
         ListCardReady,
         drawnCards,
         selectedDeck
@@ -757,6 +758,8 @@ app.post("/drawtest", async(req,res)=>{
     ListCardReady=app.locals.data;
 
     res.render("drawtest",{
+
+        title: "Drawtest",
         ListCardReady,
         drawnCards,
         selectedDeck       
@@ -777,6 +780,7 @@ app.post("/drawtest", async(req,res)=>{
 
         res.render("drawtest",{
         
+            title: "Drawtest",
             ListCardReady,
             drawnCards,
             selectedDeck  
@@ -790,7 +794,8 @@ app.post("/drawtest", async(req,res)=>{
         //reshuffles en updates to lacals
          app.locals.data =ListCardReady;
     res.render("drawtest",{
-        
+
+        title: "Drawtest",
         ListCardReady,
         drawnCards,
         selectedDeck 
