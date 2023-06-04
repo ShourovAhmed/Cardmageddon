@@ -89,3 +89,21 @@ for (let i = 0; i < closeModalBtns.length; i++){
         modalBack.style.display = "none";
         })
 };
+
+
+// Get deck id from dropdown menu on card details
+const form = document.getElementById("deckSelector");
+
+function changeAddUrl(){
+    let dropDownMenu = deckSelector.decks;
+    let deckId = dropDownMenu.selectedIndex;
+
+    let path = form.getAttribute("action");
+    let splitted = path.split('/');
+    let cardId = splitted[3];
+
+    let url = "/deck/" + deckId + "/" + cardId + "/1";
+    
+    form.action = url;
+
+}

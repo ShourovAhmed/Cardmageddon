@@ -53,19 +53,21 @@
                                         <span class="sr-only">Next</span>
                                     </a>
                                 </div> 
-                                <form action="#" name="deckSelector">
+                                <form action="/deck/<%= decks[0].id %>/<%= localCard.id %>/1" name="deckSelector" id="deckSelector">
                                     <label for="decks">Decks: </label>
-                                    <select class="addDeckButton" name="decks" id="decks">
+                                    <select name="decks" id="decks" onchange="changeAddUrl()">
                                         <% for(let i = 0; i < decks.length; i++){ %>
                                         <option value="<%= decks[i].name %>"><%= decks[i].name %></option>
                                         <% } %>
                                     </select>
                                     <a href="/deck/<%= decks[2].id %>/<%= localCard.id %>/1">Add</a>
+                                    <input type="submit" value="Add">
                                 </form>
                                 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
                                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
                                 <!-- Include all compiled plugins (below), or include individual files as needed -->
                                 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+                                <script src="/js/modals.js"></script>
 
                     </td>
                 </tr>
