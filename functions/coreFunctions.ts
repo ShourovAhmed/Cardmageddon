@@ -1,7 +1,7 @@
 import { Deck, CardS, Set, Card, CardFace, Info, CookieInfo, User } from "../types";
 
 import { cookieInfo} from "../index";
-import { db, client, CryptoJS } from "../staticValues";
+import { db, client, CryptoJS, testDeckIds } from "../staticValues";
 
 import { getCard } from "./scryfallFunctions";
 import { getFreeId } from "./deckFunctions";
@@ -27,7 +27,7 @@ export const capitalizeFirstLetter = (text: string) => {
 
 // MONGO CALLS
 
-export const getOwnDeckIds = async(userId : number):Promise<number[]> => {
+export const myDeckIds = async():Promise<number[]> => {
     let user : User|null = await db.collection("users").findOne<User>({id: cookieInfo.id});
     if(user != null){
         return user.decks
@@ -35,24 +35,24 @@ export const getOwnDeckIds = async(userId : number):Promise<number[]> => {
     return [];
 }
 
-
-
-export const getMyDecks = () => { 
-    
-}
-
 // Gives back access level of a given deck by deck ID
-export const deckAccess = (deckId : number):number => {
+export const deckAccess = async(deckId : number):Promise<number> => {
 // 0 = no access
 // 1 = view only
-// 2 = full access
-    if(deckId >= 0 && deckId < 10){
+// 2 = (open access slot) // atm: deckimg, rename, card-add/remove
+// 3 = full access
+    if(await testDeckIds.includes(deckId)){
         return 1;
     }
-    // if(myDecks().includes(deckId)){
-    //     return 2;
-    // }
-
-    return 0;
-
-}
+    if(false){
+        return 2;
+    }
+    else{
+        for(let id of await myDeckIds()){
+            if(id === deckId){
+                return 3;
+            }
+        }
+        return 0;
+    }
+}  

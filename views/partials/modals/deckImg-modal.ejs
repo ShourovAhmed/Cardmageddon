@@ -2,13 +2,20 @@
     
         <button class="hideM">X</button>
         <form method="post" class="modal-form"
-        <%if(deck.cards.length != 0){%>
-            action="/deckImage/<%=deck.id%>">
+        <%
+        // If there are cards in the deck to choose from
+        if(deck.cards.length != 0){%>
+            //
+            action="/deck/<%=deck.id%>">
+
             <iframe src="/deckImage/<%=deck.id%>" frameborder="0"></iframe>
             
             <input type="hidden" name="pickImage" id="pickImage" value="1">
 
-        <%}else{%>
+        <%}
+        // If there are no cards in the deck
+        else{%>
+            // Send cardsearch to homepage
              action="/home">
             <p>Er zijn geen kaarten in dit deck<br>om een afbeelding van te kiezen</p>
             <label for="search">Zoek kaarten:</label>
@@ -16,6 +23,7 @@
             
             
             <%}%>
+            <input type="number" name="deckImage" value="1" hidden required>
             <button type="submit">Bevestigen</button>
 
         </form>

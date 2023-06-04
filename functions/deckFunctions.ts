@@ -3,6 +3,8 @@ import { db, maxNonLandCardcount, maxTotalCardsInDeck } from "../staticValues";
 
 import { getCard } from "./scryfallFunctions";
 import { getDeck } from "./mongoFunctions";
+import { cookieInfo } from "..";
+import { table } from "console";
 
 
 
@@ -124,6 +126,7 @@ export const addOrRemoveCard = async(deckId : number, cardId : string, amount : 
             return await addCard(theCard, deck, amount);
         }
 }
+
 //Returns a new deck given a name,
 //option to directly add cards as cardSArr or deckId as a number
 export const makeNewDeck = async (name : string, userId : number, cards? : CardS[], deckId? : number): Promise<Deck> => {
@@ -180,4 +183,26 @@ export const getDeckImages = (deck : Deck):string[] =>{
         }
     }
     return deckImages;
+}
+
+//Copy Deck
+export const copyDeck = async(deckId : number, name : string):Promise<Info> => {
+    let info : Info = new Info;
+    let deck : Deck = await getDeck(deckId);
+
+    try{
+        deck._id = undefined;
+        deck.id = await getFreeId();
+        deck.name = name;
+        await db.collection("decks").insertOne(deck);
+        await db.collection("users").updateOne({id: cookieInfo.id},{$push: {decks: deck.id}});
+    }
+    catch (e){
+        info.message = "Kopieren mislukt";
+        return info;
+    }
+    info.succes = true;
+    info.message = `Deck gekopieerd als: ${deck.name}`;
+    info.direct = deck.id;
+    return info; 
 }

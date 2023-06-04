@@ -23,7 +23,9 @@
             <%-include("partials/info-bar")%>
         </section>
         <section id="decks-view">
-            <%for(let deck of decks){%>
+            <%for(let deck of decks){
+                if(deck.name.length > 15){
+                    deck.name = deck.name.substring(0, 15) + ".."}%>
             <a class="deck-summary" href="/deck/<%=deck.id%>">
                 <h2><%=deck.name%></h2>
                 <ul>
