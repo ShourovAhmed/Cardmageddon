@@ -41,18 +41,18 @@ export const deckAccess = async(deckId : number):Promise<number> => {
 // 1 = view only
 // 2 = (open access slot) // atm: deckimg, rename, card-add/remove
 // 3 = full access
-    if(await testDeckIds.includes(deckId)){
-        return 1;
+
+    for(let id of await myDeckIds()){
+        if(id === deckId){
+            return 3;
+        }
     }
     if(false){
         return 2;
     }
-    else{
-        for(let id of await myDeckIds()){
-            if(id === deckId){
-                return 3;
-            }
-        }
-        return 0;
+    if(await testDeckIds.includes(deckId)){
+        return 1;
     }
+    
+    return 0;
 }  
