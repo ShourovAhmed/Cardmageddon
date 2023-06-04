@@ -268,14 +268,14 @@ app.post("/home", async (req, res) => {
 
 app.get("/cardDetail/:id", async (req, res) => {
     
-    let user: string = cookieInfo.username;
+    //let user: string = cookieInfo.username;
     let userId: number = cookieInfo.id;
 
     let users = await db.collection("users").find<User>({}).toArray();
 
     let userDecks = [];
     for (let i = 0; i< users.length; i++){
-        if(users[i].firstName == user && users[i].id == userId){
+        if(users[i].id == userId){
             for (let deckId of users[i].decks){
                 userDecks.push(deckId);
             }
