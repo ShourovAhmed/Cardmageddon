@@ -203,7 +203,7 @@ export const copyDeck = async(deckId : number, name : string):Promise<Info> => {
         await db.collection("users").updateOne({id: cookieInfo.id},{$push: {decks: deck.id}});
     }
     catch (e){
-        info.message = "Kopieren mislukt";
+        info.message = "Kopiëren mislukt";
         return info;
     }
     info.succes = true;
