@@ -217,6 +217,7 @@ app.post("/home", async (req, res) => {
         
 
         else{
+            pics = [];
             return res.render("homepage", {error: "Your query didn’t match any cards"});
         }
     }
