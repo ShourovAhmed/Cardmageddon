@@ -78,16 +78,17 @@
         <section class="calculation"> 
         <select name="Selection">
           
-          <option name="blabla" type="submit"  value="<%=0%>"><%=ListCardReady[selectedDeck].simpleCard[selectedCard].name%></option> 
+          <option name="blabla" type="submit"  value="<%=selectedCard%>"><%=ListCardReady[selectedDeck].simpleCard[selectedCard].name%></option> 
     <%
                     
-          for(let i =0;i<ListCardReady[selectedDeck].simpleCard.length; i++){  
+         let i=0;
+            for(let j =ListCardReady[selectedDeck].simpleCard.length-1;j>0; j--)  {
     %>
       
-      <option name="blabla" type="submit"  value="<%=i%>"><%=ListCardReady[selectedDeck].simpleCard[i].name%></option>
+      <option name="blabla" type="submit"  value="<%=i%>"><%=ListCardReady[selectedDeck].simpleCard[j].name%></option>
           
           <% 
-        }
+        i++}
           %>  
            
         </select>

@@ -624,41 +624,7 @@ let makeIdList=(cards:CardS[],cardsIds:string[]) => {
     return cardsIds;
 
 }
-let LoadingDeck =async () => {
-    try{
-        //let startTime = performance.now()
 
-        await client.connect();
-    
-        const deckCollection= client.db("userData").collection("decks");
-    
-        const decksDatabase= await deckCollection.find<Deck>({}).toArray();
-        
-        let chosenDeck=decksDatabase[0];//later deckkeuze aanmaken
-        let cards:CardS[]= chosenDeck.cards!;    //non-null assertion operator ? should work 
-        //console.log(cards);
-    
-        
-        let cardsIds:string[]=[]; 
-        cardsIds=makeIdList(cards,cardsIds);    //this array only contains variableIds used for api
-        
-        let simpleCard:simpleCardObject[]=[];
-        
-        let ListCardReady= makeCardListFromApi(cardsIds,simpleCard);//this caused long load
-        console.log('\x1b[36m%s\x1b[0m',"deck loaded");
-
-        //used to debug LoadTimes
-        // let endTime = performance.now()
-        // console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
-        
-        
-        return ListCardReady;
-    
-    }catch(e){
-        console.error(e);
-    }
-    
-}
 let LoadingAllDecks =async () => {//will do as before but load all decks so cards wil be one space deeper inside the array
 
 
