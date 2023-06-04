@@ -140,5 +140,27 @@ h2{
     
 }
 
+.calculation{
 
+    display: flex;
+    flex-direction: row;
+}
+
+#searchedUl {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: auto;
+  }
+  
+  #searchedUl li a {
+    
+    
+    background-color: #f6f6f6;
+    padding-top: 0.3rem;
+    text-decoration: none;
+    font-size: 0.5rem;
+    color: black;
+    display: block
+  }
 

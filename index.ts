@@ -26,7 +26,8 @@ app.use(express.urlencoded({extended: true}));
 
 //MONGO
 const uri : string =
-    "mongodb+srv://admin:admin@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority";
+"mongodb+srv://Sascha:mongo123@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority";
+//"mongodb+srv://admin:admin@cardmageddon.jjjci9m.mongodb.net/?retryWrites=true&w=majority"
 const client = new MongoClient(uri);
 export const db = client.db("userData");
 
@@ -719,8 +720,11 @@ let ListCardReadyPreload:any=iHatePromises(); //to fix promiseissues?
 let drawnCards:number=7;//startcount cards shown
 let selectedDeck:number=0;//default is first deck
 
+
 let ListCardReady:ListReadyDecksInterface=ListCardReadyPreload
 app.locals.data =ListCardReady;//makes global varianle wich can be updated and accessed in all scopes//required for updating/randomizing from post scope -> get
+let selectedCard:number=0;//for calculation
+
 
 
 app.get('/drawtest',async(req,res)=>{
@@ -738,7 +742,8 @@ app.get('/drawtest',async(req,res)=>{
         title: "Drawtest",
         ListCardReady,
         drawnCards,
-        selectedDeck
+        selectedDeck,
+        selectedCard
         
     });
     
@@ -762,7 +767,8 @@ app.post("/drawtest", async(req,res)=>{
         title: "Drawtest",
         ListCardReady,
         drawnCards,
-        selectedDeck       
+        selectedDeck,
+        selectedCard      
     });}
 
     if(buttonType=='changeDeck'){
@@ -783,7 +789,9 @@ app.post("/drawtest", async(req,res)=>{
             title: "Drawtest",
             ListCardReady,
             drawnCards,
-            selectedDeck  
+            selectedDeck,
+            
+            selectedCard
         });
     }
     if(buttonType=='NewHand'){
@@ -798,9 +806,29 @@ app.post("/drawtest", async(req,res)=>{
         title: "Drawtest",
         ListCardReady,
         drawnCards,
-        selectedDeck 
+        selectedDeck,
+        
+        selectedCard
     });
     }
+    if(buttonType=='calculate'){
+        let ListCardReady=await app.locals.data;
+        
+        let selectMenuThing= req.body;//find value
+        var selectedValue = selectMenuThing[Object.keys(selectMenuThing)[0]];//this gives selected value
+
+        selectedCard=selectedValue;
+
+    res.render("drawtest",{
+
+        title: "Drawtest",
+        ListCardReady,
+        drawnCards,
+        selectedDeck ,
+        selectedCard
+    });
+    }
+
 });
 
 

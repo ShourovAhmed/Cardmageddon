@@ -39,6 +39,7 @@
   <form action="/drawtest" method="post">
     <label for="decks">Select deck</label>
     <select name="Selection">
+      <option name="blabla" type="submit"  value="<%=selectedDeck%>"><%=ListCardReady[selectedDeck].deckName%></option>
 <%
                 
       for(let i =0;i<ListCardReady.length; i++){  
@@ -50,7 +51,7 @@
     }
       %>   
     </select>
-    <button id="btnDrawTest"  name="buttonType"  type="submit" value="changeDeck" style="font-size: 0.7rem; padding: 0.03rem;">&nbsp;Select&nbsp;  </button>
+    <button id="btnDrawTest"  name="buttonType"  type="submit" value="changeDeck" style="font-size: 0.7rem; padding: 0.03rem; margin-left:3px">&nbsp;Select&nbsp;  </button>
   </form>
   
     <br><br>
@@ -68,12 +69,48 @@
       New Hand</button>
     </form>
     
-    <form id="draw-chance"  action="">
+    <form id="draw-chance"  action="/drawtest" method="post">
       <label for="drawchance">Calculate chance to draw card</label> <br>
-      <input type="text" placeholder="Select card">
-      <p>Chance to draw: <a href=""></a>5%</p>
-      <img src="/assets/images/backside-card.png" id="drawPile" alt="">
+      
+
+      <form action="/drawtest" method="post">
+        
+        <section class="calculation"> 
+        <select name="Selection">
+          
+          <option name="blabla" type="submit"  value="<%=0%>"><%=ListCardReady[selectedDeck].simpleCard[selectedCard].name%></option> 
+    <%
+                    
+          for(let i =0;i<ListCardReady[selectedDeck].simpleCard.length; i++){  
+    %>
+      
+      <option name="blabla" type="submit"  value="<%=i%>"><%=ListCardReady[selectedDeck].simpleCard[i].name%></option>
+          
+          <% 
+        }
+          %>  
+           
+        </select>
+        
+        <button id="btnDrawTest"  name="buttonType"  type="submit" value="calculate" style="font-size: 0.7rem; margin-left: -3px; border-top-left-radius: 0% ">&nbsp;select&nbsp   </button>
+        </section>
+        <p>Chance to draw: 
+        <%=Math.ceil((1/(ListCardReady[selectedDeck].simpleCard.length-drawnCards))*100)%>%</p>
+        <p>
+
+        
+      
+      <img src="<%=ListCardReady[selectedDeck].simpleCard[selectedCard].img%>" id="drawPile" alt="">
+      <p><%=ListCardReady[selectedDeck].simpleCard[selectedCard].name%></p>
+      </form>
+
+
+      
   </form>
+ 
+
+
+
 
 </article>
 
