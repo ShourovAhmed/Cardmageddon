@@ -119,7 +119,9 @@ app.post("/account/new", async(req, res) =>{
     }
     
 })
-
+app.get(("/termsOfCondition"), (req, res) => {
+    res.render("termsOfConditions");
+});
 
 app.use((req, res, next) => {
     if(cookieInfo.verified){

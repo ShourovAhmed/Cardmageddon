@@ -66,8 +66,11 @@ modal{
 .modal-form > input:focus{
     outline: var(--header-colour) 0.12rem solid;
 }
+input {
+    background-color: var(--primary-colour);
+}
 
-form > button{
+button{
     margin-left: 3rem;
     border-radius: 0.3rem;
     background-color: var(--primary-colour);
