@@ -362,7 +362,7 @@
 
             <select name="decks" id="decks" onchange="changeAddUrl()">
                 <% for(let i = 0; i < decks.length; i++){ %>
-                <option value="<%= decks[i].name %>"><%= decks[i].name %></option>
+                <option value="<%= decks[i].id %>"><%= decks[i].name %></option>
                 <% } %>
             </select>
             <% let text = [];

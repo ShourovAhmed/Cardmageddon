@@ -229,22 +229,57 @@ app.post("/home", async (req, res) => {
 });
 
 app.get("/cardDetail/:id", async (req, res) => {
+    
+    let user: string = cookieInfo.username;
+    let userId: number = cookieInfo.id;
 
+    let users = await db.collection("users").find<User>({}).toArray();
 
-    // Get decknames for dropdown menu & all cards from all decks for text
-    let decksDb = await db.collection("decks").find<Deck>({}).toArray();
-    let cards = [];
-    for(let i = 0; i< decksDb.length; i++){
-        for(let j = 0; j< decksDb[i].cards.length; j++){
-            cards.push({cardId: decksDb[i].cards[j].variations[0].id, deckName: decksDb[i].name});
+    let userDecks = [];
+    for (let i = 0; i< users.length; i++){
+        if(users[i].firstName == user && users[i].id == userId){
+            for (let deckId of users[i].decks){
+                userDecks.push(deckId);
+            }
         }
     }
 
+// Get decknames for dropdown menu & all cards from all decks for text
+    let decksDb = await db.collection("decks").find<Deck>({}).toArray();
+    let decks: any = [];
 
-    let decks = [];
-    for(let deck of decksDb){
-        decks.push(deck.name);
+    // Add first 6 test decks
+    let cards = [];
+    for(let i = 0; i< 6; i++){
+        for(let j = 0; j< decksDb[i].cards.length; j++){
+            cards.push({cardId: decksDb[i].cards[j].variations[0].id, deckName: decksDb[i].name});
+        }
+        decks.push({id: i, name: decksDb[i].name});
     }
+
+
+    // Add user decks + Specials deck
+    for(let i = 6; i < decksDb.length; i++){
+
+        // Specials deck
+        if(decksDb[i].id == 9){
+            for(let j = 0; j< decksDb[i].cards.length; j++){
+                cards.push({cardId: decksDb[i].cards[j].variations[0].id, deckName: decksDb[i].name});
+            }
+            decks.push({id: 9, name: decksDb[i].name});
+        }
+
+        // Userdecks
+        for(let j = 0; j < userDecks.length; j++){
+            if(userDecks[j] == decksDb[i].id){
+                for(let k = 0; k < decksDb[i].cards.length; k++){
+                    cards.push({cardId: decksDb[i].cards[k].variations[0].id, deckName: decksDb[i].name});
+                }
+                decks.push({id: userDecks[j], name: decksDb[i].name});
+            }
+        }
+    }
+
 
     let id: number = parseInt(req.params.id);
     if(pageNumber > 1){
@@ -376,7 +411,7 @@ app.get("/cardDetail/:id", async (req, res) => {
 
     
 
-    res.render("cardDetail", {card: card, card2: card2, localCard: pics[id], decks: decksDb, cards: cards});
+    res.render("cardDetail", {card: card, card2: card2, localCard: pics[id], decks: decks, cards: cards});
 
     
 });

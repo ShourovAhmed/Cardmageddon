@@ -96,7 +96,7 @@ const form = document.getElementById("deckSelector");
 
 function changeAddUrl(){
     let dropDownMenu = deckSelector.decks;
-    let deckId = dropDownMenu.selectedIndex;
+    let deckId = dropDownMenu[dropDownMenu.selectedIndex].value;
 
     let path = form.getAttribute("action");
     let splitted = path.split('/');
