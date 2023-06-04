@@ -1,7 +1,7 @@
 import { Deck, Info } from "../types";
 import { db, testDeckIds } from "../staticValues";
 
-import { getOwnDeckIds } from "./coreFunctions";
+import { myDeckIds } from "./coreFunctions";
 
 
 // returns a deck from Mongo when given a correct deck ID 
@@ -13,9 +13,9 @@ export const getDeck =  async(deckId: number):Promise<Deck> => {
     return deck;
 }
 
-export const getDecks = async(userId : number):Promise<Deck[]> => {
+export const getDecks = async():Promise<Deck[]> => {
 
-    let availableDecks : number[] = [...testDeckIds, ...await getOwnDeckIds(userId)];
+    let availableDecks : number[] = [...testDeckIds, ...await myDeckIds()];
     return await db.collection('decks').find<Deck>({id: { $in: availableDecks}}).toArray();
 
 };

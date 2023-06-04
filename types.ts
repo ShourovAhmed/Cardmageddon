@@ -4,6 +4,7 @@ import { userInfo } from "os";
 export class Info {
     succes: boolean;
     message: string;
+    direct?: number;
     constructor(succes: boolean = false, message: string = "Er ging iets mis"){
         this.succes = succes;
         this.message = message;

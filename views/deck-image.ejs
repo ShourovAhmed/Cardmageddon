@@ -1,17 +1,25 @@
 <%-include("partials/page-head")%>
 <section class="image-chooser">
-<form class="left-form" method="post">
+
+
+<form class="left-form" method="post" action="/deck/<%=deckId%>">
 <input id="previous" name="previous" value="-1" hidden>
+<input type="number" name="deckImage" value="1" hidden required>
 <button id="nextButton" type="submit"><img src="/assets/images/left.png"></button>
 </form>
+
 
 <img src="https://cards.scryfall.io/art_crop/front/<%=image.substring(0,1)%>/<%=image.substring(1,2)%>/<%=image%>.jpg" alt="" width="210">
 <%-include("partials/page-tail")%>
 <input type="text" name="cardId" id="cardId" value="<%=image%>" hidden>
 
-<form class="right-form" method="post">
+
+<form class="right-form" method="post" action="/deck/<%=deckId%>">
+    <input type="number" name="deckImage" value="1" hidden required>
     <input id="next" name="next" value="1" hidden>
 <button id="prevButton" type="submit"><img src="/assets/images/right.png"></button>
 </form>
+
+
 </section>
 <%-include("partials/page-tail")%>

@@ -32,6 +32,7 @@
                 <button class="header-btn showM deckNameM">Decknaam</button>
                 <button class="header-btn showM deckImgM">Deckafbeelding</button>
                 <button class="header-btn showM deckRemoveM">Verwijderen</button>
+                <button class="header-btn showM deckCopyM">Kopieeren</button>
     
             </section>
             <%-include("partials/info-bar")%>
@@ -39,6 +40,8 @@
 
         <aside>
             <section class="deck-summary">
+                <%if(deck.name.length > 15){
+                    deck.name = deck.name.substring(0, 15) + ".."}%>
                 <h2><div><%=deck.name%></div></h2>
                 <ul>
                     <%
@@ -140,6 +143,7 @@
 
 
 <section id="modals">
+    <%-include("partials/modals/deckCopy-modal")%>
     <%-include("partials/modals/card-modal")%>
     <%-include("partials/modals/error-modal")%>
     <%-include("partials/modals/logout-modal")%>
