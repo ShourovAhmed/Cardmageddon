@@ -609,13 +609,23 @@ let makeIdList=(cards:CardS[],cardsIds:string[]) => {
     //get array only containing varIds// needed for api
 
     for(let i=0;i<cards.length;i++){
+        if(cards[i].variations[0].count>1){
+            for(let c=0;c<cards[i].variations[0].count;c++){
+                
+                let card=cards[i].variations[0];
+                cardsIds.push(card.id);
+            }
+
+        }else{
 
         let card=cards[i].variations[0];
+        cardsIds.push(card.id);
+        }
         
         
         
 
-        cardsIds.push(card.id);
+        
 
 
 
@@ -727,6 +737,7 @@ app.post("/drawtest", async(req,res)=>{
     
     drawnCards++;
     ListCardReady=app.locals.data;
+    
 
     res.render("drawtest",{
 
