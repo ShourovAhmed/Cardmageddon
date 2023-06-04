@@ -549,7 +549,7 @@ app.get("/drawtest/:deckId", async(req,res) => {
 });
 
 //Drawtest
-/*
+
 const shuffleArray = (array:any) => {
     // create a copy of the array so that the original array is not mutated
     
@@ -811,7 +811,7 @@ app.post("/drawtest", async(req,res)=>{
     });
     }
 });
-*/
+
 
 // -------------- //
 // 404
