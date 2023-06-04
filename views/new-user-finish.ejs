@@ -1,0 +1,38 @@
+<%-include('partials/page-head')%>
+
+    <main>
+        <section class="sub-header">
+            <section class="sub-header-top">
+                <h1>Registratie</h1>
+
+
+            </section>
+            <%-include("partials/info-bar")%>
+        </section>
+
+            <form method="post" class="registration-form">
+                <input type="text" id="username" name="username" value="<%=username%>" required readonly>
+                <br>
+                <label for="password">Paswoord</label>
+                <br>
+                <input type="password" id="password1" name="password1" <%if(locals.password){%>value="<%=password%>"<%}%> required>
+                <br>
+                <label for="password">Paswoord nogmaals</label>
+                <br>
+                <input type="password" id="password2" name="password2" <%if(locals.password){%>value="<%=password%>"<%}%> required>
+                <br>
+                <label for="termsOfAgrement">Ik accepteer de gebruikersvoorwaarden,<br>die niemand ooit zal lezen omdat ze ergens,<br>in een veel te lang document staan uitgeschreven</label>
+                <input type="checkbox" name="termsOfAgrement" id="termsOfAgrement">
+                <section id="captcha-box" class="ff">
+                    <p>Bewijs dat je slimmer bent dan chatGPT door het volgende woord, voluit te schrijven:</p>
+                    <p><%=//secretWord%></p>
+                </section>
+                <button id="registration-btn" type="submit">Registreer</button>
+            
+            </form>
+
+
+
+    </main>
+
+<%-include('partials/page-tail')%>

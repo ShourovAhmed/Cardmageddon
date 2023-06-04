@@ -1,12 +1,13 @@
-import { Deck, CardS, Set, Card, CardFace, Info, CookieInfo, User } from "../types";
+import { Deck, CardS, Set, Card, CardFace, Info, CookieInfo, User, LoginData } from "../types";
 
 import { cookieInfo} from "../index";
 import { db, client, CryptoJS, testDeckIds } from "../staticValues";
 
 import { getCard } from "./scryfallFunctions";
-import { getFreeId } from "./deckFunctions";
+import { } from "./deckFunctions";
 
 import { error, log } from "console";
+import { Long } from "mongodb";
 
 
 export const fullHash = (text: string):string => {
@@ -55,4 +56,57 @@ export const deckAccess = async(deckId : number):Promise<number> => {
     }
     
     return 0;
-}  
+}
+
+export const freeUsername = async(username : string) => {
+    
+    let loginData : LoginData|any = await db.collection("loginData").findOne({username: username});
+    if(loginData === null){
+        return true;
+    }
+    return false;
+}
+
+const getFreeId = async(collection : string) => {
+
+        // IDs 0 to 9 are reserved! 
+        let i : number = 10;
+
+        while (true){
+            let test : Deck|null = await db.collection(collection).findOne<Deck>({id: i});
+            if(test === null){
+               return i;
+            }
+            i++;
+        }
+    }
+
+export const registerUser = async(username: string, password : string): Promise<CookieInfo> => {
+    let newUSerCookie : CookieInfo = new CookieInfo;
+
+    try{
+        let newLoginData : LoginData = {
+            id: await getFreeId("loginData"),
+            user_id: await getFreeId("users"),
+            username: username,
+            password: password
+        }
+        await db.collection("loginData").insertOne(newLoginData);
+        let newUser : User = {
+            id: newLoginData.user_id,
+            firstName: "Unknown",
+            surname: "Unknown",
+            decks: []
+        }
+        await db.collection("users").insertOne(newUser);
+        
+        newUSerCookie.id = newLoginData.user_id;
+        newUSerCookie.username = newLoginData.username;
+        newUSerCookie.verified = true;
+    }
+    catch{
+        return newUSerCookie;
+    }
+    return newUSerCookie;
+
+}

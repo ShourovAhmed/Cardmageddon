@@ -4,7 +4,7 @@ import {MongoClient} from 'mongodb';
 import {Deck, CardS, Info, CookieInfo, User, LoginData, simpleCardObject, ListReadyDecksInterface} from "./types";
 import { render } from 'ejs';
 
-import { fullHash, emailHash, deckAccess, capitalizeFirstLetter } from './functions/coreFunctions';
+import { fullHash, emailHash, deckAccess, capitalizeFirstLetter, freeUsername, registerUser } from './functions/coreFunctions';
 import { splitMana } from './functions/conversionFunctions';
 import { iHatePromises, shuffleArray } from './functions/drawFunctions';
 import { getCard } from './functions/scryfallFunctions';
@@ -86,9 +86,38 @@ app.get("/logout", (req, res) =>{
 })
 
 app.get("/account/new", (req, res) =>{
-    log("logout");
-    table(cookieInfo);
-    res.redirect("/");
+    res.render("new-user-start");
+})
+app.post("/account/new", async(req, res) =>{
+    
+    if(!await freeUsername(req.body.username)){
+        res.render("new-user-start", {title: "Registration", info: new Info(false, "Naam al in gebruik.")});
+
+    }
+    if(req.body.password1 && req.body.password2){
+        if(req.body.password1 != req.body.password2){
+            res.render("new-user-finish", {title: "Registration", username: req.body.username, info: new Info(false, "paswoorden komen niet overeen.")});
+            return;
+        }
+        if(req.body.termsOfAgrement != "on"){
+            res.render("new-user-finish", {title: "Registration", username: req.body.username, password: req.body.password1, info: new Info(false, "Accepteer de voorwaarden")});
+            return;
+        }
+
+        cookieInfo = await registerUser(req.body.username, await fullHash(req.body.password1))
+        
+        if(cookieInfo.verified){
+            res.render("landingPage", {info: new Info(true, `Welkom ${cookieInfo.username}`)});
+        }
+        else{
+            res.render("landingPage", {info: new Info(false, `Registratie mislukt`)});
+        }
+
+    }
+    else{
+        res.render("new-user-finish", {title: "Registration", username: req.body.username});
+    }
+    
 })
 
 
