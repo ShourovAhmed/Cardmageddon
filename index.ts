@@ -541,12 +541,12 @@ app.post("/deckImage/:deckId/", async(req,res) =>{
 
 
 // // !!!!!!!!!!!!! ///
-let ListCardReadyPreload:any= [];
+//let ListCardReadyPreload:any= [];
 // // !!!!!!!!!!!!! ///
 
 
 
-//let ListCardReadyPreload:any= iHatePromises(); //to fix promiseissues?
+let ListCardReadyPreload:any= iHatePromises(); //to fix promiseissues?
 
 
 
