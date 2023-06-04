@@ -229,7 +229,16 @@ app.post("/home", async (req, res) => {
 
 app.get("/cardDetail/:id", async (req, res) => {
 
+
+    // Get decknames for dropdown menu & all cards from all decks for text
     let decksDb = await db.collection("decks").find<Deck>({}).toArray();
+    let cards = [];
+    for(let i = 0; i< decksDb.length; i++){
+        for(let j = 0; j< decksDb[i].cards.length; j++){
+            cards.push({cardId: decksDb[i].cards[j].variations[0].id, deckName: decksDb[i].name});
+        }
+    }
+
 
     let decks = [];
     for(let deck of decksDb){
@@ -366,7 +375,7 @@ app.get("/cardDetail/:id", async (req, res) => {
 
     
 
-    res.render("cardDetail", {card: card, card2: card2, localCard: pics[id], decks: decksDb});
+    res.render("cardDetail", {card: card, card2: card2, localCard: pics[id], decks: decksDb, cards: cards});
 
     
 });
@@ -540,7 +549,7 @@ app.get("/drawtest/:deckId", async(req,res) => {
 });
 
 //Drawtest
-
+/*
 const shuffleArray = (array:any) => {
     // create a copy of the array so that the original array is not mutated
     
@@ -802,7 +811,7 @@ app.post("/drawtest", async(req,res)=>{
     });
     }
 });
-
+*/
 
 // -------------- //
 // 404

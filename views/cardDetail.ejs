@@ -52,23 +52,11 @@
                                         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                                         <span class="sr-only">Next</span>
                                     </a>
-                                </div> 
-                                <form action="/deck/<%= decks[0].id %>/<%= localCard.id %>/1" name="deckSelector" id="deckSelector">
-                                    <label for="decks">Decks: </label>
-                                    <select name="decks" id="decks" onchange="changeAddUrl()">
-                                        <% for(let i = 0; i < decks.length; i++){ %>
-                                        <option value="<%= decks[i].name %>"><%= decks[i].name %></option>
-                                        <% } %>
-                                    </select>
-                                    <a href="/deck/<%= decks[2].id %>/<%= localCard.id %>/1">Add</a>
-                                    <input type="submit" value="Add">
-                                </form>
+                                </div>
                                 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
                                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
                                 <!-- Include all compiled plugins (below), or include individual files as needed -->
                                 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-                                <script src="/js/modals.js"></script>
-
                     </td>
                 </tr>
             </section>
@@ -369,6 +357,32 @@
                 </tr>        
                 </section>   
         </table>
+        <br>
+        <form action="/deck/<%= decks[0].id %>/<%= localCard.id %>/1" name="deckSelector" id="deckSelector">
+
+            <select name="decks" id="decks" onchange="changeAddUrl()">
+                <% for(let i = 0; i < decks.length; i++){ %>
+                <option value="<%= decks[i].name %>"><%= decks[i].name %></option>
+                <% } %>
+            </select>
+            <% let text = [];
+                for(let i = 0; i < cards.length; i++){
+                if(localCard.id == cards[i].cardId){
+                    text.push(" " + cards[i].deckName );
+                }
+            }{
+            %>
+            <input type="submit" value="Add" id="addButton">
+            <% if(text.length>0){ %>
+                <br>
+                <label for="showInDecks" id="decksLabel">This card is in the following deck(s):</label>
+                <p id="showInDecks">  <%= text %> </p><%}%>
+            <%}%>
+            
+            
+
+        </form>
+        <script src="/js/modals.js"></script>
     </main>
 </body>
 
