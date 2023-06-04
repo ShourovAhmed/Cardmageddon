@@ -38,6 +38,41 @@
 form {
     text-align: center;
 }
+
+#decks{
+  font-size: 15pt;
+  font-weight: bold;
+  color: white;
+  background-color: rgb(222, 146, 91);
+ 
+}
+#decks option{
+  color: white;
+}
+
+#addButton{
+  font-size: 15pt;
+  font-weight: bold;
+  color: white;
+  background-color: rgb(122, 55, 55);
+}
+
+#decksLabel{
+  font-size: 15pt;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+
+#showInDecks{
+  font-size: 15pt;
+  font-weight: bold;
+  color: rgb(222, 146, 91);
+
+  -webkit-text-stroke: .1px;
+  -webkit-text-stroke-color: black;
+}
+
 /*Slideshow*/
   .carousel-fade .carousel-inner .item {
     opacity: 0;
