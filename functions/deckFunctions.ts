@@ -5,6 +5,7 @@ import { getCard } from "./scryfallFunctions";
 import { getDeck } from "./mongoFunctions";
 import { cookieInfo } from "..";
 import { table } from "console";
+import { deckAccess } from "./coreFunctions";
 
 
 
@@ -111,6 +112,10 @@ export const addCard = async(theCard : CardS, deck : Deck, amount : number):Prom
 };
 
 export const addOrRemoveCard = async(deckId : number, cardId : string, amount : number):Promise<Info> => {
+
+        if(await deckAccess(deckId) <2){
+            return new Info(false, "U hebt niet voldoende recht op dit deck.")
+        }
 
         //check the input
         if(amount === 0){            
