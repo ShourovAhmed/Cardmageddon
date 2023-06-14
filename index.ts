@@ -562,7 +562,7 @@ app.post("/deck/:deckId", async(req,res)=>{
 // DUPLICATE DECK
 if(req.body.deckCopy){
 
-    let info = await copyDeck(deckId, req.body.deckName);
+    let info = await copyDeck(deckId, req.body.deckName); 
     if(info.direct){ 
         deckId = info.direct;
     }
