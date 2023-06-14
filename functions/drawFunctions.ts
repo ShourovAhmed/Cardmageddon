@@ -13,6 +13,7 @@ export const shuffleArray = (array:any) => {
   };
 
 
+
 export const getCardFromApi= async (cardsid:string ) => {
 
     //gets card object from id to api call
@@ -178,9 +179,9 @@ export const LoadingAllDecks =async () => {//will do as before but load all deck
         }
     }
 
-    
+
 export const iHatePromises =async () => {
-        let ListCardReadyPreload=await LoadingAllDecks();
-        return ListCardReadyPreload;
-    
-    }
+    let ListCardReadyPreload=await LoadingAllDecks();
+    return ListCardReadyPreload;
+
+}
