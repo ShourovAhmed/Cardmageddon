@@ -12,18 +12,21 @@ export const shuffleArray = (array:any) => {
     return array;
   };
 
+
 export const getCardFromApi= async (cardsid:string ) => {
 
-//gets card object from id to api call
-    let id= cardsid;
-    let response = await fetch(`https://api.scryfall.com/cards/${id}`); 
-    //let cardFromApi: string[]=[];//old
-    let cardFromApi=[];
-    cardFromApi = await response.json();
-    
-    
-    return cardFromApi;       
+    //gets card object from id to api call
+        let id= cardsid;
+        let response = await fetch(`https://api.scryfall.com/cards/${id}`); 
+        //let cardFromApi: string[]=[];//old
+        let cardFromApi=[];
+        cardFromApi = await response.json();
+        
+        
+        return cardFromApi;       
+        
 }
+
 export const makeCardListFromApi =async(cardsIds:string[],simpleCard:simpleCardObject[]) => {
 
 
@@ -64,20 +67,24 @@ export const makeCardListFromApi =async(cardsIds:string[],simpleCard:simpleCardO
 }
 
 
+
 export const makeIdList=(cards:CardS[],cardsIds:string[]) => {
 
     //get array only containing varIds// needed for api
 
     for(let i=0;i<cards.length;i++){
+        if(cards[i].variations[0].count>1){
+            for(let c=0;c<cards[i].variations[0].count;c++){
+                
+                let card=cards[i].variations[0];
+                cardsIds.push(card.id);
+            }
+
+        }else{
 
         let card=cards[i].variations[0];
-        
-        
-        
-
         cardsIds.push(card.id);
-
-
+        }
 
     }
     //console.log(`copyArray: ${cardToIds}`);
@@ -122,58 +129,58 @@ export const LoadingDeck =async () => {
 export const LoadingAllDecks =async () => {//will do as before but load all decks so cards wil be one space deeper inside the array
 
 
-try{
-        await client.connect();
-
-        const deckCollection= client.db("userData").collection("decks");
+    try{
+            await client.connect();
     
-        const decksDatabase= await deckCollection.find<Deck>({}).toArray();
-
-        let ListReadyDecks:ListReadyDecksInterface[]=[];
-        for(let i:number=0;i<decksDatabase.length;i++){
-            
-            let cards:CardS[]= decksDatabase[i].cards!; 
-            let deckname:string=decksDatabase[i].name;
-            console.log(deckname)
-            //might need to add deck id here later+interface
-
-            let cardsIds:string[]=[]; 
-            cardsIds=makeIdList(cards,cardsIds);//list of ids neeeded for apicall later
-
-            let simpleCard:simpleCardObject[]=[];
-            let ListCardReady= await makeCardListFromApi(cardsIds,simpleCard);
-            //simpleCard=ListCardReady!;
-            
-            ListReadyDecks[i]={
-                deckName:deckname,
-                simpleCard:[]
+            const deckCollection= client.db("userData").collection("decks");
+        
+            const decksDatabase= await deckCollection.find<Deck>({}).toArray();
+    
+            let ListReadyDecks:ListReadyDecksInterface[]=[];
+            for(let i:number=0;i<decksDatabase.length;i++){
+                
+                let cards:CardS[]= decksDatabase[i].cards!; 
+                let deckname:string=decksDatabase[i].name;
+                console.log(deckname)
+                //might need to add deck id here later+interface
+    
+                let cardsIds:string[]=[]; 
+                cardsIds=makeIdList(cards,cardsIds);//list of ids neeeded for apicall later
+    
+                let simpleCard:simpleCardObject[]=[];
+                let ListCardReady= await makeCardListFromApi(cardsIds,simpleCard);
+                //simpleCard=ListCardReady!;
+                
+                ListReadyDecks[i]={
+                    deckName:deckname,
+                    simpleCard:[]
+                }
+    
+    
+    
+                
+                
+                for(let j=0;j<ListCardReady.length;j++){
+                    ListReadyDecks[i].simpleCard.push(ListCardReady[j]);
+                }
+                
+                //ListReadyDecks.push(await ListCardReady);
+                console.log('\x1b[36m%s\x1b[0m',"deck "+i+" loaded");
+                
+    
             }
-
-
-
-            
-            
-            for(let j=0;j<ListCardReady.length;j++){
-                ListReadyDecks[i].simpleCard.push(ListCardReady[j]);
-            }
-            
-            //ListReadyDecks.push(await ListCardReady);
-            console.log('\x1b[36m%s\x1b[0m',"deck "+i+" loaded");
-            
-
+            //console.log(ListReadyDecks);
+            return ListReadyDecks;
+    
+    
+        }catch(e){
+            console.error(e);
         }
-        //console.log(ListReadyDecks);
-        return ListReadyDecks;
-
-
-    }catch(e){
-        console.error(e);
     }
-}
 
-
+    
 export const iHatePromises =async () => {
-    let ListCardReadyPreload=await LoadingAllDecks();
-    return ListCardReadyPreload;
-
-}
+        let ListCardReadyPreload=await LoadingAllDecks();
+        return ListCardReadyPreload;
+    
+    }
