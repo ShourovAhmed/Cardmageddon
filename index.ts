@@ -652,7 +652,7 @@ catch (e: any){
 
 
 // // !!!!!!!!!!!!! ///
-//let ListCardReadyPreload:any= []; 
+//let ListCardReadyPreload:any= [];  
 // // !!!!!!!!!!!!! ///
 
 
@@ -661,7 +661,7 @@ catch (e: any){
 let ListCardReadyPreload:any = iHatePromises(); //to fix promiseissues?
 
 let drawnCards:number=7;//startcount cards shown
-let selectedDeck:number=0;//default is first deck
+let selectedDeck:number=0;//default is first deck 
 
 
 let ListCardReady:ListReadyDecksInterface=ListCardReadyPreload

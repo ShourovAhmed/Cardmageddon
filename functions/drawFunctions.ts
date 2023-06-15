@@ -90,7 +90,7 @@ const makeIdList=(cards:CardS[],cardsIds:string[]) => {
     }
     
 
-const LoadingAllDecks = async () => {//will do as before but load all decks so cards wil be one space deeper inside the array
+const loadingAllDecks = async () => {//will do as before but load all decks so cards wil be one space deeper inside the array
     
     try{
             const deckCollection= client.db("userData").collection("decks");
@@ -98,11 +98,15 @@ const LoadingAllDecks = async () => {//will do as before but load all decks so c
             const decksDatabase= await deckCollection.find<Deck>({}).toArray();
     
             let ListReadyDecks:ListReadyDecksInterface[]=[];
+            let notEmptyDeckCount : number = -1;
             for(let i:number=0;i<decksDatabase.length;i++){
                 
+
+                if(decksDatabase[i].cards.length != 0){
+                    notEmptyDeckCount++;
                     let cards:CardS[]= decksDatabase[i].cards!; 
                     let deckname:string=decksDatabase[i].name;
-                    console.log(deckname)
+                    console.log(deckname);
                     //might need to add deck id here later+interface
         
                     let cardsIds:string[]=[]; 
@@ -112,19 +116,20 @@ const LoadingAllDecks = async () => {//will do as before but load all decks so c
                     let ListCardReady= await makeCardListFromApi(cardsIds,simpleCard);
                     //simpleCard=ListCardReady!;
                     
-                    ListReadyDecks[i]={
+                    ListReadyDecks[notEmptyDeckCount]={
                         deckName:deckname,
                         simpleCard:[]
                     }
                     
                     for(let j=0;j<ListCardReady.length;j++){
-                        ListReadyDecks[i].simpleCard.push(ListCardReady[j]);
+                        ListReadyDecks[notEmptyDeckCount].simpleCard.push(ListCardReady[j]);
                     }
-                    
+
+                    console.log('\x1b[36m%s\x1b[0m',"deck "+i+" loaded as #" + notEmptyDeckCount);
+                }
+
                     //ListReadyDecks.push(await ListCardReady);
-                    console.log('\x1b[36m%s\x1b[0m',"deck "+i+" loaded");
-                    
-        
+
                 }
 
             
@@ -138,7 +143,7 @@ const LoadingAllDecks = async () => {//will do as before but load all decks so c
     }
 
 export const iHatePromises =async () => {
-    let ListCardReadyPreload=await LoadingAllDecks();
+    let ListCardReadyPreload=await loadingAllDecks();
     return ListCardReadyPreload;
 
 }
