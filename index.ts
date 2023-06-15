@@ -9,7 +9,7 @@ import { splitMana } from './functions/conversionFunctions';
 import { iHatePromises, shuffleArray } from './functions/drawFunctions';
 import { getCard } from './functions/scryfallFunctions';
 import { addOrRemoveCard, makeNewDeck, getDeckImages, copyDeck } from './functions/deckFunctions';
-import { getDeck, getDecks } from './functions/mongoFunctions';
+import { getDeck, getDecks, connect, exit } from './functions/mongoFunctions';
 
 import { db, client, maxNonLandCardcount, maxTotalCardsInDeck, mssg } from './staticValues';
 import { log, table } from 'console';
@@ -19,7 +19,7 @@ import { title } from 'process';
 
 
 //EXPRESS
-const app = express();
+const app = express(); 
 
 
 app.set("port", 3000);
@@ -42,11 +42,11 @@ app.get("//:id", async(req, res) =>{
     let loginData : LoginData|null = await db.collection("loginData").findOne<LoginData>({user_id: parseInt(req.params.id)});
     cookieInfo = new CookieInfo(loginData?.username, loginData?.user_id, true);
     res.render("landingPage", {title: "Landingpage", info: new Info(true, mssg+cookieInfo.username)});
-})
+});
 
 app.get("/", (req, res) =>{
     res.render("landingPage");
-})
+});
 
 app.post("/", async(req, res) =>{
     let info : Info = new Info();
@@ -246,7 +246,7 @@ app.post("/home", async (req, res) => {
             //console.table(shownCards, ['name', 'rarity']);
                     
                 
-            console.table(pics, ["name", "multipleCards", "doubleSided"]);
+            //console.table(pics, ["name", "multipleCards", "doubleSided"]);
             return res.render("homepage", {
                 cards: shownCards,
                 pageNumber,
@@ -456,204 +456,195 @@ app.get("/cardDetail/:id", async (req, res) => {
     
 });
 
-app.get("/decks", async (req,res) =>{
+try{
+
+    app.get("/decks", async (req,res) =>{
     
-    res.render("decks", {title: "Decks", decks: await getDecks()});
-
-});
-
-app.post("/decks", async (req,res) =>{
-    let newDeckName : string = req.body.deckName;
-
-    let newDeck : Deck = await makeNewDeck(req.body.deckName, cookieInfo.id);
-
-    try{
-        await db.collection("decks").insertOne(newDeck);
-        let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
-        let info : Info = new Info(true, `Deck: "${newDeckName}" Toegevoegd`);
-        res.render("decks", {title: "Decks", decks: await getDecks(), info: info});
-    }
-    catch(e: any){
-        let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
-        let info : Info = new Info(false, `Toevoegen mislukt`)
-        res.render("decks", {title: "Decks", decks: await getDecks(), info: info});
-    }
-});
-
-
-///---START DECK---///
-app.get("/deck/:id", async(req,res) =>{
-    let info : Info = new Info(false, "Er ging iets mis");
-    let deckId : number = parseInt(req.params.id);
-
+        res.render("decks", {title: "Decks", decks: await getDecks()});
+    
+    });
+    
+    app.post("/decks", async (req,res) =>{
+        let newDeckName : string = req.body.deckName;
+    
+        let newDeck : Deck = await makeNewDeck(req.body.deckName, cookieInfo.id);
+    
+        try{
+            await db.collection("decks").insertOne(newDeck);
+            let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
+            let info : Info = new Info(true, `Deck: "${newDeckName}" Toegevoegd`);
+            res.render("decks", {title: "Decks", decks: await getDecks(), info: info});
+        }
+        catch(e: any){
+            let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
+            let info : Info = new Info(false, `Toevoegen mislukt`)
+            res.render("decks", {title: "Decks", decks: await getDecks(), info: info});
+        }
+    });
+    
+    
+    ///---START DECK---///
+    app.get("/deck/:id", async(req,res) =>{
+        let info : Info = new Info(false, "Er ging iets mis");
+        let deckId : number = parseInt(req.params.id);
+    
+        // CHECK INPUT
+            if(deckId - parseFloat(req.params.id) != 0){
+                res.render("decks", {title: "Decks", decks: await getDecks(), info: new Info(false, "Foutief Deck ID")});
+                return;
+            }
+    
+        try{
+            let deck : Deck|null = await getDeck(deckId);
+    
+            res.render('deck', {title: "Deck", deck: deck});
+    
+        }
+        catch (e){
+            res.render('decks', {title: "Decks", decks: await getDecks(), info: e});
+        }
+    });
+    
+    // DECKOPTIONS
+    
+    let deckImages : string[] = [];
+    let imageIndex : number = 0;
+    app.get("/deckImage/:id", async(req,res) =>{
+        imageIndex = 0;
+        let deckId : number = parseInt(req.params.id);
+        let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
+        let info : Info = new Info;
+    
+        if (!deck){
+            info.message = `Kon deck met id ${deckId} niet vinden`
+            res.render(`/deck/${deckId}`, {info: info});
+        }
+        else{
+            deckImages = getDeckImages(deck);
+        }
+        res.render('deck-image', {title: "Deck Image", image: deckImages[imageIndex], deckId: req.params.id});
+    });
+    
+    app.post("/deck/:deckId", async(req,res)=>{
+    
+        let deckId : number = parseInt(req.params.deckId);
+    
     // CHECK INPUT
-        if(deckId - parseFloat(req.params.id) != 0){
+        if(deckId - parseFloat(req.params.deckId) != 0){
             res.render("decks", {title: "Decks", decks: await getDecks(), info: new Info(false, "Foutief Deck ID")});
             return;
         }
-
-    try{
-        let deck : Deck|null = await getDeck(deckId);
-
-        res.render('deck', {title: "Deck", deck: deck});
-
-    }
-    catch (e){
-        res.render('decks', {title: "Decks", decks: await getDecks(), info: e});
-    }
-});
-
-// DECKOPTIONS
-
-let deckImages : string[] = [];
-let imageIndex : number = 0;
-app.get("/deckImage/:id", async(req,res) =>{
-    imageIndex = 0;
-    let deckId : number = parseInt(req.params.id);
-    let deck : Deck|null = await db.collection('decks').findOne<Deck>({id: parseInt(req.params.id)});
-    let info : Info = new Info;
-
-    if (!deck){
-        info.message = `Kon deck met id ${deckId} niet vinden`
-        res.render(`/deck/${deckId}`, {info: info});
-    }
-    else{
-        deckImages = getDeckImages(deck);
-    }
-    res.render('deck-image', {title: "Deck Image", image: deckImages[imageIndex], deckId: req.params.id});
-});
-
-app.post("/deck/:deckId", async(req,res)=>{
-
-    let deckId : number = parseInt(req.params.deckId);
-
-// CHECK INPUT
-    if(deckId - parseFloat(req.params.deckId) != 0){
-        res.render("decks", {title: "Decks", decks: await getDecks(), info: new Info(false, "Foutief Deck ID")});
+    
+        let accessLvl : number = await deckAccess(deckId);
+    
+    // Needs to be improved later, works just fine for now
+    /// FORM HERE
+        if(req.body.deckImage){
+            if(req.body.next){
+                imageIndex++;
+                if(imageIndex >= deckImages.length){ 
+                    imageIndex = 0;
+                }
+                res.render("deck-image", {title: "Deck Image", image: deckImages[imageIndex], deckId: req.params.deckId});
+                return;
+            }
+            else if(req.body.previous){
+                imageIndex--;
+                if(imageIndex < 0){
+                    imageIndex = deckImages.length-1;
+                }
+                res.render("deck-image", {title: "Deck Image", image: deckImages[imageIndex], deckId: req.params.deckId});
+                return;
+            }
+    
+        }
+    ///TO HERE
+    
+    // LVL 1 ACCESS
+    // DUPLICATE DECK
+    if(req.body.deckCopy){
+    
+        let info = await copyDeck(deckId, req.body.deckName); 
+        if(info.direct){ 
+            deckId = info.direct;
+        }
+        res.render("deck", {title: "deck", deck: await getDeck(deckId), info: info});
         return;
     }
-
-    let accessLvl : number = await deckAccess(deckId);
-
-// Needs to be improved later, works just fine for now
-/// FORM HERE
-    if(req.body.deckImage){
-        if(req.body.next){
-            imageIndex++;
-            if(imageIndex >= deckImages.length){ 
-                imageIndex = 0;
+    
+    
+    // LVL 2 ACCESS
+    if(accessLvl < 2){ 
+        res.render("deck", {title: "deck", deck: await getDeck(deckId), info: new Info(false, "U hebt enkel lees en kopieer recht voor dit deck.")});
+        return;
+    }
+    
+    // SET DECK IMAGE
+    if(req.body.pickImage){
+        console.log(deckImages[imageIndex]);
+        await db.collection("decks").updateOne({id: parseInt(req.params.deckId)}, {$set: {coverCard: deckImages[imageIndex]}});
+        res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: new Info(true, "Nieuwe Deckcover Ingesteld")});
+        return;
+    }
+    // RENAME DECK
+    if(req.body.deckRename){
+        // Update deck name
+        await db.collection("decks").updateOne({id: parseInt(req.params.deckId)},{$set:{name: req.body.deckName}});
+        res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: new Info(true, `Deck hernoemt naar: ${req.body.deckName}`)});
+        return;
+    }
+    
+    // LVL 3 ACCESS
+    if(accessLvl < 3){
+        res.render("deck", {title: "deck", deck: await getDeck(deckId), info: new Info(false, "U hebt niet voldoende rechten om dit deck te verwijderen")});
+        return;
+    }
+    // REMOVE DECK
+        if(req.body.removeDeck){ //Delete Deck
+        await db.collection("users").updateOne({id: cookieInfo.id}, {$pullAll: {decks: [deckId]}});
+        await db.collection("decks").deleteOne({id: parseInt(req.params.deckId)});
+    
+        res.render("decks", {title: "Decks", decks: await getDecks(), info: new Info(true, `Deck verwijderd`)});
+        return;
+    }
+    
+    
+    });
+    
+    //ADD OR REMOVE CARD
+    app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
+    
+        let amount : number = parseFloat(req.params.amount);
+        let deckId : number = parseInt(req.params.deckId);
+        let cardId : string = req.params.cardId;
+    
+        try{
+            if(amount%1 != 0){
+                throw new Info(false, `Hoeveelheid is geen getal`);
             }
-            res.render("deck-image", {title: "Deck Image", image: deckImages[imageIndex], deckId: req.params.deckId});
-            return;
-        }
-        else if(req.body.previous){
-            imageIndex--;
-            if(imageIndex < 0){
-                imageIndex = deckImages.length-1;
+            if(deckId != parseFloat(req.params.deckId)){
+                throw new Info(false, "Foutief deck ID");
             }
-            res.render("deck-image", {title: "Deck Image", image: deckImages[imageIndex], deckId: req.params.deckId});
-            return;
+            let info : Info = await addOrRemoveCard(deckId, cardId, amount);
+    
+            res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: info})
         }
-
-    }
-///TO HERE
-
-// LVL 1 ACCESS
-// DUPLICATE DECK
-if(req.body.deckCopy){
-
-    let info = await copyDeck(deckId, req.body.deckName); 
-    if(info.direct){ 
-        deckId = info.direct;
-    }
-    res.render("deck", {title: "deck", deck: await getDeck(deckId), info: info});
-    return;
-}
-
-
-// LVL 2 ACCESS
-if(accessLvl < 2){ 
-    res.render("deck", {title: "deck", deck: await getDeck(deckId), info: new Info(false, "U hebt enkel lees en kopieer recht voor dit deck.")});
-    return;
-}
-
-// SET DECK IMAGE
-if(req.body.pickImage){
-    console.log(deckImages[imageIndex]);
-    await db.collection("decks").updateOne({id: parseInt(req.params.deckId)}, {$set: {coverCard: deckImages[imageIndex]}});
-    res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: new Info(true, "Nieuwe Deckcover Ingesteld")});
-    return;
-}
-// RENAME DECK
-if(req.body.deckRename){
-    // Update deck name
-    await db.collection("decks").updateOne({id: parseInt(req.params.deckId)},{$set:{name: req.body.deckName}});
-    res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: new Info(true, `Deck hernoemt naar: ${req.body.deckName}`)});
-    return;
-}
-
-// LVL 3 ACCESS
-if(accessLvl < 3){
-    res.render("deck", {title: "deck", deck: await getDeck(deckId), info: new Info(false, "U hebt niet voldoende rechten om dit deck te verwijderen")});
-    return;
-}
-// REMOVE DECK
-    if(req.body.removeDeck){ //Delete Deck
-    await db.collection("users").updateOne({id: cookieInfo.id}, {$pullAll: {decks: [deckId]}});
-    await db.collection("decks").deleteOne({id: parseInt(req.params.deckId)});
-
-    res.render("decks", {title: "Decks", decks: await getDecks(), info: new Info(true, `Deck verwijderd`)});
-    return;
-}
-
-
-});
-
-//ADD OR REMOVE CARD
-app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
-
-    let amount : number = parseFloat(req.params.amount);
-    let deckId : number = parseInt(req.params.deckId);
-    let cardId : string = req.params.cardId;
-
-    try{
-        if(amount%1 != 0){
-            throw new Info(false, `Hoeveelheid is geen getal`);
+        catch (e){
+           res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: e}) 
         }
-        if(deckId != parseFloat(req.params.deckId)){
-            throw new Info(false, "Foutief deck ID");
+    
+    });
+}
+catch (e: any){
+    console.error(e.message);
+    app.use( async (req, res) => {
+        res.status(500);
+        res.render("decks", {title: "Decks", decks: await getDecks(), info: new Info(false, "Er ging iets mis")});
         }
-        let info : Info = await addOrRemoveCard(deckId, cardId, amount);
-
-        res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: info})
-    }
-    catch (e){
-       res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: e}) 
-    }
-
-});
+      );
+}
 
 ///---END DECK---///
-
-
-//Drawtest
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //Drawtest
@@ -665,141 +656,6 @@ app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
 
 
 
-
-let getCardFromApi= async (cardsid:string ) => {
-
-//gets card object from id to api call
-    let id= cardsid;
-    let response = await fetch(`https://api.scryfall.com/cards/${id}`); 
-    //let cardFromApi: string[]=[];//old
-    let cardFromApi=[];
-    cardFromApi = await response.json();
-    
-    
-    return cardFromApi;       
-}
-let makeCardListFromApi =async(cardsIds:string[],simpleCard:simpleCardObject[]) => {
-
-
-    let ListCardReady: any[]=[];       
-    for(let i=0;i<cardsIds.length;i++){
-
-        
-        let cardObject=await getCardFromApi(cardsIds[i]);
-        if(cardObject.image_uris){
-
-        //ListCardReady.push(cardObject);   oldway
-        
-            simpleCard[i] = {
-            name: cardObject.name,
-            img: cardObject.image_uris.normal,
-            rarity: cardObject.rarity
-        };    
-    }  
-    else{
-        simpleCard[i] = {
-            name: cardObject.name,
-            //img: "https://cards.scryfall.io/normal/front/0/d/0d3c0c43-2d6d-49b8-a112-07611a23ae69.jpg",
-            img:cardObject.card_faces[0].image_uris,
-            rarity: cardObject.rarity
-        }; 
-
-    } 
-
-    }//makes array of cards in deck
-
-    //random ordering:
-    let randomizedListCardReady = simpleCard
-    .map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value)
-   
-    return simpleCard;
-}
-
-
-let makeIdList=(cards:CardS[],cardsIds:string[]) => {
-
-    //get array only containing varIds// needed for api
-
-    for(let i=0;i<cards.length;i++){
-        if(cards[i].variations[0].count>1){
-            for(let c=0;c<cards[i].variations[0].count;c++){
-                
-                let card=cards[i].variations[0];
-                cardsIds.push(card.id);
-            }
-
-        }else{
-
-        let card=cards[i].variations[0];
-        cardsIds.push(card.id);
-        }
-        
-        
-        
-
-        
-
-
-
-    }
-    //console.log(`copyArray: ${cardToIds}`);
-    return cardsIds;
-
-}
-
-let LoadingAllDecks =async () => {//will do as before but load all decks so cards wil be one space deeper inside the array
-
-
-try{
-        await client.connect();
-
-        const deckCollection= client.db("userData").collection("decks");
-    
-        const decksDatabase= await deckCollection.find<Deck>({}).toArray();
-
-        let ListReadyDecks:ListReadyDecksInterface[]=[];
-        for(let i:number=0;i<decksDatabase.length;i++){
-            
-            let cards:CardS[]= decksDatabase[i].cards!; 
-            let deckname:string=decksDatabase[i].name;
-            console.log(deckname)
-            //might need to add deck id here later+interface
-
-            let cardsIds:string[]=[]; 
-            cardsIds=makeIdList(cards,cardsIds);//list of ids neeeded for apicall later
-
-            let simpleCard:simpleCardObject[]=[];
-            let ListCardReady= await makeCardListFromApi(cardsIds,simpleCard);
-            //simpleCard=ListCardReady!;
-            
-            ListReadyDecks[i]={
-                deckName:deckname,
-                simpleCard:[]
-            }
-
-
-
-            
-            
-            for(let j=0;j<ListCardReady.length;j++){
-                ListReadyDecks[i].simpleCard.push(ListCardReady[j]);
-            }
-            
-            //ListReadyDecks.push(await ListCardReady);
-            console.log('\x1b[36m%s\x1b[0m',"deck "+i+" loaded");
-            
-
-        }
-        //console.log(ListReadyDecks);
-        return ListReadyDecks;
-
-
-    }catch(e){
-        console.error(e);
-    }
-}
 
 let ListCardReadyPreload:any=iHatePromises(); //to fix promiseissues?
 
@@ -926,9 +782,10 @@ app.use((req, res) => {
     }
   );
 
-app.listen(app.get("port"), () =>
-  console.log("[server] http://localhost:" + app.get("port"))
-);
+app.listen (app.get("port"), async() => {
+    console.log("[server] http://localhost:" + app.get("port"));
+    await connect();
+});
 
 
 

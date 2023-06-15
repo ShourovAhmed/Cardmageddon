@@ -12,9 +12,7 @@ export const shuffleArray = (array:any) => {
     return array;
   };
 
-
-
-export const getCardFromApi= async (cardsid:string ) => {
+const getCardFromApi= async (cardsid:string ) => {
 
     //gets card object from id to api call
         let id= cardsid;
@@ -25,114 +23,76 @@ export const getCardFromApi= async (cardsid:string ) => {
         
         
         return cardFromApi;       
-        
-}
-
-export const makeCardListFromApi =async(cardsIds:string[],simpleCard:simpleCardObject[]) => {
-
-
-    let ListCardReady: any[]=[];       
-    for(let i=0;i<cardsIds.length;i++){
-
-        
-        let cardObject=await getCardFromApi(cardsIds[i]);
-        if(cardObject.image_uris){
-
-        //ListCardReady.push(cardObject);   oldway
-        
+    }
+const makeCardListFromApi =async(cardsIds:string[],simpleCard:simpleCardObject[]) => {
+    
+    
+        let ListCardReady: any[]=[];       
+        for(let i=0;i<cardsIds.length;i++){
+    
+            
+            let cardObject=await getCardFromApi(cardsIds[i]);
+            if(cardObject.image_uris){
+    
+            //ListCardReady.push(cardObject);   oldway
+            
+                simpleCard[i] = {
+                name: cardObject.name,
+                img: cardObject.image_uris.normal,
+                rarity: cardObject.rarity
+            };    
+        }  
+        else{
             simpleCard[i] = {
-            name: cardObject.name,
-            img: cardObject.image_uris.normal,
-            rarity: cardObject.rarity
-        };    
-    }  
-    else{
-        simpleCard[i] = {
-            name: cardObject.name,
-            //img: "https://cards.scryfall.io/normal/front/0/d/0d3c0c43-2d6d-49b8-a112-07611a23ae69.jpg",
-            img:cardObject.card_faces[0].image_uris,
-            rarity: cardObject.rarity
-        }; 
-
-    } 
-
-    }//makes array of cards in deck
-
-    //random ordering:
-    let randomizedListCardReady = simpleCard
-    .map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value)
-   
-    return simpleCard;
-}
-
-
-
-export const makeIdList=(cards:CardS[],cardsIds:string[]) => {
-
-    //get array only containing varIds// needed for api
-
-    for(let i=0;i<cards.length;i++){
-        if(cards[i].variations[0].count>1){
-            for(let c=0;c<cards[i].variations[0].count;c++){
-                
-                let card=cards[i].variations[0];
-                cardsIds.push(card.id);
+                name: cardObject.name,
+                //img: "https://cards.scryfall.io/normal/front/0/d/0d3c0c43-2d6d-49b8-a112-07611a23ae69.jpg",
+                img:cardObject.card_faces[0].image_uris,
+                rarity: cardObject.rarity
+            }; 
+    
+        } 
+    
+        }//makes array of cards in deck
+    
+        //random ordering:
+        let randomizedListCardReady = simpleCard
+        .map(value => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value)
+       
+        return simpleCard;
+    }
+    
+    
+const makeIdList=(cards:CardS[],cardsIds:string[]) => {
+    
+        //get array only containing varIds// needed for api
+    
+        for(let i=0;i<cards.length;i++){
+            if(cards[i].variations[0].count>1){
+                for(let c=0;c<cards[i].variations[0].count;c++){
+                    
+                    let card=cards[i].variations[0];
+                    cardsIds.push(card.id);
+                }
+    
+            }else{
+    
+            let card=cards[i].variations[0];
+            cardsIds.push(card.id);
             }
-
-        }else{
-
-        let card=cards[i].variations[0];
-        cardsIds.push(card.id);
+        
+    
         }
-
-    }
-    //console.log(`copyArray: ${cardToIds}`);
-    return cardsIds;
-
-}
-export const LoadingDeck =async () => {
-    try{
-        //let startTime = performance.now()
-
-        await client.connect();
+        //console.log(`copyArray: ${cardToIds}`);
+        return cardsIds;
     
-        const deckCollection= client.db("userData").collection("decks");
-    
-        const decksDatabase= await deckCollection.find<Deck>({}).toArray();
-        
-        let chosenDeck=decksDatabase[0];//later deckkeuze aanmaken
-        let cards:CardS[]= chosenDeck.cards!;    //non-null assertion operator ? should work 
-        //console.log(cards);
-    
-        
-        let cardsIds:string[]=[]; 
-        cardsIds=makeIdList(cards,cardsIds);    //this array only contains variableIds used for api
-        
-        let simpleCard:simpleCardObject[]=[];
-        
-        let ListCardReady= makeCardListFromApi(cardsIds,simpleCard);//this caused long load
-        console.log('\x1b[36m%s\x1b[0m',"deck loaded");
-
-        //used to debug LoadTimes
-        // let endTime = performance.now()
-        // console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
-        
-        
-        return ListCardReady;
-    
-    }catch(e){
-        console.error(e);
     }
     
-}
-export const LoadingAllDecks =async () => {//will do as before but load all decks so cards wil be one space deeper inside the array
 
-
-    try{
-            await client.connect();
+const LoadingAllDecks = async () => {//will do as before but load all decks so cards wil be one space deeper inside the array
     
+    try{
             const deckCollection= client.db("userData").collection("decks");
         
             const decksDatabase= await deckCollection.find<Deck>({}).toArray();
@@ -178,7 +138,6 @@ export const LoadingAllDecks =async () => {//will do as before but load all deck
             console.error(e);
         }
     }
-
 
 export const iHatePromises =async () => {
     let ListCardReadyPreload=await LoadingAllDecks();
