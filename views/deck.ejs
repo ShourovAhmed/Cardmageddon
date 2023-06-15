@@ -1,8 +1,10 @@
 <%-include('partials/page-head')%>
+<% if (locals.header != 'false'){ %>
 <%-include('partials/header')%>
-
+<% } %>
 
     <main>
+        <% if (locals.header != 'false'){ %>
         <section class="sub-header">
             <section class="sub-header-top">
                 <h1><%=deck.name%></h1>
@@ -35,9 +37,10 @@
                 <button class="header-btn showM deckCopyM">Kopiëren</button>
     
             </section>
-            <%-include("partials/info-bar")%>
-        </section>
 
+        </section>
+        <% } %>
+        <%-include("partials/info-bar")%>
         <aside>
             <section class="deck-summary">
                 <%if(deck.name.length > 15){

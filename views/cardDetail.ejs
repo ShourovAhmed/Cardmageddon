@@ -358,7 +358,7 @@
                 </section>   
         </table>
         <br>
-        <form action="/deck/<%= decks[0].id %>/<%= localCard.id %>/1" name="deckSelector" id="deckSelector">
+        <form action="/deck/<%= decks[0].id %>/<%= localCard.id %>/1/false" name="deckSelector" id="deckSelector">
 
             <select name="decks" id="decks" onchange="changeAddUrl()">
                 <% for(let i = 0; i < decks.length; i++){ %>

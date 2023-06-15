@@ -105,7 +105,7 @@ function changeAddUrl(){
     let splitted = path.split('/');
     let cardId = splitted[3];
 
-    let url = "/deck/" + deckId + "/" + cardId + "/1";
+    let url = "/deck/" + deckId + "/" + cardId + "/1/false";
     
     form.action = url;
 
