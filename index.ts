@@ -650,14 +650,6 @@ catch (e: any){
 
 //Drawtest
 
-
-// // !!!!!!!!!!!!! ///
-//let ListCardReadyPreload:any= [];  
-// // !!!!!!!!!!!!! ///
-
-
-
-
 let ListCardReadyPreload:any = iHatePromises(); //to fix promiseissues?
 
 let drawnCards:number=7;//startcount cards shown
