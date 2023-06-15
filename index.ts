@@ -651,7 +651,7 @@ catch (e: any){
 
 
 // // !!!!!!!!!!!!! ///
-//let ListCardReadyPreload:any= [];
+//let ListCardReadyPreload:any= []; 
 // // !!!!!!!!!!!!! ///
 
 

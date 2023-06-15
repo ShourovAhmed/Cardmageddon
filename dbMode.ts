@@ -83,7 +83,7 @@ const main = async() =>{
                 console.log("Users And LoginData Where Reset To The Core Values")
             }
         }
-        if(readLine.keyInYN('Reset Test Deck?')){
+        if(readLine.keyInYN('Reset Test Deck?')){ 
             let deckId : number = -1;
             if(readLine.keyInYN('All Test Decks?')){
                 try{
