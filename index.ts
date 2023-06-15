@@ -242,7 +242,7 @@ app.post("/home", async (req, res) => {
             const shownCards = pics.slice(startIdx, endIdx);
         
             const totalPages = Math.ceil(pics.length / cardsPerPage);
-            console.log("Sliced");
+            //console.log("Sliced");
             //console.table(shownCards, ['name', 'rarity']);
                     
                 
@@ -472,7 +472,7 @@ try{
         try{
             await db.collection("decks").insertOne(newDeck);
             let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
-            let info : Info = new Info(true, `Deck: "${newDeckName}" Toegevoegd`);
+            let info : Info = new Info(true, `Deck: "${newDeckName}" toegevoegd`);
             res.render("decks", {title: "Decks", decks: await getDecks(), info: info});
         }
         catch(e: any){
