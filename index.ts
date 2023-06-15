@@ -107,10 +107,10 @@ app.post("/account/new", async(req, res) =>{
         cookieInfo = await registerUser(req.body.username, await fullHash(req.body.password1))
         
         if(cookieInfo.verified){
-            res.render("landingPage", {info: new Info(true, `Welkom ${cookieInfo.username}`)});
+            res.render("landingPage", {info: new Info(true, `Welkom ${cookieInfo.username}`), cookieInfo: cookieInfo});
         }
         else{
-            res.render("landingPage", {info: new Info(false, `Registratie mislukt`)});
+            res.render("landingPage", {info: new Info(false, `Registratie mislukt`), cookieInfo: cookieInfo});
         }
 
     }
@@ -128,7 +128,7 @@ app.use((req, res, next) => {
         next();
     }
     else{
-        res.render("landingPage", {titel: "Landingpage", info: new Info(false, "Toegang geweigerd")}); 
+        res.render("landingPage", {titel: "Landingpage", info: new Info(false, "Toegang geweigerd"), cookieInfo: cookieInfo}); 
     }
     
 });
