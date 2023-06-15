@@ -470,7 +470,7 @@ app.post("/decks", async (req,res) =>{
     try{
         await db.collection("decks").insertOne(newDeck);
         let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
-        let info : Info = new Info(true, `Deck: "${newDeckName}" Toegevoegd`);
+        let info : Info = new Info(true, `Deck: "${newDeckName}" toegevoegd`);
         res.render("decks", {title: "Decks", decks: await getDecks(), info: info});
     }
     catch(e: any){
