@@ -138,16 +138,23 @@ img{
     justify-content: center;
     align-items: center;
     width: 100vw;
-    margin-top: 9vh;
+    margin-top: 9vw;
+    
 
 }
 .registerFormSection{
-    background-color: var(--secondary-colour);
-    padding: 1.5rem;
     border-radius: 0.6rem;
+    background-color: var(--active-colour);
+    padding: 3rem;
+    border: var(--secondary-colour) 0.3rem solid;
+}
+.registerSection button:hover{
+    border-radius: 0.3rem;
+    background-color: var(--secondary-colour);
+
 }
 .registerSection a{
-    color: var(--header-colour);
+    color: var(--primary-colour);
 }
 .registerSection button{
     font-weight: 800;
