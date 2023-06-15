@@ -1,4 +1,7 @@
 <%-include('partials/page-head')%>
+<% if (!locals.header){
+    header = "true";
+}%>
 <% if (locals.header != 'false'){ %>
 <%-include('partials/header')%>
 <% } %>
@@ -128,10 +131,10 @@
                     <img class="upDown flipIcon" src="/assets/images/flip.png" alt="">
                 <%}%>
                 <section class="card-count">
-                    <a <%=atMin%> href="/deck/<%=deck.id%>/<%=variation.id%>/-1/true" class="count-down">-</a>
+                    <a <%=atMin%> href="/deck/<%=deck.id%>/<%=variation.id%>/-1/<%=header%>" class="count-down">-</a>
                     <a <%-trash%>hidden href="/deck/<%=deck.id%>/<%=variation.id%>/-1" class="count-down"><img src="/assets/images/bin.png" alt="" width="20px"></a>
                     <p class="count-now"><%=variation.count%></p>
-                    <a <%=atMax%> href="/deck/<%=deck.id%>/<%=variation.id%>/1/true" class="count-up">+</a>
+                    <a <%=atMax%> href="/deck/<%=deck.id%>/<%=variation.id%>/1/<%=header%>" class="count-up">+</a>
                 </section>
             </article>
 
