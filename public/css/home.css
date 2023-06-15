@@ -159,3 +159,58 @@ body {
 .mythic{
   border-color:crimson;
 }
+
+@media (width <= 961px){
+
+  .search-container input[type=text] {
+    font-size: 16pt;
+  }
+  .search-container button {
+    font-size: 16pt;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+
+  }
+
+  #pages{
+    font-size: 18pt;   
+  }
+
+
+}
+
+@media (width <= 641px){
+
+  .search-container input[type=text] {
+    font-size: 16pt;
+  }
+  .search-container button {
+    font-size: 16pt;
+  }
+
+  .arrow{
+    width:25%;
+    padding: 0;
+  }
+
+  .pagination button {
+    margin: 0 5px;
+  
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    padding: 15px;
+
+  }
+
+  #pages{
+    font-size: 15pt;   
+  }
+
+
+}
