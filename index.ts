@@ -242,7 +242,7 @@ app.post("/home", async (req, res) => {
             const shownCards = pics.slice(startIdx, endIdx);
         
             const totalPages = Math.ceil(pics.length / cardsPerPage);
-            console.log("Sliced");
+            //console.log("Sliced");
             //console.table(shownCards, ['name', 'rarity']);
                     
                 
@@ -472,7 +472,7 @@ try{
         try{
             await db.collection("decks").insertOne(newDeck);
             let decks : Deck[]|null = await db.collection('decks').find<Deck>({}).toArray();
-            let info : Info = new Info(true, `Deck: "${newDeckName}" Toegevoegd`);
+            let info : Info = new Info(true, `Deck: "${newDeckName}" toegevoegd`);
             res.render("decks", {title: "Decks", decks: await getDecks(), info: info});
         }
         catch(e: any){
@@ -612,11 +612,12 @@ try{
     });
     
     //ADD OR REMOVE CARD
-    app.get("/deck/:deckId/:cardId/:amount", async(req,res) =>{
+    app.get("/deck/:deckId/:cardId/:amount/:header", async(req,res) =>{
     
         let amount : number = parseFloat(req.params.amount);
         let deckId : number = parseInt(req.params.deckId);
         let cardId : string = req.params.cardId;
+        let header : string = req.params.header;
     
         try{
             if(amount%1 != 0){
@@ -627,10 +628,10 @@ try{
             }
             let info : Info = await addOrRemoveCard(deckId, cardId, amount);
     
-            res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: info})
+            res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: info, header: header})
         }
         catch (e){
-           res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: e}) 
+           res.render("deck", {title: "Deck", deck: await getDeck(deckId), info: e, header: header}) 
         }
     
     });
