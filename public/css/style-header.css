@@ -31,7 +31,7 @@ nav > ul > li:last-child{
     margin-left: auto;
     margin-right: 0;
 }
-.header-btn:hover > button{
+.header-btn:hover{
     border-radius: 0.3rem;
     background-color: var(--active-colour);
 }

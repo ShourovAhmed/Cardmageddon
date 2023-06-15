@@ -658,13 +658,14 @@ catch (e: any){
 
 
 
-let ListCardReadyPreload:any=iHatePromises(); //to fix promiseissues?
+let ListCardReadyPreload:any = iHatePromises(); //to fix promiseissues?
 
 let drawnCards:number=7;//startcount cards shown
 let selectedDeck:number=0;//default is first deck
 
 
 let ListCardReady:ListReadyDecksInterface=ListCardReadyPreload
+
 app.locals.data =ListCardReady;//makes global varianle wich can be updated and accessed in all scopes//required for updating/randomizing from post scope -> get
 let selectedCard:number=0;//for calculation
 

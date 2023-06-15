@@ -72,6 +72,7 @@ button, input, select {
     background-color: var(--light-colour);
     border-radius: 0.3rem;
     font-weight: 400;
+    padding: 0.3rem 0.45rem 0.3rem 0.45rem;
 }
 img{
     border-radius: 4.2%;

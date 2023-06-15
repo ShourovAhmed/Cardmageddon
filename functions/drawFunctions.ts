@@ -100,36 +100,34 @@ const LoadingAllDecks = async () => {//will do as before but load all decks so c
             let ListReadyDecks:ListReadyDecksInterface[]=[];
             for(let i:number=0;i<decksDatabase.length;i++){
                 
-                let cards:CardS[]= decksDatabase[i].cards!; 
-                let deckname:string=decksDatabase[i].name;
-                console.log(deckname)
-                //might need to add deck id here later+interface
-    
-                let cardsIds:string[]=[]; 
-                cardsIds=makeIdList(cards,cardsIds);//list of ids neeeded for apicall later
-    
-                let simpleCard:simpleCardObject[]=[];
-                let ListCardReady= await makeCardListFromApi(cardsIds,simpleCard);
-                //simpleCard=ListCardReady!;
-                
-                ListReadyDecks[i]={
-                    deckName:deckname,
-                    simpleCard:[]
+                    let cards:CardS[]= decksDatabase[i].cards!; 
+                    let deckname:string=decksDatabase[i].name;
+                    console.log(deckname)
+                    //might need to add deck id here later+interface
+        
+                    let cardsIds:string[]=[]; 
+                    cardsIds=makeIdList(cards,cardsIds);//list of ids neeeded for apicall later
+        
+                    let simpleCard:simpleCardObject[]=[];
+                    let ListCardReady= await makeCardListFromApi(cardsIds,simpleCard);
+                    //simpleCard=ListCardReady!;
+                    
+                    ListReadyDecks[i]={
+                        deckName:deckname,
+                        simpleCard:[]
+                    }
+                    
+                    for(let j=0;j<ListCardReady.length;j++){
+                        ListReadyDecks[i].simpleCard.push(ListCardReady[j]);
+                    }
+                    
+                    //ListReadyDecks.push(await ListCardReady);
+                    console.log('\x1b[36m%s\x1b[0m',"deck "+i+" loaded");
+                    
+        
                 }
-    
-    
-    
-                
-                
-                for(let j=0;j<ListCardReady.length;j++){
-                    ListReadyDecks[i].simpleCard.push(ListCardReady[j]);
-                }
-                
-                //ListReadyDecks.push(await ListCardReady);
-                console.log('\x1b[36m%s\x1b[0m',"deck "+i+" loaded");
-                
-    
-            }
+
+            
             //console.log(ListReadyDecks);
             return ListReadyDecks;
     
