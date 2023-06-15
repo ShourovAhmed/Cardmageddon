@@ -133,3 +133,30 @@ img{
     color: rgb(197, 0, 0);
 
 }
+.registerSection{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    margin-top: 9vh;
+
+}
+.registerFormSection{
+    background-color: var(--secondary-colour);
+    padding: 1.5rem;
+    border-radius: 0.6rem;
+}
+.registerSection a{
+    color: var(--header-colour);
+}
+.registerSection button{
+    font-weight: 800;
+}
+input{
+    font-weight: 800;
+    font-size: medium;
+    background-color: var(--light-colour);
+}
+header button, .sub-header button{
+    font-weight: 800;
+}

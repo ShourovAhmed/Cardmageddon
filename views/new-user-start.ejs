@@ -9,19 +9,24 @@
             </section>
             <%-include("partials/info-bar")%>
         </section>
+        <section class="registerSection">
+            <section class="registerFormSection">
+                <form method="post" class="registration-form">
+                    <label for="username">Gebruikersnaam</label>
+                    <br>
+                    <input style="margin: 0.6rem 0 1.5rem 0;" type="text" id="username" name="username" required>
+                    <br>
+                    <section id="captcha-box" class="ff">
+                        <p>Bewijs dat je slimmer bent dan chatGPT door het volgende woord, voluit te schrijven:</p>
+                        <p><%=//secretWord%></p>
+                    </section>
+                    <button id="check-name-btn" type="submit">Volgende</button>
+                
+                </form>
+            </section>
 
-            <form method="post" class="registration-form">
-                <label for="username">Gebruikersnaam</label>
-                <br>
-                <input type="text" id="username" name="username" required>
-                <br>
-                <section id="captcha-box" class="ff">
-                    <p>Bewijs dat je slimmer bent dan chatGPT door het volgende woord, voluit te schrijven:</p>
-                    <p><%=//secretWord%></p>
-                </section>
-                <button id="check-name-btn" type="submit">Volgende</button>
-            
-            </form>
+        </section>
+
 
 
 

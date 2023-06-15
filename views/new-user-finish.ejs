@@ -10,26 +10,32 @@
             <%-include("partials/info-bar")%>
         </section>
 
-            <form method="post" class="registration-form">
-                <input type="text" id="username" name="username" value="<%=username%>" required readonly>
-                <br>
-                <label for="password">Paswoord</label>
-                <br>
-                <input type="password" id="password1" name="password1" <%if(locals.password){%>value="<%=password%>"<%}%> required>
-                <br>
-                <label for="password">Paswoord nogmaals</label>
-                <br>
-                <input type="password" id="password2" name="password2" <%if(locals.password){%>value="<%=password%>"<%}%> required>
-                <br>
-                <label for="termsOfAgrement">Ik accepteer de <a href="/termsOfCondition" target="_blank">gebruikersvoorwaarden</a>,<br>die niemand ooit zal lezen omdat ze ergens,<br>in een veel te lang document staan uitgeschreven</label>
-                <input type="checkbox" name="termsOfAgrement" id="termsOfAgrement">
-                <section id="captcha-box" class="ff">
-                    <p>Bewijs dat je slimmer bent dan chatGPT door het volgende woord, voluit te schrijven:</p>
-                    <p><%=//secretWord%></p>
-                </section>
-                <button id="registration-btn" type="submit">Registreer</button>
-            
-            </form>
+        <section class="registerSection">
+            <section class="registerFormSection">
+                <form method="post" class="registration-form">
+                    <input type="text" id="username" name="username" value="<%=username%>" required readonly>
+                    <br>
+                    <label for="password">Paswoord</label>
+                    <br>
+                    <input type="password" id="password1" name="password1" <%if(locals.password){%>value="<%=password%>"<%}%> required>
+                    <br>
+                    <label for="password">Paswoord nogmaals</label>
+                    <br>
+                    <input type="password" id="password2" name="password2" <%if(locals.password){%>value="<%=password%>"<%}%> required>
+                    <br>
+                    <label for="termsOfAgrement">Ik accepteer de <a href="/termsOfCondition" target="_blank">gebruikersvoorwaarden </label></a><input type="checkbox" name="termsOfAgrement" id="termsOfAgrement"><br>
+                        <p>die niemand ooit zal lezen omdat ze ergens,<br>in een veel te lang document staan uitgeschreven</p>
+                    
+                    <section id="captcha-box" class="ff">
+                        <p>Bewijs dat je slimmer bent dan chatGPT door het volgende woord, voluit te schrijven:</p>
+                        <p><%=//secretWord%></p>
+                    </section>
+                    <br>
+                    <button style="margin-top: 0.9rem;" id="registration-btn" type="submit">Registreer</button>
+                </form>
+    
+            </section>
+        </section>
 
 
 

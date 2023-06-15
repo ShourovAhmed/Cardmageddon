@@ -10,15 +10,19 @@
             <br>
             <input type="password" id="password" name="password" required>
             <br>
-            <label for="cookie">Accept Our Evil Cookie<br>Or be forever confined to this landingpage</label>
+            <label for="cookie">Accept Our Evil Cookie </label>
             <input type="checkbox" name="cookie" id="cookie" required>
+            <br>
+            <p>Or be forever confined to this landingpage</p>
+            
             <section id="captcha-box" class="ff">
                 <p>Bewijs dat je slimmer bent dan chatGPT door het volgende woord, voluit te schrijven:</p>
                 <p><%=//secretWord%></p>
             </section>
+            <br>
             <button id="request-login-btn" type="submit">Aanmelden</button>
         </form>
         <p>Nog geen account?</p>
-        <br>
         <a href="/account/new"><button>Registreer Nu</button></a>
+        
     </modal>
