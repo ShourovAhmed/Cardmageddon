@@ -17,7 +17,14 @@
 <body>
 
     <header>
-		<button style="margin-left: auto; margin-top: 0.3rem; margin-bottom: 0.3rem;" class="header-btn showM logM" id="loginStatus">Aanmelden<status>0</status></button>
+		<%
+		status = 0;
+		statusText = "Aanmelden";
+		if(cookieInfo.verified === true){
+			status = 1;
+			statusText = "Afmelden";
+		}%>
+		<button style="margin-left: auto; margin-top: 0.3rem; margin-bottom: 0.3rem;" class="header-btn showM logM" id="loginStatus"><%=statusText%><status><%=status%></status></button>
     </header>
 	<%-include("partials/info-bar")%>
 

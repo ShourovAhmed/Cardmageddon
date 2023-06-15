@@ -41,15 +41,15 @@ export let cookieInfo : CookieInfo = new CookieInfo;
 app.get("//:id", async(req, res) =>{
     let loginData : LoginData|null = await db.collection("loginData").findOne<LoginData>({user_id: parseInt(req.params.id)});
     cookieInfo = new CookieInfo(loginData?.username, loginData?.user_id, true);
-    res.render("landingPage", {title: "Landingpage", info: new Info(true, mssg+cookieInfo.username)});
+    res.render("landingPage", {title: "Landingpage", info: new Info(true, mssg+cookieInfo.username), cookieInfo: cookieInfo});
 });
 
 app.get("/", (req, res) =>{
-    res.render("landingPage");
+    res.render("landingPage", {cookieInfo: cookieInfo});
 });
 
 app.post("/", async(req, res) =>{
-    let info : Info = new Info();
+    let info : Info = new Info(); 
     if(cookieInfo.verified){
         info.succes = true;
         info.message = "Je login was nog actief";
@@ -75,7 +75,7 @@ app.post("/", async(req, res) =>{
     }
     log("login");
     console.table(cookieInfo);
-    res.render("landingPage", {title: "Landingpage", info: info});
+    res.render("landingPage", {title: "Landingpage", info: info, cookieInfo: cookieInfo});
 })
 
 app.get("/logout", (req, res) =>{
