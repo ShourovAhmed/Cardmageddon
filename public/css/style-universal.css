@@ -91,6 +91,9 @@ img{
 
     background-color:var(--subHeader-colour);
 }
+/* .sub-header > .dropDrownPer{
+    margin-right: 50rem;
+} */
 
 /* INFO TEXT BOX */
 #info-bar{

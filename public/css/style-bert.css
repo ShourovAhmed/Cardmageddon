@@ -61,6 +61,40 @@ aside > .deck-summary{
     margin: auto;
     align-items: center;
 }
+
+.dropDownPer{
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+
+}
+.dropDownPer button{
+    margin: 0;
+}
+
+.dropDown{
+    display: none !important;
+    position: absolute;
+    top: -0.3rem;
+    right: -1.2rem;
+    background-color:var(--subHeader-colour);
+    list-style: none;
+    border-radius: 0.9rem;
+}
+.dropDownPer:hover > .dropDown{
+    display: block !important;
+
+
+}
+.dropDown > li {
+    display: flex;
+    padding: 0.39rem 0.69rem 0.39rem 0.69rem !important;
+    border-radius: 0.9rem;
+    justify-content: center;
+}
+.dropDown > li > button {
+width: 100%;
+}
 label{
     padding-right: 0.51rem;
 }
