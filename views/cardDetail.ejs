@@ -358,6 +358,7 @@
                 </section>   
         </table>
         <br>
+        <% if(decks.length > 0){ %>
         <form action="/deck/<%= decks[0].id %>/<%= localCard.id %>/1/false" name="deckSelector" id="deckSelector">
 
             <select name="decks" id="decks" onchange="changeAddUrl()">
@@ -382,6 +383,7 @@
             
 
         </form>
+        <%}%>
         <script src="/js/modals.js"></script>
     </main>
 </body>
