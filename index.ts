@@ -290,24 +290,25 @@ app.get("/cardDetail/:id", async (req, res) => {
 
     // Add first 6 test decks
     let cards = [];
-    for(let i = 0; i< 6; i++){
-        for(let j = 0; j< decksDb[i].cards.length; j++){
-            cards.push({cardId: decksDb[i].cards[j].variations[0].id, deckName: decksDb[i].name});
-        }
-        decks.push({id: i, name: decksDb[i].name});
-    }
+    
+    // for(let i = 0; i< 6; i++){
+    //     for(let j = 0; j< decksDb[i].cards.length; j++){
+    //         cards.push({cardId: decksDb[i].cards[j].variations[0].id, deckName: decksDb[i].name});
+    //     }
+    //     decks.push({id: i, name: decksDb[i].name});
+    // }
 
 
     // Add user decks + Specials deck
     for(let i = 6; i < decksDb.length; i++){
 
         // Specials deck
-        if(decksDb[i].id == 9){
-            for(let j = 0; j< decksDb[i].cards.length; j++){
-                cards.push({cardId: decksDb[i].cards[j].variations[0].id, deckName: decksDb[i].name});
-            }
-            decks.push({id: 9, name: decksDb[i].name});
-        }
+        // if(decksDb[i].id == 9){
+        //     for(let j = 0; j< decksDb[i].cards.length; j++){
+        //         cards.push({cardId: decksDb[i].cards[j].variations[0].id, deckName: decksDb[i].name});
+        //     }
+        //     decks.push({id: 9, name: decksDb[i].name});
+        // }
 
         // Userdecks
         for(let j = 0; j < userDecks.length; j++){
